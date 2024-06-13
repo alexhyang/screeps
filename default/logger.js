@@ -1,5 +1,5 @@
-var squadLogger = require("logger.squad");
-const resourceLogger = require("logger.resource");
+var squadLogger = require("./logger.squad");
+const resourceLogger = require("./logger.resource");
 
 var logger = {
   log: function () {

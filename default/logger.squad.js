@@ -1,5 +1,5 @@
-var squad = require("squad");
-const { capitalize } = require("utils");
+var squad = require("./squad");
+const { capitalize } = require("./utils");
 
 var squadLogger = {
   log: function () {

@@ -1,7 +1,7 @@
-var roleHarvester = require("role.harvester");
-var roleUpgrader = require("role.upgrader");
-var roleBuilder = require("role.builder");
-var squadRecruiter = require("squad.recruiter");
+var roleHarvester = require("./role.harvester");
+var roleUpgrader = require("./role.upgrader");
+var roleBuilder = require("./role.builder");
+var squadRecruiter = require("./squad.recruiter");
 
 const {
   HARVESTER_TEAM_SIZE,

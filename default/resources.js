@@ -1,4 +1,4 @@
-const { SPAWN_WITHDRAW_THRESHOLD } = require("strategy.parameters");
+const { SPAWN_WITHDRAW_THRESHOLD } = require("./strategy.parameters");
 // structure id's
 const structureExtensions = new Set();
 structureExtensions.add("6669acae4416c85f20d3c1ab");

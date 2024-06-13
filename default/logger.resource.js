@@ -1,10 +1,8 @@
-const resources = require("resources");
-
 var resourceLogger = {
   log: function () {
-    let totalEnergy = resources.getTotalEnergy();
-    let totalEnergyCapacity = resources.getTotalEnergyCapacity();
-    console.log("Energy: " + `${totalEnergy}/${totalEnergyCapacity}`);
+    let energyAvailable = Game.rooms["W35N43"].energyAvailable;
+    let energyCapacityAvailable = Game.rooms["W35N43"].energyCapacityAvailable;
+    console.log("Energy: " + `${energyAvailable}/${energyCapacityAvailable}`);
   },
 };
 

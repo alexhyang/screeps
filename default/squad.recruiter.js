@@ -8,7 +8,7 @@
  *
  */
 
-const resources = require("resources");
+const resources = require("./resources");
 
 const HARVESTER_200 = {
   name: "H200",
