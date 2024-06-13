@@ -50,7 +50,6 @@ let resources = {
   assignCreepToObtainEnergyFromSpawn: function (creep) {
     var spawn = creep.room.find(FIND_MY_SPAWNS)[0];
     if (
-      resources.withdrawOk() &&
       creep.pos.getRangeTo(spawn) == 1 &&
       creep.withdraw(spawn, RESOURCE_ENERGY) == OK
     ) {
@@ -62,10 +61,11 @@ let resources = {
     }
   },
   /** @param {Creep} creep **/
-  assignCreepToObtainEnergyFromSource: function (creep) {
+  /** @param {Number} sourceIndex **/
+  assignCreepToObtainEnergyFromSource: function (creep, sourceIndex) {
     var sources = creep.room.find(FIND_SOURCES);
-    if (creep.harvest(sources[0]) == ERR_NOT_IN_RANGE) {
-      creep.moveTo(sources[0], {
+    if (creep.harvest(sources[sourceIndex]) == ERR_NOT_IN_RANGE) {
+      creep.moveTo(sources[sourceIndex], {
         visualizePathStyle: { stroke: "#ffaa00" },
       });
     }

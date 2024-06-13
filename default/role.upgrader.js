@@ -3,7 +3,10 @@ const {
   assignCreepToObtainEnergyFromSource,
   withdrawFromSpawnOk,
 } = require("./resources");
-const { UPGRADER_ENERGY_SOURCE } = require("./strategy.parameters");
+const {
+  UPGRADER_ENERGY_SOURCE,
+  UPGRADER_SOURCE_INDEX,
+} = require("./strategy.parameters");
 
 var roleUpgrader = {
   /** @param {Creep} creep **/
@@ -40,7 +43,7 @@ var roleUpgrader = {
     if (withdrawFromSpawnOk() && UPGRADER_ENERGY_SOURCE === "spawn") {
       assignCreepToObtainEnergyFromSpawn(creep);
     } else {
-      assignCreepToObtainEnergyFromSource(creep);
+      assignCreepToObtainEnergyFromSource(creep, UPGRADER_SOURCE_INDEX);
     }
   },
 };
