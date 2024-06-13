@@ -3,9 +3,11 @@ var roleUpgrader = require("role.upgrader");
 var roleBuilder = require("role.builder");
 var squadRecruiter = require("squad.recruiter");
 
-const HARVESTER_TEAM_SIZE = 2;
-const BUILDER_TEAM_SIZE = 2;
-const UPGRADER_TEAM_SIZE = 3;
+const {
+  HARVESTER_TEAM_SIZE,
+  BUILDER_TEAM_SIZE,
+  UPGRADER_TEAM_SIZE,
+} = require("game.parameters");
 
 var squad = {
   recruitSquad: function () {

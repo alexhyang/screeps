@@ -1,3 +1,4 @@
+const { SPAWN_WITHDRAW_THRESHOLD } = require("game.parameters");
 // structure id's
 const structureExtensions = new Set();
 structureExtensions.add("6669acae4416c85f20d3c1ab");
@@ -6,9 +7,8 @@ structureExtensions.add("666a4fe56bce396094619218");
 structureExtensions.add("666a6db0f354fc685f615f0d");
 
 let resources = {
-  WITHDRAW_THRESHOLD: 201,
   withdrawOk: function () {
-    return this.getTotalEnergy() >= this.WITHDRAW_THRESHOLD;
+    return this.getTotalEnergy() >= SPAWN_WITHDRAW_THRESHOLD;
   },
   getTotalEnergyCapacity: function () {
     return (
