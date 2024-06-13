@@ -8,6 +8,8 @@
  *
  */
 
+const resources = require("resources");
+
 const HARVESTER_200 = {
   name: "H200",
   role: "harvester",
@@ -31,7 +33,11 @@ const UPGRADER_400 = {
 
 var squadRecruiter = {
   recruitHarvester: function () {
-    this.recruitCreep(HARVESTER_450);
+    if (resources.getTotalEnergy >= 450) {
+      this.recruitCreep(HARVESTER_450);
+    } else {
+      this.recruitCreep(HARVESTER_200);
+    }
   },
   recruitBuilder: function () {
     this.recruitCreep(BUILDER_250);
