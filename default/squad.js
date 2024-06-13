@@ -1,22 +1,22 @@
 var roleHarvester = require("role.harvester");
 var roleUpgrader = require("role.upgrader");
 var roleBuilder = require("role.builder");
-var teamRecruiter = require("teamRecruiter");
+var squadRecruiter = require("squad.recruiter");
 
 const HARVESTER_TEAM_SIZE = 2;
 const BUILDER_TEAM_SIZE = 2;
-const UPGRADER_TEAM_SIZE = 2;
+const UPGRADER_TEAM_SIZE = 3;
 
 var squad = {
   recruitSquad: function () {
     if (this.getHarvesters().length < HARVESTER_TEAM_SIZE) {
-      teamRecruiter.recruitHarvester();
+      squadRecruiter.recruitHarvester();
     }
     if (this.getBuilders().length < BUILDER_TEAM_SIZE) {
-      teamRecruiter.recruitBuilder();
+      squadRecruiter.recruitBuilder();
     }
     if (this.getUpgraders().length < UPGRADER_TEAM_SIZE) {
-      teamRecruiter.recruitUpgrader();
+      squadRecruiter.recruitUpgrader();
     }
   },
   assignJobs: function () {

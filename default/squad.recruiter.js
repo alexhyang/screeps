@@ -29,7 +29,7 @@ const UPGRADER_400 = {
   body: [WORK, WORK, WORK, CARRY, MOVE],
 };
 
-var teamRecruiter = {
+var squadRecruiter = {
   recruitHarvester: function () {
     this.recruitCreep(HARVESTER_450);
   },
@@ -51,4 +51,4 @@ var teamRecruiter = {
   },
 };
 
-module.exports = teamRecruiter;
+module.exports = squadRecruiter;
