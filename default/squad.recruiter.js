@@ -1,49 +1,38 @@
-/**
- * This is a team recruiter of the room.
- *
- * Creep spawn costs (BODYPART_COST)
- *   work: 100, carry: 50, move: 50,
- *   attack: 80, ranged_attack: 150, heal: 250
- *   claim: 600, tough: 10
- *
- */
-
 const resources = require("./resources");
-
-const HARVESTER_200 = {
-  name: "H200",
-  role: "harvester",
-  body: [WORK, CARRY, MOVE],
-};
-const HARVESTER_450 = {
-  name: "H450",
-  role: "harvester",
-  body: [WORK, WORK, WORK, CARRY, CARRY, MOVE],
-};
-const BUILDER_250 = {
-  name: "B250",
-  role: "builder",
-  body: [WORK, CARRY, MOVE, MOVE],
-};
-const UPGRADER_400 = {
-  name: "U400",
-  role: "upgrader",
-  body: [WORK, WORK, WORK, CARRY, MOVE],
-};
+const {
+  HARVESTER_200,
+  HARVESTER_300,
+  HARVESTER_350,
+  HARVESTER_450,
+  BUILDER_200,
+  BUILDER_250_FAST,
+  BUILDER_250_LARGE,
+  BUILDER_350_LARGE,
+  BUILDER_400_LARGE,
+  UPGRADER_200,
+  UPGRADER_400,
+  UPGRADER_500,
+} = require("./strategy.creepModels");
 
 var squadRecruiter = {
   recruitHarvester: function () {
     if (resources.getTotalEnergy >= 450) {
       this.recruitCreep(HARVESTER_450);
+    } else if (resources.getTotalEnergy >= 350) {
+      this.recruitCreep(HARVESTER_350);
     } else {
-      this.recruitCreep(HARVESTER_200);
+      this.recruitCreep(HARVESTER_300);
     }
   },
   recruitBuilder: function () {
-    this.recruitCreep(BUILDER_250);
+    this.recruitCreep(BUILDER_350_LARGE);
   },
   recruitUpgrader: function () {
-    this.recruitCreep(UPGRADER_400);
+    if (resources.getTotalEnergy >= 500) {
+      this.recruitCreep(UPGRADER_500);
+    } else {
+      this.recruitCreep(UPGRADER_400);
+    }
   },
   /**
    * @param {CreepModel} creepModel
