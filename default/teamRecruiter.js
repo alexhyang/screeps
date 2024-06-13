@@ -9,22 +9,22 @@
  */
 
 const HARVESTER_200 = {
-  name: "Harvester200",
+  name: "H200",
   role: "harvester",
   body: [WORK, CARRY, MOVE],
 };
 const HARVESTER_450 = {
-  name: "Harvester450",
+  name: "H450",
   role: "harvester",
   body: [WORK, WORK, WORK, CARRY, CARRY, MOVE],
 };
 const BUILDER_250 = {
-  name: "Builder250",
+  name: "B250",
   role: "builder",
   body: [WORK, CARRY, MOVE, MOVE],
 };
 const UPGRADER_400 = {
-  name: "Upgrader400",
+  name: "U400",
   role: "upgrader",
   body: [WORK, WORK, WORK, CARRY, MOVE],
 };
@@ -43,7 +43,7 @@ var teamRecruiter = {
    * @param {CreepModel} creepModel
    */
   recruitCreep: function (creepModel) {
-    var newName = creepModel.name + "-" + Game.time;
+    var newName = creepModel.name + "-" + (Game.time % 10000);
     console.log(`Spawning new ${creepModel.role}: ` + newName);
     Game.spawns["Spawn1"].spawnCreep(creepModel.body, newName, {
       memory: { role: creepModel.role },
