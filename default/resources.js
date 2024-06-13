@@ -46,6 +46,30 @@ let resources = {
     });
     return energy;
   },
+  /** @param {Creep} creep **/
+  assignCreepToObtainEnergyFromSpawn: function (creep) {
+    var spawn = creep.room.find(FIND_MY_SPAWNS)[0];
+    if (
+      resources.withdrawOk() &&
+      creep.pos.getRangeTo(spawn) == 1 &&
+      creep.withdraw(spawn, RESOURCE_ENERGY) == OK
+    ) {
+      creep.memory.building = true;
+    } else {
+      creep.moveTo(spawn, {
+        visualizePathStyle: { stroke: "#ffaa00" },
+      });
+    }
+  },
+  /** @param {Creep} creep **/
+  assignCreepToObtainEnergyFromSource: function (creep) {
+    var sources = creep.room.find(FIND_SOURCES);
+    if (creep.harvest(sources[0]) == ERR_NOT_IN_RANGE) {
+      creep.moveTo(sources[0], {
+        visualizePathStyle: { stroke: "#ffaa00" },
+      });
+    }
+  },
 };
 
 module.exports = resources;

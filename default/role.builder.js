@@ -1,4 +1,8 @@
-const resources = require("resources");
+const resources = require("./resources");
+const {
+  assignCreepToObtainEnergyFromSpawn,
+  assignCreepToObtainEnergyFromSource,
+} = require("./resources");
 
 var roleBuilder = {
   /** @param {Creep} creep **/
@@ -36,31 +40,9 @@ var roleBuilder = {
   /** @param {Creep} creep **/
   obtainEnergy: function (creep) {
     if (resources.withdrawOk()) {
-      this.obtainEnergyFromSpawn(creep);
+      assignCreepToObtainEnergyFromSpawn(creep);
     } else {
-      this.obtainEnergyFromSource(creep);
-    }
-  },
-  obtainEnergyFromSpawn: function (creep) {
-    var spawn = creep.room.find(FIND_MY_SPAWNS)[0];
-    if (
-      resources.withdrawOk() &&
-      creep.pos.getRangeTo(spawn) == 1 &&
-      creep.withdraw(spawn, RESOURCE_ENERGY) == OK
-    ) {
-      creep.memory.building = true;
-    } else {
-      creep.moveTo(spawn, {
-        visualizePathStyle: { stroke: "#ffaa00" },
-      });
-    }
-  },
-  obtainEnergyFromSource: function (creep) {
-    var sources = creep.room.find(FIND_SOURCES);
-    if (creep.harvest(sources[0]) == ERR_NOT_IN_RANGE) {
-      creep.moveTo(sources[0], {
-        visualizePathStyle: { stroke: "#ffaa00" },
-      });
+      assignCreepToObtainEnergyFromSource(creep);
     }
   },
 };
