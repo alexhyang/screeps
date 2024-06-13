@@ -26,6 +26,10 @@
         'HarvesterBig', { memory: { role: 'harvester' } }
     );
 
+    // storage
+    Game.structure[hashCode].store.getCapacity(RESOURCE_ENERGY);
+    Game.structure[hashCode].store.getUsedCapacity(RESOURCE_ENERGY);
+
     // activate the safe mode
     Game.spawns['Spawn1'].room.controller.activateSafeMode();
 

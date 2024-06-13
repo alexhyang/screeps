@@ -6,7 +6,6 @@ var squadLogger = {
     this.printTeamStatus("harvester");
     this.printTeamStatus("builder");
     this.printTeamStatus("upgrader");
-    console.log("\n");
   },
   /**
    * @param {string} creepRole
@@ -23,8 +22,11 @@ var squadLogger = {
       let teamMember = teamMembers[i];
       let name = teamMember.name;
       let lifeLeft = teamMember.ticksToLive;
+      let carry = teamMember.store[RESOURCE_ENERGY];
+      let carryMax = teamMember.store.getCapacity(RESOURCE_ENERGY);
       let bodyParts = teamMember.body.map((part) => part.type).join(",");
-      let printMsg = name + " (life: " + lifeLeft + ") " + bodyParts;
+      let creepMeta = `(life: ${lifeLeft}, carry: ${carry}/${carryMax})`;
+      let printMsg = `${name} ${creepMeta} ${bodyParts}`;
       console.log(printMsg);
     }
   },
