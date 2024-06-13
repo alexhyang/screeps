@@ -7,7 +7,7 @@ structureExtensions.add("666a4fe56bce396094619218");
 structureExtensions.add("666a6db0f354fc685f615f0d");
 
 let resources = {
-  withdrawOk: function () {
+  withdrawFromSpawnOk: function () {
     return this.getTotalEnergy() >= SPAWN_WITHDRAW_THRESHOLD;
   },
   getTotalEnergyCapacity: function () {
