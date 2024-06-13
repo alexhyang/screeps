@@ -1,13 +1,15 @@
 var roleHarvester = require("./role.harvester");
 var roleUpgrader = require("./role.upgrader");
 var roleBuilder = require("./role.builder");
+const roleRepairer = require("./role.repairer");
 var squadRecruiter = require("./squad.recruiter");
 
 const {
   HARVESTER_TEAM_SIZE,
   BUILDER_TEAM_SIZE,
   UPGRADER_TEAM_SIZE,
-} = require("strategy.parameters");
+  REPAIRER_TEAM_SIZE,
+} = require("./strategy.parameters");
 
 var squad = {
   recruitSquad: function () {
@@ -19,6 +21,9 @@ var squad = {
     }
     if (this.getUpgraders().length < UPGRADER_TEAM_SIZE) {
       squadRecruiter.recruitUpgrader();
+    }
+    if (this.getRepairer().length < REPAIRER_TEAM_SIZE) {
+      squadRecruiter.recruitRepairer();
     }
   },
   assignJobs: function () {
@@ -33,6 +38,9 @@ var squad = {
       if (creep.memory.role == "builder") {
         roleBuilder.run(creep);
       }
+      if (creep.memory.role == "repairer") {
+        roleRepairer.run(creep);
+      }
     }
   },
   getHarvesters: function () {
@@ -43,6 +51,9 @@ var squad = {
   },
   getUpgraders: function () {
     return this.getTeam("upgrader");
+  },
+  getRepairer: function () {
+    return this.getTeam("repairer");
   },
   /** @param {string} creepRole */
   getTeam: function (creepRole) {

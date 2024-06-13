@@ -12,6 +12,7 @@ const {
   UPGRADER_200,
   UPGRADER_400,
   UPGRADER_500,
+  REPAIRER_200,
 } = require("./strategy.creepModels");
 
 var squadRecruiter = {
@@ -34,6 +35,10 @@ var squadRecruiter = {
       this.recruitCreep(UPGRADER_400);
     }
   },
+  recruitRepairer: function () {
+    this.recruitCreep(REPAIRER_200);
+  },
+
   /**
    * @param {CreepModel} creepModel
    */

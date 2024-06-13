@@ -69,6 +69,11 @@ let MODELS = {
     role: "upgrader",
     body: [WORK, WORK, WORK, WORK, CARRY, MOVE],
   },
+  REPAIRER_200: {
+    name: "R200",
+    role: "repairer",
+    body: [WORK, CARRY, MOVE],
+  },
 };
 
 module.exports = MODELS;
