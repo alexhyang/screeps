@@ -27,6 +27,8 @@
     );
 
     // storage
+    Game.rooms[roomName].energyAvailable;
+    Game.rooms[roomName].energyCapacityAvailable;
     Game.structure[hashCode].store.getCapacity(RESOURCE_ENERGY);
     Game.structure[hashCode].store.getUsedCapacity(RESOURCE_ENERGY);
 
