@@ -22,10 +22,11 @@ var squadLogger = {
       let teamMember = teamMembers[i];
       let name = teamMember.name;
       let lifeLeft = teamMember.ticksToLive;
+      let fatigue = teamMember.fatigue;
       let carry = teamMember.store[RESOURCE_ENERGY];
       let carryMax = teamMember.store.getCapacity(RESOURCE_ENERGY);
       let bodyParts = teamMember.body.map((part) => part.type).join(",");
-      let creepMeta = `(life: ${lifeLeft}, carry: ${carry}/${carryMax})`;
+      let creepMeta = `(life: ${lifeLeft}, carry: ${carry}/${carryMax}, fatigue: ${fatigue})`;
       let printMsg = `${name} ${creepMeta} ${bodyParts}`;
       console.log(printMsg);
     }
