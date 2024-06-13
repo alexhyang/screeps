@@ -7,7 +7,7 @@ const {
   HARVESTER_TEAM_SIZE,
   BUILDER_TEAM_SIZE,
   UPGRADER_TEAM_SIZE,
-} = require("game.parameters");
+} = require("strategy.parameters");
 
 var squad = {
   recruitSquad: function () {
