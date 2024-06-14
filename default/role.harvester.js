@@ -15,12 +15,12 @@ var roleHarvester = {
     }
   },
   findTargets: function (creep) {
+    let transferToNonContainer =
+      Game.rooms[ROOM_NUMBER].energyAvailable <
+      Game.rooms[ROOM_NUMBER].energyCapacityAvailable;
     var targets = creep.room.find(FIND_STRUCTURES, {
       filter: (structure) => {
-        if (
-          Game.rooms[ROOM_NUMBER].energyAvailable <
-          Game.rooms[ROOM_NUMBER].energyCapacityAvailable
-        ) {
+        if (transferToNonContainer) {
           return (
             (structure.structureType == STRUCTURE_EXTENSION ||
               structure.structureType == STRUCTURE_SPAWN ||
