@@ -30,6 +30,17 @@ let roleRepairer = {
     }
   },
   repairConstruction: function (creep) {
+    let targets = this.findTargets(creep).sort((a, b) => a.hits - b.hits);
+    this.repairTargets(creep, targets);
+  },
+  obtainEnergy: function (creep) {
+    if (withdrawFromSpawnOk() && REPAIRER_ENERGY_SOURCE === "spawn") {
+      assignCreepToObtainEnergyFromSpawn(creep);
+    } else {
+      assignCreepToObtainEnergyFromSource(creep, REPAIRER_SOURCE_INDEX);
+    }
+  },
+  findTargets: function (creep) {
     var targets = creep.room.find(FIND_STRUCTURES, {
       filter: (structure) => {
         return (
@@ -40,20 +51,15 @@ let roleRepairer = {
         );
       },
     });
-    targets.sort((a, b) => a.hits - b.hits);
+    return targets;
+  },
+  repairTargets: function (creep, targets) {
     if (targets.length > 0) {
       if (creep.repair(targets[0]) == ERR_NOT_IN_RANGE) {
         creep.moveTo(targets[0], {
           visualizePathStyle: { stroke: "#ffffff" },
         });
       }
-    }
-  },
-  obtainEnergy: function (creep) {
-    if (withdrawFromSpawnOk() && REPAIRER_ENERGY_SOURCE === "spawn") {
-      assignCreepToObtainEnergyFromSpawn(creep);
-    } else {
-      assignCreepToObtainEnergyFromSource(creep, REPAIRER_SOURCE_INDEX);
     }
   },
 };
