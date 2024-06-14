@@ -9,12 +9,9 @@ let resources = {
   assignCreepToObtainEnergyFromSpawn: function (creep) {
     var spawn = creep.room.find(FIND_MY_SPAWNS)[0];
     if (
-      creep.pos.getRangeTo(spawn) == 1 &&
-      creep.withdraw(spawn, RESOURCE_ENERGY) == OK
+      creep.withdraw(spawn, RESOURCE_ENERGY) !== OK ||
+      creep.pos.getRangeTo(spawn) !== 1
     ) {
-      // TODO: examine the line below
-      creep.memory.building = true;
-    } else {
       creep.moveTo(spawn, {
         visualizePathStyle: { stroke: "#ffaa00" },
       });
