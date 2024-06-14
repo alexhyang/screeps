@@ -1,3 +1,9 @@
+const {
+  HARVESTER_TEAM_SIZE,
+  BUILDER_TEAM_SIZE,
+  UPGRADER_TEAM_SIZE,
+  REPAIRER_TEAM_SIZE,
+} = require("./dashboard");
 var squad = require("./squad");
 const { capitalize } = require("./utils");
 
@@ -20,7 +26,9 @@ var squadLogger = {
     console.log(
       capitalize(creepRole) +
         `s ${this.getTeamNameSuffix(creepRole)}(life, carry, fatigue): ` +
-        teamSize
+        teamSize +
+        "/" +
+        this.getTeamMaxSize(creepRole)
     );
   },
   printTeamMembers: function (teamMembers) {
@@ -31,6 +39,20 @@ var squadLogger = {
       let creepNameSuffix = this.getCreepNameSuffix(teamMember);
       let printMsg = `  ${teamMember.name}${creepNameSuffix}${creepMeta} ${bodyParts}`;
       console.log(printMsg);
+    }
+  },
+  getTeamMaxSize: function (creepRole) {
+    switch (creepRole) {
+      case "harvester":
+        return HARVESTER_TEAM_SIZE;
+      case "builder":
+        return BUILDER_TEAM_SIZE;
+      case "upgrader":
+        return UPGRADER_TEAM_SIZE;
+      case "repairer":
+        return REPAIRER_TEAM_SIZE;
+      default:
+        return -1;
     }
   },
   /**
