@@ -46,7 +46,9 @@ var squadLogger = {
       case "harvester":
         return HARVESTER_TEAM_SIZE;
       case "builder":
-        return BUILDER_TEAM_SIZE;
+        let comments =
+          Object.keys(Game.constructionSites) > 0 ? "" : " (no constructions)";
+        return BUILDER_TEAM_SIZE + comments;
       case "upgrader":
         return UPGRADER_TEAM_SIZE;
       case "repairer":

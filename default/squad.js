@@ -16,7 +16,10 @@ var squad = {
     if (this.getHarvesters().length < HARVESTER_TEAM_SIZE) {
       squadRecruiter.recruitHarvester();
     }
-    if (this.getBuilders().length < BUILDER_TEAM_SIZE) {
+    if (
+      this.getBuilders().length < BUILDER_TEAM_SIZE &&
+      Object.keys(Game.constructionSites) > 0
+    ) {
       squadRecruiter.recruitBuilder();
     }
     if (this.getUpgraders().length < UPGRADER_TEAM_SIZE) {
