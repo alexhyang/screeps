@@ -3,6 +3,7 @@ const {
   BUILDER_TEAM_SIZE,
   UPGRADER_TEAM_SIZE,
   REPAIRER_TEAM_SIZE,
+  MINER_TEAM_SIZE,
 } = require("./dashboard");
 var squad = require("./squad");
 const { capitalize } = require("./utils");
@@ -54,6 +55,8 @@ var squadLogger = {
         return UPGRADER_TEAM_SIZE;
       case "repairer":
         return REPAIRER_TEAM_SIZE;
+      case "miner":
+        return MINER_TEAM_SIZE;
       default:
         return -1;
     }
