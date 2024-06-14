@@ -1,9 +1,10 @@
-const { SPAWN_WITHDRAW_THRESHOLD, ENERGY_AVAILABLE } = require("./dashboard");
+const { SPAWN_WITHDRAW_THRESHOLD, ROOM_NUMBER } = require("./dashboard");
 
 let resources = {
   /** @returns {number} */
   withdrawFromSpawnOk: function () {
-    return ENERGY_AVAILABLE >= SPAWN_WITHDRAW_THRESHOLD;
+    let energyAvailable = Game.rooms[ROOM_NUMBER].energyAvailable;
+    return energyAvailable >= SPAWN_WITHDRAW_THRESHOLD;
   },
   /**
    * @param {Creep} creep

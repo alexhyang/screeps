@@ -1,9 +1,5 @@
 var squadLogger = require("./logger.squad");
-const {
-  ROOM,
-  ENERGY_AVAILABLE,
-  ENERGY_CAPACITY_AVAILABLE,
-} = require("./dashboard");
+const { ROOM_NUMBER } = require("./dashboard");
 
 var logger = {
   log: function () {
@@ -12,8 +8,11 @@ var logger = {
     console.log("\n");
   },
   printLogTitle: function () {
-    let energyMeta = `Energy: ${ENERGY_AVAILABLE}/${ENERGY_CAPACITY_AVAILABLE}`;
-    let controller = ROOM.controller;
+    let energyAvailable = Game.rooms[ROOM_NUMBER].energyAvailable;
+    let energyCapacityAvailable =
+      Game.rooms[ROOM_NUMBER].energyCapacityAvailable;
+    let energyMeta = `Energy: ${energyAvailable}/${energyCapacityAvailable}`;
+    let controller = Game.rooms[ROOM_NUMBER].controller;
     let current = controller.progress;
     let total = controller.progressTotal;
     let controllerMeta = `Controller (lvl. ${controller.level} ${Math.round(
