@@ -1,15 +1,9 @@
-const { ENERGY_AVAILABLE } = require("./dashboard");
+const { ENERGY_AVAILABLE, ENERGY_CAPACITY_AVAILABLE } = require("./dashboard");
 const MODELS = require("./constants.creepModels");
 
 var squadRecruiter = {
   recruitHarvester: function () {
-    if (ENERGY_AVAILABLE >= 450) {
-      this.recruitCreep(MODELS.HARVESTER_450);
-    } else if (ENERGY_AVAILABLE >= 350) {
-      this.recruitCreep(MODELS.HARVESTER_350);
-    } else {
-      this.recruitCreep(MODELS.HARVESTER_300);
-    }
+    this.recruitCreep(MODELS.HARVESTER_350_FAST);
   },
   recruitBuilder: function () {
     this.recruitCreep(MODELS.BUILDER_350_LARGE);
@@ -22,10 +16,10 @@ var squadRecruiter = {
     }
   },
   recruitRepairer: function () {
-    if (ENERGY_AVAILABLE >= 300) {
-      this.recruitCreep(MODELS.REPAIRER_300);
+    if (ENERGY_AVAILABLE >= ENERGY_CAPACITY_AVAILABLE) {
+      this.recruitCreep(MODELS.REPAIRER_400);
     } else {
-      this.recruitCreep(MODELS.REPAIRER_200);
+      this.recruitCreep(MODELS.REPAIRER_250);
     }
   },
 

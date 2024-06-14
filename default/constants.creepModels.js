@@ -6,9 +6,15 @@
  *   attack: 80, ranged_attack: 150, heal: 250
  *   claim: 600, tough: 10
  *
+ * Role characteristics:
+ *   Harvesters: WORK, CARRY, MOVE
+ *   Upgraders:  WORK, CARRY, MOVE
+ *   Builders:   WORK, MOVE, CARRY
+ *   Repairers:  WORK, MOVE, CARRY
  */
 
 let MODELS = {
+  // --- HARVESTERS ---
   HARVESTER_200: {
     name: "H200",
     role: "harvester",
@@ -19,16 +25,22 @@ let MODELS = {
     role: "harvester",
     body: [WORK, WORK, CARRY, MOVE],
   },
-  HARVESTER_350: {
-    name: "H300",
+  HARVESTER_350_FAST: {
+    name: "H300F",
+    role: "harvester",
+    body: [WORK, WORK, CARRY, MOVE, MOVE],
+  },
+  HARVESTER_350_LARGE: {
+    name: "H300L",
     role: "harvester",
     body: [WORK, WORK, CARRY, CARRY, MOVE],
   },
-  HARVESTER_450: {
+  HARVESTER_500: {
     name: "H450",
     role: "harvester",
     body: [WORK, WORK, WORK, CARRY, CARRY, MOVE],
   },
+  // --- BUILDERS ---
   BUILDER_200: {
     name: "B200",
     role: "builder",
@@ -69,10 +81,15 @@ let MODELS = {
     role: "upgrader",
     body: [WORK, WORK, WORK, WORK, CARRY, MOVE],
   },
-  REPAIRER_200: {
-    name: "R200",
+  REPAIRER_250: {
+    name: "R250",
     role: "repairer",
-    body: [WORK, CARRY, MOVE],
+    body: [WORK, CARRY, MOVE, MOVE],
+  },
+  REPAIRER_400: {
+    name: "R400",
+    role: "repairer",
+    body: [WORK, WORK, CARRY, MOVE, MOVE, MOVE],
   },
 };
 
