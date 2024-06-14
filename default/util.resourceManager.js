@@ -30,13 +30,17 @@ let resources = {
   /** @param {Creep} creep **/
   /** @param {number} sourceIndex the index of source **/
   assignCreepToObtainEnergyFromContainer: function (creep, containerIndex) {
-    var containers = creep.room.find(FIND_STRUCTUREs, {
+    var containers = creep.room.find(FIND_STRUCTURES, {
       filter: (structure) =>
         structure.structureType == STRUCTURE_CONTAINER &&
-        structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0,
+        structure.store.getCapacity(RESOURCE_ENERGY) > 0,
     });
-    if (creep.harvest(containers[containerIndex]) == ERR_NOT_IN_RANGE) {
-      creep.moveTo(containers[containerIndex], {
+    let container = containers[containerIndex];
+    if (
+      creep.withdraw(container, RESOURCE_ENERGY) !== OK ||
+      creep.pos.getRangeTo(container) !== 1
+    ) {
+      creep.moveTo(container, {
         visualizePathStyle: { stroke: "#ffaa00" },
       });
     }
