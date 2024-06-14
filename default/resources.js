@@ -20,7 +20,7 @@ let resources = {
     }
   },
   /** @param {Creep} creep **/
-  /** @param {Number} sourceIndex **/
+  /** @param {number} sourceIndex the index of source **/
   assignCreepToObtainEnergyFromSource: function (creep, sourceIndex) {
     var sources = creep.room.find(FIND_SOURCES);
     if (creep.harvest(sources[sourceIndex]) == ERR_NOT_IN_RANGE) {

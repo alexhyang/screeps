@@ -43,19 +43,27 @@ var squad = {
       }
     }
   },
+
+  /** @returns {Object<string, Creep>} a hash containing harvesters */
   getHarvesters: function () {
     return this.getTeam("harvester");
   },
+  /** @returns {Object<string, Creep>} a hash containing builders */
   getBuilders: function () {
     return this.getTeam("builder");
   },
+  /** @returns {Object<string, Creep>} a hash containing upgraders */
   getUpgraders: function () {
     return this.getTeam("upgrader");
   },
+  /** @returns {Object<string, Creep>} a hash containing repairers */
   getRepairer: function () {
     return this.getTeam("repairer");
   },
-  /** @param {string} creepRole */
+  /**
+   * @param {string} creepRole
+   * @returns {Object<string, Creep>} a hash containing creeps given their role
+   * */
   getTeam: function (creepRole) {
     return _.filter(Game.creeps, (creep) => creep.memory.role == creepRole);
   },
