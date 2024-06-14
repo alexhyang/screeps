@@ -31,7 +31,14 @@ let roleRepairer = {
   },
   repairConstruction: function (creep) {
     var targets = creep.room.find(FIND_STRUCTURES, {
-      filter: (structure) => structure.hits < structure.hitsMax / 4,
+      filter: (structure) => {
+        return (
+          (structure.structureType !== STRUCTURE_WALL &&
+            structure.hits < structure.hitsMax) ||
+          (structure.structureType == STRUCTURE_WALL &&
+            structure.hits < structure.hitsMax / 4)
+        );
+      },
     });
     targets.sort((a, b) => a.hits - b.hits);
     if (targets.length > 0) {
