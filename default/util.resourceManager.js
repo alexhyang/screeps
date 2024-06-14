@@ -27,6 +27,20 @@ let resources = {
       });
     }
   },
+  /** @param {Creep} creep **/
+  /** @param {number} sourceIndex the index of source **/
+  assignCreepToObtainEnergyFromContainer: function (creep, containerIndex) {
+    var containers = creep.room.find(FIND_STRUCTUREs, {
+      filter: (structure) =>
+        structure.structureType == STRUCTURE_CONTAINER &&
+        structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0,
+    });
+    if (creep.harvest(containers[containerIndex]) == ERR_NOT_IN_RANGE) {
+      creep.moveTo(containers[containerIndex], {
+        visualizePathStyle: { stroke: "#ffaa00" },
+      });
+    }
+  },
 };
 
 module.exports = resources;
