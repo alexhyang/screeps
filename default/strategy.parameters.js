@@ -1,4 +1,8 @@
+let roomName = "W35N43";
 let parameters = {
+  ROOM_NAME: "W35N43",
+  ENERGY_AVAILABLE: Game.rooms[roomName].energyAvailable,
+  ENERGY_CAPACITY_AVAILABLE: Game.rooms[roomName].energyCapacityAvailable,
   SPAWN_WITHDRAW_THRESHOLD: 750,
   // HARVESTERS
   HARVESTER_TEAM_SIZE: 2,

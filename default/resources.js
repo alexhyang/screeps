@@ -1,13 +1,12 @@
 const {
   SPAWN_WITHDRAW_THRESHOLD,
-  ROOM_NAME,
+  TOTAL_AVAILABLE_ENERGY,
 } = require("./strategy.parameters");
 
 let resources = {
   /** @returns {number} */
-  totalAvailableEnergy: Game.rooms[ROOM_NAME].energyAvailable,
   withdrawFromSpawnOk: function () {
-    return this.totalAvailableEnergy >= SPAWN_WITHDRAW_THRESHOLD;
+    return TOTAL_AVAILABLE_ENERGY >= SPAWN_WITHDRAW_THRESHOLD;
   },
   /** @param {Creep} creep **/
   assignCreepToObtainEnergyFromSpawn: function (creep) {

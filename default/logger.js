@@ -1,10 +1,13 @@
 var squadLogger = require("./logger.squad");
-const resourceLogger = require("./logger.resource");
+const {
+  ENERGY_AVAILABLE,
+  ENERGY_CAPACITY_AVAILABLE,
+} = require("./strategy.parameters");
 
 var logger = {
   log: function () {
     console.log("-------------------------------");
-    resourceLogger.log();
+    console.log(`Energy: ${ENERGY_AVAILABLE}/${ENERGY_CAPACITY_AVAILABLE}`);
     squadLogger.log();
     console.log("\n");
   },

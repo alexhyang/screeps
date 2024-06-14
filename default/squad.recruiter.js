@@ -1,42 +1,28 @@
-const resources = require("./resources");
-const {
-  HARVESTER_200,
-  HARVESTER_300,
-  HARVESTER_350,
-  HARVESTER_450,
-  BUILDER_200,
-  BUILDER_250_FAST,
-  BUILDER_250_LARGE,
-  BUILDER_350_LARGE,
-  BUILDER_400_LARGE,
-  UPGRADER_200,
-  UPGRADER_400,
-  UPGRADER_500,
-  REPAIRER_200,
-} = require("./strategy.creepModels");
+const { TOTAL_AVAILABLE_ENERGY } = require("./strategy.parameters");
+const models = require("./strategy.creepModels");
 
 var squadRecruiter = {
   recruitHarvester: function () {
-    if (resources.getTotalEnergy >= 450) {
-      this.recruitCreep(HARVESTER_450);
-    } else if (resources.getTotalEnergy >= 350) {
-      this.recruitCreep(HARVESTER_350);
+    if (TOTAL_AVAILABLE_ENERGY >= 450) {
+      this.recruitCreep(models.HARVESTER_450);
+    } else if (TOTAL_AVAILABLE_ENERGY >= 350) {
+      this.recruitCreep(models.HARVESTER_350);
     } else {
-      this.recruitCreep(HARVESTER_300);
+      this.recruitCreep(models.HARVESTER_300);
     }
   },
   recruitBuilder: function () {
-    this.recruitCreep(BUILDER_350_LARGE);
+    this.recruitCreep(models.BUILDER_350_LARGE);
   },
   recruitUpgrader: function () {
-    if (resources.getTotalEnergy >= 500) {
-      this.recruitCreep(UPGRADER_500);
+    if (TOTAL_AVAILABLE_ENERGY >= 500) {
+      this.recruitCreep(models.UPGRADER_500);
     } else {
-      this.recruitCreep(UPGRADER_400);
+      this.recruitCreep(models.UPGRADER_400);
     }
   },
   recruitRepairer: function () {
-    this.recruitCreep(REPAIRER_200);
+    this.recruitCreep(models.REPAIRER_200);
   },
 
   /**
