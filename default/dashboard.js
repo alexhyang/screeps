@@ -3,7 +3,6 @@ const MODELS = require("./creepModels");
 let parameters = {
   // Room status
   ROOM_NUMBER: "W35N43",
-  SPAWN_WITHDRAW_THRESHOLD: 501,
   // HARVESTERS
   HARVESTER_CURRENT_MODEL: MODELS.HARVESTER_400_FAST,
   HARVESTER_TEAM_SIZE: 3,
