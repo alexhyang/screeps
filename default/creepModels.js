@@ -26,12 +26,12 @@ let MODELS = {
     body: [WORK, WORK, CARRY, MOVE],
   },
   HARVESTER_350_FAST: {
-    name: "H300F",
+    name: "H350F",
     role: "harvester",
     body: [WORK, WORK, CARRY, MOVE, MOVE],
   },
   HARVESTER_350_LARGE: {
-    name: "H300L",
+    name: "H350L",
     role: "harvester",
     body: [WORK, WORK, CARRY, CARRY, MOVE],
   },

@@ -1,5 +1,5 @@
 const { ENERGY_AVAILABLE, ENERGY_CAPACITY_AVAILABLE } = require("./dashboard");
-const MODELS = require("./constants.creepModels");
+const MODELS = require("./creepModels");
 
 var squadRecruiter = {
   recruitHarvester: function () {
@@ -16,7 +16,7 @@ var squadRecruiter = {
     }
   },
   recruitRepairer: function () {
-    if (ENERGY_AVAILABLE >= ENERGY_CAPACITY_AVAILABLE) {
+    if (ENERGY_AVAILABLE >= 400) {
       this.recruitCreep(MODELS.REPAIRER_400);
     } else {
       this.recruitCreep(MODELS.REPAIRER_250);
