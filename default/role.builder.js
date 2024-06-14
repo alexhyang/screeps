@@ -3,8 +3,9 @@ const {
   assignCreepToObtainEnergyFromSource,
   withdrawFromSpawnOk,
   assignCreepToObtainEnergyFromContainer,
+  obtainEnergy,
 } = require("./util.resourceManager");
-const { BUILDER_ENERGY_SOURCE, BUILDER_SOURCE_INDEX } = require("./dashboard");
+const { BUILDER_SOURCE_INDEX } = require("./dashboard");
 
 var roleBuilder = {
   /** @param {Creep} creep **/
@@ -41,17 +42,15 @@ var roleBuilder = {
   },
   /** @param {Creep} creep **/
   obtainEnergy: function (creep) {
-    switch (BUILDER_ENERGY_SOURCE) {
-      case "spawn":
-        if (withdrawFromSpawnOk()) {
-          assignCreepToObtainEnergyFromSpawn(creep);
-        }
-        break;
-      case "container":
-        assignCreepToObtainEnergyFromContainer(creep, BUILDER_SOURCE_INDEX);
-        break;
-      default:
-        assignCreepToObtainEnergyFromSource(creep, BUILDER_SOURCE_INDEX);
+    if (assignCreepToObtainEnergyFromContainer(creep)) {
+      return;
+    } else if (
+      withdrawFromSpawnOk() &&
+      assignCreepToObtainEnergyFromSpawn(creep)
+    ) {
+      return;
+    } else {
+      assignCreepToObtainEnergyFromSource(creep, BUILDER_SOURCE_INDEX);
     }
   },
 };

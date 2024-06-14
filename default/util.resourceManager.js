@@ -5,7 +5,10 @@ let resources = {
   withdrawFromSpawnOk: function () {
     return ENERGY_AVAILABLE >= SPAWN_WITHDRAW_THRESHOLD;
   },
-  /** @param {Creep} creep **/
+  /**
+   * @param {Creep} creep
+   * @returns {boolean} whether the assignment is successful
+   */
   assignCreepToObtainEnergyFromSpawn: function (creep) {
     var spawn = creep.room.find(FIND_MY_SPAWNS)[0];
     if (
@@ -15,6 +18,9 @@ let resources = {
       creep.moveTo(spawn, {
         visualizePathStyle: { stroke: "#ffaa00" },
       });
+      return true;
+    } else {
+      return false;
     }
   },
   /** @param {Creep} creep **/
@@ -27,15 +33,20 @@ let resources = {
       });
     }
   },
-  /** @param {Creep} creep **/
-  /** @param {number} sourceIndex the index of source **/
-  assignCreepToObtainEnergyFromContainer: function (creep, containerIndex) {
+  /**
+   * @param {Creep} creep
+   * @param {number} sourceIndex the index of source
+   * @returns {boolean} whether the assignment is successful
+   */
+  assignCreepToObtainEnergyFromContainer: function (creep) {
     var containers = creep.room.find(FIND_STRUCTURES, {
       filter: (structure) =>
         structure.structureType == STRUCTURE_CONTAINER &&
-        structure.store.getCapacity(RESOURCE_ENERGY) > 0,
+        structure.store.getUsedCapacity(RESOURCE_ENERGY) > 0,
     });
-    let container = containers[containerIndex];
+    _.sortBy(containers, (c) => c.store.getUsedCapacity());
+    if (containers.length > 0) {
+      let container = containers[containers.length - 1];
     if (
       creep.withdraw(container, RESOURCE_ENERGY) !== OK ||
       creep.pos.getRangeTo(container) !== 1
@@ -43,6 +54,10 @@ let resources = {
       creep.moveTo(container, {
         visualizePathStyle: { stroke: "#ffaa00" },
       });
+      }
+      return true;
+    } else {
+      return false;
     }
   },
 };
