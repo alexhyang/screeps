@@ -35,6 +35,11 @@ let MODELS = {
     role: "harvester",
     body: [WORK, WORK, CARRY, CARRY, MOVE],
   },
+  HARVESTER_400_FAST: {
+    name: "H400F",
+    role: "harvester",
+    body: [WORK, WORK, CARRY, MOVE, MOVE, MOVE],
+  },
   HARVESTER_500: {
     name: "H450",
     role: "harvester",
@@ -56,10 +61,20 @@ let MODELS = {
     role: "builder",
     body: [WORK, CARRY, CARRY, MOVE],
   },
+  BUILDER_350_FAST: {
+    name: "B350F",
+    role: "builder",
+    body: [WORK, WORK, CARRY, MOVE, MOVE],
+  },
   BUILDER_350_LARGE: {
     name: "B350L",
     role: "builder",
     body: [WORK, WORK, CARRY, CARRY, MOVE],
+  },
+  BUILDER_400_FAST: {
+    name: "B400F",
+    role: "builder",
+    body: [WORK, WORK, CARRY, CARRY, MOVE, MOVE],
   },
   BUILDER_400_LARGE: {
     name: "B400L",
