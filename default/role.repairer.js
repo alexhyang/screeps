@@ -2,9 +2,9 @@ const {
   assignCreepToObtainEnergyFromSpawn,
   assignCreepToObtainEnergyFromSource,
   withdrawFromSpawnOk,
+  assignCreepToObtainEnergyFromContainer,
 } = require("./util.resourceManager");
 const {
-  REPAIRER_ENERGY_SOURCE,
   REPAIRER_SOURCE_INDEX,
   REPAIR_PRIORITY,
   REPAIR_HITS_THRESHOLD_RATIO,
@@ -36,8 +36,13 @@ let roleRepairer = {
     this.repairTargets(creep, targets);
   },
   obtainEnergy: function (creep) {
-    if (withdrawFromSpawnOk() && REPAIRER_ENERGY_SOURCE === "spawn") {
-      assignCreepToObtainEnergyFromSpawn(creep);
+    if (assignCreepToObtainEnergyFromContainer(creep)) {
+      return;
+    } else if (
+      withdrawFromSpawnOk() &&
+      assignCreepToObtainEnergyFromSpawn(creep)
+    ) {
+      return;
     } else {
       assignCreepToObtainEnergyFromSource(creep, REPAIRER_SOURCE_INDEX);
     }
