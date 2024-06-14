@@ -1,12 +1,9 @@
-const {
-  SPAWN_WITHDRAW_THRESHOLD,
-  TOTAL_AVAILABLE_ENERGY,
-} = require("./dashboard");
+const { SPAWN_WITHDRAW_THRESHOLD, ENERGY_AVAILABLE } = require("./dashboard");
 
 let resources = {
   /** @returns {number} */
   withdrawFromSpawnOk: function () {
-    return TOTAL_AVAILABLE_ENERGY >= SPAWN_WITHDRAW_THRESHOLD;
+    return ENERGY_AVAILABLE >= SPAWN_WITHDRAW_THRESHOLD;
   },
   /** @param {Creep} creep **/
   assignCreepToObtainEnergyFromSpawn: function (creep) {
@@ -15,6 +12,7 @@ let resources = {
       creep.pos.getRangeTo(spawn) == 1 &&
       creep.withdraw(spawn, RESOURCE_ENERGY) == OK
     ) {
+      // TODO: examine the line below
       creep.memory.building = true;
     } else {
       creep.moveTo(spawn, {
