@@ -14,7 +14,7 @@
  */
 
 let MODELS = {
-  // --- HARVESTERS ---
+  // ======== HARVESTERS ========
   HARVESTER_200: {
     name: "H200",
     role: "harvester",
@@ -40,12 +40,18 @@ let MODELS = {
     role: "harvester",
     body: [WORK, WORK, CARRY, MOVE, MOVE, MOVE],
   },
-  HARVESTER_500: {
+  HARVESTER_450: {
     name: "H450",
     role: "harvester",
-    body: [WORK, WORK, WORK, CARRY, CARRY, MOVE],
+    body: [WORK, WORK, WORK, CARRY, MOVE, MOVE],
   },
-  // --- BUILDERS ---
+  // ======== MINERS ========
+  MINER_700: {
+    name: "H450",
+    role: "harvester",
+    body: [WORK, WORK, WORK, WORK, WORK, WORK, CARRY, MOVE],
+  },
+  // ======== BUILDERS ========
   BUILDER_200: {
     name: "B200",
     role: "builder",
@@ -81,6 +87,7 @@ let MODELS = {
     role: "builder",
     body: [WORK, WORK, CARRY, CARRY, MOVE, MOVE],
   },
+  // ======== UPGRADERS ========
   UPGRADER_200: {
     name: "U200",
     role: "upgrader",
@@ -101,6 +108,7 @@ let MODELS = {
     role: "upgrader",
     body: [WORK, WORK, WORK, WORK, WORK, CARRY, MOVE],
   },
+  // ======== REPAIRERS ========
   REPAIRER_250: {
     name: "R250",
     role: "repairer",

@@ -2,6 +2,7 @@ var roleHarvester = require("./role.harvester");
 var roleUpgrader = require("./role.upgrader");
 var roleBuilder = require("./role.builder");
 const roleRepairer = require("./role.repairer");
+const roleMiner = require("./role.miner");
 var squadRecruiter = require("./squad.recruiter");
 
 const {
@@ -9,6 +10,7 @@ const {
   BUILDER_TEAM_SIZE,
   UPGRADER_TEAM_SIZE,
   REPAIRER_TEAM_SIZE,
+  MINER_TEAM_SIZE,
 } = require("./dashboard");
 
 var squad = {
@@ -25,24 +27,34 @@ var squad = {
     if (this.getUpgraders().length < UPGRADER_TEAM_SIZE) {
       squadRecruiter.recruitUpgrader();
     }
-    if (this.getRepairer().length < REPAIRER_TEAM_SIZE) {
+    if (this.getRepairers().length < REPAIRER_TEAM_SIZE) {
       squadRecruiter.recruitRepairer();
+    }
+    if (this.getMiners().length < MINER_TEAM_SIZE) {
+      squadRecruiter.recruitMiner();
     }
   },
   assignJobs: function () {
     for (var name in Game.creeps) {
       var creep = Game.creeps[name];
-      if (creep.memory.role == "harvester") {
-        roleHarvester.run(creep);
-      }
-      if (creep.memory.role == "upgrader") {
-        roleUpgrader.run(creep);
-      }
-      if (creep.memory.role == "builder") {
-        roleBuilder.run(creep);
-      }
-      if (creep.memory.role == "repairer") {
-        roleRepairer.run(creep);
+      switch (creep.memory.role) {
+        case "harvester":
+          roleHarvester.run(creep);
+          break;
+        case "upgrader":
+          roleUpgrader.run(creep);
+          break;
+        case "builder":
+          roleBuilder.run(creep);
+          break;
+        case "repairer":
+          roleRepairer.run(creep);
+          break;
+        case "miner":
+          roleMiner.run(creep);
+          break;
+        default:
+          break;
       }
     }
   },
@@ -60,8 +72,12 @@ var squad = {
     return this.getTeam("upgrader");
   },
   /** @returns {Object<string, Creep>} a hash containing repairers */
-  getRepairer: function () {
+  getRepairers: function () {
     return this.getTeam("repairer");
+  },
+  /** @returns {Object<string, Creep>} a hash containing miners */
+  getMiners: function () {
+    return this.getTeam("miner");
   },
   /**
    * @param {string} creepRole

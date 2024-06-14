@@ -3,6 +3,7 @@ const {
   BUILDER_CURRENT_MODEL,
   UPGRADER_CURRENT_MODEL,
   REPAIRER_CURRENT_MODEL,
+  MINER_CURRENT_MODEL,
 } = require("./dashboard");
 
 var squadRecruiter = {
@@ -17,6 +18,9 @@ var squadRecruiter = {
   },
   recruitRepairer: function () {
     this.recruitCreep(REPAIRER_CURRENT_MODEL);
+  },
+  recruitMiner: function () {
+    this.recruitCreep(MINER_CURRENT_MODEL);
   },
 
   /**
