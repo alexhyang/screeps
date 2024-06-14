@@ -6,6 +6,7 @@ var squadLogger = {
     this.printTeamStatus("harvester");
     this.printTeamStatus("builder");
     this.printTeamStatus("upgrader");
+    this.printTeamStatus("repairer");
   },
   /**
    * @param {string} creepRole
