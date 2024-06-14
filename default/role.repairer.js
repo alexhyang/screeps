@@ -2,11 +2,11 @@ const {
   assignCreepToObtainEnergyFromSpawn,
   assignCreepToObtainEnergyFromSource,
   withdrawFromSpawnOk,
-} = require("./resources");
+} = require("./util.resourceManager");
 const {
   REPAIRER_ENERGY_SOURCE,
   REPAIRER_SOURCE_INDEX,
-} = require("./strategy.parameters");
+} = require("./dashboard");
 
 let roleRepairer = {
   /** @param {Creep} creep **/

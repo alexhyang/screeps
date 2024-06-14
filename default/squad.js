@@ -9,7 +9,7 @@ const {
   BUILDER_TEAM_SIZE,
   UPGRADER_TEAM_SIZE,
   REPAIRER_TEAM_SIZE,
-} = require("./strategy.parameters");
+} = require("./dashboard");
 
 var squad = {
   recruitSquad: function () {

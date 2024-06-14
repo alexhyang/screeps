@@ -1,7 +1,7 @@
 const {
   SPAWN_WITHDRAW_THRESHOLD,
   TOTAL_AVAILABLE_ENERGY,
-} = require("./strategy.parameters");
+} = require("./dashboard");
 
 let resources = {
   /** @returns {number} */

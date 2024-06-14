@@ -2,11 +2,11 @@ const {
   assignCreepToObtainEnergyFromSpawn,
   assignCreepToObtainEnergyFromSource,
   withdrawFromSpawnOk,
-} = require("./resources");
+} = require("./util.resourceManager");
 const {
   UPGRADER_ENERGY_SOURCE,
   UPGRADER_SOURCE_INDEX,
-} = require("./strategy.parameters");
+} = require("./dashboard");
 
 var roleUpgrader = {
   /** @param {Creep} creep **/

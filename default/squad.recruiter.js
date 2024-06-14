@@ -1,28 +1,28 @@
-const { TOTAL_AVAILABLE_ENERGY } = require("./strategy.parameters");
-const models = require("./strategy.creepModels");
+const { TOTAL_AVAILABLE_ENERGY } = require("./dashboard");
+const MODELS = require("./constants.creepModels");
 
 var squadRecruiter = {
   recruitHarvester: function () {
     if (TOTAL_AVAILABLE_ENERGY >= 450) {
-      this.recruitCreep(models.HARVESTER_450);
+      this.recruitCreep(MODELS.HARVESTER_450);
     } else if (TOTAL_AVAILABLE_ENERGY >= 350) {
-      this.recruitCreep(models.HARVESTER_350);
+      this.recruitCreep(MODELS.HARVESTER_350);
     } else {
-      this.recruitCreep(models.HARVESTER_300);
+      this.recruitCreep(MODELS.HARVESTER_300);
     }
   },
   recruitBuilder: function () {
-    this.recruitCreep(models.BUILDER_350_LARGE);
+    this.recruitCreep(MODELS.BUILDER_350_LARGE);
   },
   recruitUpgrader: function () {
     if (TOTAL_AVAILABLE_ENERGY >= 500) {
-      this.recruitCreep(models.UPGRADER_500);
+      this.recruitCreep(MODELS.UPGRADER_500);
     } else {
-      this.recruitCreep(models.UPGRADER_400);
+      this.recruitCreep(MODELS.UPGRADER_400);
     }
   },
   recruitRepairer: function () {
-    this.recruitCreep(models.REPAIRER_200);
+    this.recruitCreep(MODELS.REPAIRER_200);
   },
 
   /**

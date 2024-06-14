@@ -1,4 +1,5 @@
 let roomName = "W35N43";
+
 let parameters = {
   ROOM_NAME: "W35N43",
   ENERGY_AVAILABLE: Game.rooms[roomName].energyAvailable,

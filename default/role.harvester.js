@@ -1,5 +1,7 @@
-const { assignCreepToObtainEnergyFromSource } = require("./resources");
-const { HARVESTER_SOURCE_INDEX } = require("./strategy.parameters");
+const {
+  assignCreepToObtainEnergyFromSource,
+} = require("./util.resourceManager");
+const { HARVESTER_SOURCE_INDEX } = require("./dashboard");
 
 var roleHarvester = {
   /** @param {Creep} creep **/
