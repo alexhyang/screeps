@@ -29,7 +29,7 @@ var squadLogger = {
       let creepMeta = this.getCreepMeta(teamMember);
       let bodyParts = this.getCreepBodyParts(teamMember);
       let creepNameSuffix = this.getCreepNameSuffix(teamMember);
-      let printMsg = `${teamMember.name}${creepNameSuffix}${creepMeta} ${bodyParts}`;
+      let printMsg = `  ${teamMember.name}${creepNameSuffix}${creepMeta} ${bodyParts}`;
       console.log(printMsg);
     }
   },
