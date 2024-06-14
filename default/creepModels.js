@@ -96,6 +96,11 @@ let MODELS = {
     role: "upgrader",
     body: [WORK, WORK, WORK, WORK, CARRY, MOVE],
   },
+  UPGRADER_600: {
+    name: "U600",
+    role: "upgrader",
+    body: [WORK, WORK, WORK, WORK, WORK, CARRY, MOVE],
+  },
   REPAIRER_250: {
     name: "R250",
     role: "repairer",
