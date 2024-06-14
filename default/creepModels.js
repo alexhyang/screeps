@@ -47,8 +47,8 @@ let MODELS = {
   },
   // ======== MINERS ========
   MINER_700: {
-    name: "H450",
-    role: "harvester",
+    name: "M700",
+    role: "miner",
     body: [WORK, WORK, WORK, WORK, WORK, WORK, CARRY, MOVE],
   },
   // ======== BUILDERS ========
