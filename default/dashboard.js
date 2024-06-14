@@ -22,6 +22,8 @@ let parameters = {
   REPAIRER_TEAM_SIZE: 2,
   REPAIRER_ENERGY_SOURCE: "spawn",
   REPAIRER_SOURCE_INDEX: 0,
+  REPAIR_PRIORITY: "buildings",
+  REPAIR_HITS_THRESHOLD_RATIO: 1 / 4,
 };
 
 module.exports = parameters;

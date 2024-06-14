@@ -6,6 +6,8 @@ const {
 const {
   REPAIRER_ENERGY_SOURCE,
   REPAIRER_SOURCE_INDEX,
+  REPAIR_PRIORITY,
+  REPAIR_HITS_THRESHOLD_RATIO,
 } = require("./dashboard");
 
 let roleRepairer = {
@@ -42,14 +44,7 @@ let roleRepairer = {
   },
   findTargets: function (creep) {
     var targets = creep.room.find(FIND_STRUCTURES, {
-      filter: (structure) => {
-        return (
-          (structure.structureType !== STRUCTURE_WALL &&
-            structure.hits < structure.hitsMax) ||
-          (structure.structureType == STRUCTURE_WALL &&
-            structure.hits < structure.hitsMax / 4)
-        );
-      },
+      filter: this.getPrioritizedStructure,
     });
     return targets;
   },
@@ -60,6 +55,29 @@ let roleRepairer = {
           visualizePathStyle: { stroke: "#ffffff" },
         });
       }
+    }
+  },
+  getPrioritizedStructure: function (structure) {
+    let type = structure.structureType;
+    let needsRepair =
+      structure.hits < structure.hitsMax * REPAIR_HITS_THRESHOLD_RATIO;
+    let notMaxHits = structure.hits < structure.hitsMax;
+    switch (REPAIR_PRIORITY) {
+      case "walls":
+        return type == STRUCTURE_WALL && needsRepair;
+      case "roads":
+        return type == STRUCTURE_ROAD && notMaxHits;
+      case "ramparts":
+        return type == STRUCTURE_RAMPARTS && notMaxHits;
+      case "buildings":
+        return (
+          type !== STRUCTURE_WALL &&
+          type !== STRUCTURE_ROAD &&
+          type !== STRUCTURE_RAMPART &&
+          notMaxHits
+        );
+      default:
+        return needsRepair || notMaxHits;
     }
   },
 };
