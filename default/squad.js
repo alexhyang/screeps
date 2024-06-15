@@ -3,6 +3,7 @@ var roleUpgrader = require("./role.upgrader");
 var roleBuilder = require("./role.builder");
 const roleRepairer = require("./role.repairer");
 const roleMiner = require("./role.miner");
+const rolePicker = require("./role.picker");
 var squadRecruiter = require("./squad.recruiter");
 
 const {
@@ -52,6 +53,9 @@ var squad = {
           break;
         case "miner":
           roleMiner.run(creep);
+          break;
+        case "picker":
+          rolePicker.run(creep);
           break;
         default:
           break;

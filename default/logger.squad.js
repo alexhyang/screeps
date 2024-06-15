@@ -15,6 +15,7 @@ var squadLogger = {
     this.printTeamStatus("upgrader");
     this.printTeamStatus("repairer");
     this.printTeamStatus("miner");
+    this.printTeamStatus("picker");
   },
   /**
    * @param {string} creepRole
