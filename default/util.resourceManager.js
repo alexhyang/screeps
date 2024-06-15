@@ -6,7 +6,7 @@ let resources = {
     let energyAvailable = Game.rooms[ROOM_NUMBER].energyAvailable;
     let energyCapacityAvailable =
       Game.rooms[ROOM_NUMBER].energyCapacityAvailable;
-    return false;
+    return energyAvailable == energyCapacityAvailable - 200;
   },
   /**
    * @param {Creep} creep
@@ -50,13 +50,13 @@ let resources = {
     _.sortBy(containers, (c) => c.store.getUsedCapacity());
     if (containers.length > 0) {
       let container = containers[containers.length - 1];
-    if (
-      creep.withdraw(container, RESOURCE_ENERGY) !== OK ||
-      creep.pos.getRangeTo(container) !== 1
-    ) {
-      creep.moveTo(container, {
-        visualizePathStyle: { stroke: "#ffaa00" },
-      });
+      if (
+        creep.withdraw(container, RESOURCE_ENERGY) !== OK ||
+        creep.pos.getRangeTo(container) !== 1
+      ) {
+        creep.moveTo(container, {
+          visualizePathStyle: { stroke: "#ffaa00" },
+        });
       }
       return true;
     } else {
