@@ -1,11 +1,14 @@
 const MODELS = require("./creepModels");
+let roomNumber = "W35N43";
+let energyCapacityAvailable = Game.rooms[roomNumber].energyCapacityAvailable;
 
 let parameters = {
   // Room status
-  ROOM_NUMBER: "W35N43",
+  ROOM_NUMBER: roomNumber,
+  SPAWN_WITHDRAW_THRESHOLD: energyCapacityAvailable - 200,
   // HARVESTERS
   HARVESTER_CURRENT_MODEL: MODELS.HARVESTER_450,
-  HARVESTER_TEAM_SIZE: 2,
+  HARVESTER_TEAM_SIZE: 1,
   HARVESTER_SOURCE_INDEX: 1,
   // MINERS (1 miner600 + 2 upgrader600 for one energy source)
   MINER_CURRENT_MODEL: MODELS.MINER_600,
@@ -13,7 +16,7 @@ let parameters = {
   MINER_SOURCE_INDEX: 0,
   // BUILDERS
   BUILDER_CURRENT_MODEL: MODELS.BUILDER_350_LARGE,
-  BUILDER_TEAM_SIZE: 2,
+  BUILDER_TEAM_SIZE: 1,
   BUILDER_SOURCE_INDEX: 0,
   // UPGRADERS
   UPGRADER_CURRENT_MODEL: MODELS.UPGRADER_600,

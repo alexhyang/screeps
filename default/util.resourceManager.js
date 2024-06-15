@@ -1,13 +1,11 @@
 const _ = require("lodash");
-const { ROOM_NUMBER } = require("./dashboard");
+const { ROOM_NUMBER, SPAWN_WITHDRAW_THRESHOLD } = require("./dashboard");
 
 let resources = {
   /** @returns {number} */
   withdrawFromSpawnOk: function () {
     let energyAvailable = Game.rooms[ROOM_NUMBER].energyAvailable;
-    let energyCapacityAvailable =
-      Game.rooms[ROOM_NUMBER].energyCapacityAvailable;
-    return energyAvailable == energyCapacityAvailable - 200;
+    return energyAvailable >= SPAWN_WITHDRAW_THRESHOLD;
   },
   /**
    * @param {Creep} creep
