@@ -20,7 +20,7 @@ var squad = {
     }
     if (
       this.getBuilders().length < BUILDER_TEAM_SIZE &&
-      Object.keys(Game.constructionSites) > 0
+      Object.keys(Game.constructionSites).length > 0
     ) {
       squadRecruiter.recruitBuilder();
     }
