@@ -32,6 +32,11 @@
     Game.structure[hashCode].store.getCapacity(RESOURCE_ENERGY);
     Game.structure[hashCode].store.getUsedCapacity(RESOURCE_ENERGY);
 
+    // construction and resource finding
+    //   harvester: spawns + extensions > containers
+    //   builders & repairers: containers > spawn > source
+    //   upgraders: containers > source
+
     // activate the safe mode
     Game.spawns['Spawn1'].room.controller.activateSafeMode();
 
