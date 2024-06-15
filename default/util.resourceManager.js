@@ -1,3 +1,4 @@
+const _ = require("lodash");
 const { ROOM_NUMBER } = require("./dashboard");
 
 let resources = {
@@ -47,7 +48,7 @@ let resources = {
         structure.structureType == STRUCTURE_CONTAINER &&
         structure.store.getUsedCapacity(RESOURCE_ENERGY) > 0,
     });
-    _.sortBy(containers, (c) => c.store.getUsedCapacity());
+    _.sortBy(containers, (c) => c.store.getFreeCapacity());
     if (containers.length > 0) {
       let container = containers[containers.length - 1];
       if (
