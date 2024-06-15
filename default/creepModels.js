@@ -45,11 +45,21 @@ let MODELS = {
     role: "harvester",
     body: [WORK, WORK, WORK, CARRY, MOVE, MOVE],
   },
+  HARVESTER_500: {
+    name: "H500",
+    role: "harvester",
+    body: [WORK, WORK, WORK, WORK, CARRY, MOVE],
+  },
+  HARVESTER_550: {
+    name: "H550",
+    role: "harvester",
+    body: [WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE],
+  },
   // ======== MINERS ========
-  MINER_700: {
-    name: "M700",
+  MINER_600: {
+    name: "M600",
     role: "miner",
-    body: [WORK, WORK, WORK, WORK, WORK, WORK, CARRY, MOVE],
+    body: [WORK, WORK, WORK, WORK, WORK, CARRY, MOVE],
   },
   // ======== BUILDERS ========
   BUILDER_200: {
