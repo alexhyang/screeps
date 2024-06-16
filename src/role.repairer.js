@@ -8,6 +8,10 @@ const {
   REPAIRER_SOURCE_INDEX,
   REPAIR_PRIORITY,
   REPAIR_HITS_THRESHOLD_RATIO,
+  REPAIR_REGION_X_LOWER,
+  REPAIR_REGION_X_UPPER,
+  REPAIR_REGION_Y_LOWER,
+  REPAIR_REGION_Y_UPPER,
 } = require("./dashboard");
 
 let roleRepairer = {
@@ -82,7 +86,13 @@ let roleRepairer = {
           notMaxHits
         );
       default:
-        return needsRepair || notMaxHits;
+        return (
+          (needsRepair || notMaxHits) &&
+          structure.pos.x >= REPAIR_REGION_X_LOWER &&
+          structure.pos.x <= REPAIR_REGION_X_UPPER &&
+          structure.pos.y >= REPAIR_REGION_Y_LOWER &&
+          structure.pos.y <= REPAIR_REGION_Y_UPPER
+        );
     }
   },
 };
