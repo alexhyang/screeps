@@ -1,4 +1,4 @@
-const MODELS = require("./creepModels");
+const MODELS = require("./dashboard.models");
 let roomNumber = "W35N43";
 let energyCapacityAvailable = Game.rooms[roomNumber].energyCapacityAvailable;
 
