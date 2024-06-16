@@ -3,7 +3,7 @@ const {
   assignCreepToObtainEnergyFromSource,
   withdrawFromSpawnOk,
   assignCreepToObtainEnergyFromContainer,
-} = require("./util.resourceManager");
+} = require("./squad.resourceManager");
 const {
   REPAIRER_SOURCE_INDEX,
   REPAIR_PRIORITY,

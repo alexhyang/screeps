@@ -1,7 +1,7 @@
 const {
   assignCreepToObtainEnergyFromSource,
   assignCreepToObtainEnergyFromContainer,
-} = require("./util.resourceManager");
+} = require("./squad.resourceManager");
 const { UPGRADER_SOURCE_INDEX } = require("./dashboard");
 
 var roleUpgrader = {

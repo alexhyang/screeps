@@ -6,7 +6,7 @@ const {
   MINER_TEAM_SIZE,
 } = require("./dashboard");
 var squad = require("./squad");
-const { capitalize } = require("./utils");
+const { capitalize } = require("./logger.utils");
 
 var squadLogger = {
   log: function () {

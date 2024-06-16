@@ -1,6 +1,6 @@
 const {
   assignCreepToObtainEnergyFromSource,
-} = require("./util.resourceManager");
+} = require("./squad.resourceManager");
 
 const { MINER_SOURCE_INDEX } = require("./dashboard");
 

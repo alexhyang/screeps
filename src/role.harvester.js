@@ -1,6 +1,6 @@
 const {
   assignCreepToObtainEnergyFromSource,
-} = require("./util.resourceManager");
+} = require("./squad.resourceManager");
 
 const { HARVESTER_SOURCE_INDEX, ROOM_NUMBER } = require("./dashboard");
 

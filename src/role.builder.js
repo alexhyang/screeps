@@ -4,7 +4,7 @@ const {
   withdrawFromSpawnOk,
   assignCreepToObtainEnergyFromContainer,
   obtainEnergy,
-} = require("./util.resourceManager");
+} = require("./squad.resourceManager");
 const { BUILDER_SOURCE_INDEX } = require("./dashboard");
 
 var roleBuilder = {

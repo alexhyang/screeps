@@ -5,10 +5,10 @@ let energyCapacityAvailable = Game.rooms[roomNumber].energyCapacityAvailable;
 let parameters = {
   // Room status
   ROOM_NUMBER: roomNumber,
-  SPAWN_WITHDRAW_THRESHOLD: energyCapacityAvailable - 200,
+  SPAWN_WITHDRAW_THRESHOLD: energyCapacityAvailable * 0.6,
   // HARVESTERS
-  HARVESTER_CURRENT_MODEL: MODELS.HARVESTER_450,
-  HARVESTER_TEAM_SIZE: 1,
+  HARVESTER_CURRENT_MODEL: MODELS.HARVESTER_550,
+  HARVESTER_TEAM_SIZE: 2,
   HARVESTER_SOURCE_INDEX: 1,
   // MINERS (1 miner600 + 2 upgrader600 for one energy source)
   MINER_CURRENT_MODEL: MODELS.MINER_600,
@@ -25,8 +25,8 @@ let parameters = {
   UPGRADER_ENERGY_SOURCE: "source",
   // REPAIRERS
   REPAIRER_CURRENT_MODEL: MODELS.REPAIRER_400,
-  REPAIRER_TEAM_SIZE: 2,
-  REPAIRER_SOURCE_INDEX: 1,
+  REPAIRER_TEAM_SIZE: 3,
+  REPAIRER_SOURCE_INDEX: 0,
   REPAIR_PRIORITY: "none",
   REPAIR_HITS_THRESHOLD_RATIO: 1 / 4,
 };
