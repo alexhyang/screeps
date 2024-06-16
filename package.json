@@ -3,14 +3,18 @@
   "version": "0.1.0",
   "description": "my scripts for screeps",
   "scripts": {
-    "watch": "gulp",
+    "clean": "rm build/*",
+    "sync": "cp src/* build/",
+    "dev": "concurrently --kill-others \"npm run clean\" \"npm run sync\"",
     "deploy": "cp build/* production/*",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "alex",
   "license": "ISC",
   "devDependencies": {
+    "concurrently": "^8.2.2",
     "gulp": "^5.0.0",
-    "gulp-clean": "^0.4.0"
+    "gulp-clean": "^0.4.0",
+    "gulp-file-sync": "^2.1.0"
   }
 }
