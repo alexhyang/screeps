@@ -1,0 +1,16 @@
+{
+  "name": "screeps.com",
+  "version": "0.1.0",
+  "description": "my scripts for screeps",
+  "scripts": {
+    "watch": "gulp",
+    "deploy": "cp build/* production/*",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "alex",
+  "license": "ISC",
+  "devDependencies": {
+    "gulp": "^5.0.0",
+    "gulp-clean": "^0.4.0"
+  }
+}
