@@ -2,4 +2,4 @@
 tutorial-*/
 node_modules/
 build/
-production/
+dist/
