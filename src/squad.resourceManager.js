@@ -1,4 +1,3 @@
-const _ = require("lodash");
 const { ROOM_NUMBER, SPAWN_WITHDRAW_THRESHOLD } = require("./dashboard");
 
 let resources = {
