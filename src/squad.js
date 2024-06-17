@@ -34,7 +34,10 @@ var squad = {
     ) {
       squadRecruiter.recruitBuilder();
     }
-    if (RECRUIT_UPGRADER && this.getUpgraders().length < UPGRADER_TEAM_SIZE) {
+    if (
+      RECRUIT_UPGRADER &&
+      this.recruitOk(this.getUpgraders(), UPGRADER_TEAM_SIZE, 130)
+    ) {
       squadRecruiter.recruitUpgrader();
     }
     if (RECRUIT_REPAIRER && this.getRepairers().length < REPAIRER_TEAM_SIZE) {
@@ -42,9 +45,7 @@ var squad = {
     }
     if (
       RECRUIT_MINER &&
-      (this.getMiners().length < MINER_TEAM_SIZE ||
-        (this.getMiners().length == MINER_TEAM_SIZE &&
-          this.getMiners()[0].ticksToLive < 45))
+      this.recruitOk(this.getMiners(), MINER_TEAM_SIZE, 45)
     ) {
       // it takes M1150 about 50 seconds to spawn and get ready to work
       squadRecruiter.recruitMiner();
@@ -104,6 +105,12 @@ var squad = {
    * */
   getTeam: function (creepRole) {
     return _.filter(Game.creeps, (creep) => creep.memory.role == creepRole);
+  },
+  recruitOk: function (team, teamSize, dyingCreepTickLeft) {
+    return (
+      team.length < teamSize ||
+      (team.length == teamSize && team[0].ticksToLive < dyingCreepTickLeft)
+    );
   },
 };
 
