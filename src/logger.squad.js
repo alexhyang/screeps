@@ -26,7 +26,7 @@ var squadLogger = {
     this.printTeamMembers(teamMembers);
   },
   printTeamStatusTitle: function (creepRole, teamSize) {
-    let paddedTeamName = this.padName(creepRole + "s", 11);
+    let paddedTeamName = this.padStr(creepRole + "s", 11);
     console.log(
       capitalize(paddedTeamName) +
         ` (life, carry, fatigue): ${teamSize}/${this.getTeamMaxSize(creepRole)}`
@@ -37,8 +37,9 @@ var squadLogger = {
       let teamMember = teamMembers[i];
       let creepMeta = this.getCreepMeta(teamMember);
       let bodyParts = this.getCreepBodyParts(teamMember);
-      let paddedCreepName = this.padName(teamMember.name, 11);
-      let printMsg = `  ${paddedCreepName}${creepMeta} ${bodyParts}`;
+      let paddedCreepName = this.padStr(teamMember.name, 12);
+      let paddedCreepMeta = this.padStr(creepMeta, 21);
+      let printMsg = `  ${paddedCreepName}${paddedCreepMeta} ${bodyParts}`;
       console.log(printMsg);
     }
   },
@@ -62,15 +63,21 @@ var squadLogger = {
         return -1;
     }
   },
-  padName: function (name, length) {
-    return name + " ".repeat(length - name.length);
+  /**
+   *
+   * @param {string} str string to be padded
+   * @param {number} maxLength max length after padding
+   * @returns Padded string with the given max length
+   */
+  padStr: function (str, maxLength) {
+    return str + " ".repeat(maxLength - str.length);
   },
   getCreepMeta: function (creep) {
     let lifeLeft = creep.ticksToLive;
     let fatigue = creep.fatigue;
     let carry = creep.store[RESOURCE_ENERGY];
     let carryMax = creep.store.getCapacity(RESOURCE_ENERGY);
-    return ` (${lifeLeft}, ${carry}/${carryMax}, ${fatigue})`;
+    return `(${lifeLeft}, ${carry}/${carryMax}, ${fatigue})`;
   },
   getCreepBodyParts: function (creep) {
     return creep.body.map((part) => part.type).join(",");
