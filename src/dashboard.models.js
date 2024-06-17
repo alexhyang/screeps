@@ -183,6 +183,14 @@ let MODELS = {
       .concat(Array(2).fill(CARRY))
       .concat(Array(5).fill(MOVE)),
   },
+  REPAIRER_650: {
+    name: "R65",
+    role: "repairer",
+    body: Array(4)
+      .fill(WORK)
+      .concat(Array(2).fill(CARRY))
+      .concat(Array(6).fill(MOVE)),
+  },
 };
 
 module.exports = MODELS;
