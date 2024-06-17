@@ -8,7 +8,7 @@ let parameters = {
   SPAWN_WITHDRAW_THRESHOLD: energyCapacityAvailable * 1.1,
   CONTAINER_WITHDRAW_THRESHOLD: 200,
   TOP_TOWER: "666fab3114aef66f9cff9d7a",
-  RIGHT_TOWER: "666ae566e679a17f17d4a1aa",
+  BOTTOM_TOWER: "667034768b06595fba27f482",
   // ======== HARVESTERS ========
   // 2 energy pts per WORK part per tick
   RECRUIT_HARVESTER: true,
