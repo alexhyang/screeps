@@ -31,7 +31,12 @@ var squad = {
     if (this.getRepairers().length < REPAIRER_TEAM_SIZE) {
       squadRecruiter.recruitRepairer();
     }
-    if (this.getMiners().length < MINER_TEAM_SIZE) {
+    if (
+      this.getMiners().length < MINER_TEAM_SIZE ||
+      (this.getMiners().length == MINER_TEAM_SIZE &&
+        this.getMiners()[0].ticksToLive < 45)
+    ) {
+      // it takes M1150 about 50 seconds to spawn and get ready to work
       squadRecruiter.recruitMiner();
     }
   },
