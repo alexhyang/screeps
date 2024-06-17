@@ -29,10 +29,8 @@ var squadRecruiter = {
     this.recruitCreep(REPAIRER_CURRENT_MODEL);
   },
   recruitMiner: function () {
-    if (this.getAvailableEnergy() >= 1150) {
+    if (this.getAvailableEnergy() >= 700) {
       this.recruitCreep(MINER_CURRENT_MODEL);
-    } else if (this.getAvailableEnergy() >= 700) {
-      this.recruitCreep(MINER_700);
     } else if (this.getAvailableEnergy() >= 600) {
       this.recruitCreep(MINER_600);
     } else if (this.getAvailableEnergy() >= 500) {
