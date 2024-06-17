@@ -26,12 +26,10 @@ var squadLogger = {
     this.printTeamMembers(teamMembers);
   },
   printTeamStatusTitle: function (creepRole, teamSize) {
+    let paddedTeamName = this.padName(creepRole + "s", 11);
     console.log(
-      capitalize(creepRole) +
-        `s ${this.getTeamNameSuffix(creepRole)}(life, carry, fatigue): ` +
-        teamSize +
-        "/" +
-        this.getTeamMaxSize(creepRole)
+      capitalize(paddedTeamName) +
+        ` (life, carry, fatigue): ${teamSize}/${this.getTeamMaxSize(creepRole)}`
     );
   },
   printTeamMembers: function (teamMembers) {
@@ -39,8 +37,8 @@ var squadLogger = {
       let teamMember = teamMembers[i];
       let creepMeta = this.getCreepMeta(teamMember);
       let bodyParts = this.getCreepBodyParts(teamMember);
-      let creepNameSuffix = this.getCreepNameSuffix(teamMember);
-      let printMsg = `  ${teamMember.name}${creepNameSuffix}${creepMeta} ${bodyParts}`;
+      let paddedCreepName = this.padName(teamMember.name, 11);
+      let printMsg = `  ${paddedCreepName}${creepMeta} ${bodyParts}`;
       console.log(printMsg);
     }
   },
@@ -64,22 +62,8 @@ var squadLogger = {
         return -1;
     }
   },
-  /**
-   * @param {string} creepRole
-   * @returns {string} a suffix for team name alignment in log
-   */
-  getTeamNameSuffix: function (creepRole) {
-    let teamNameSuffix = "";
-    if (creepRole === "builder") {
-      teamNameSuffix += "  ";
-    }
-    if (creepRole === "upgrader") {
-      teamNameSuffix += " ";
-    }
-    if (creepRole === "repairer") {
-      teamNameSuffix += " ";
-    }
-    return teamNameSuffix;
+  padName: function (name, length) {
+    return name + " ".repeat(length - name.length);
   },
   getCreepMeta: function (creep) {
     let lifeLeft = creep.ticksToLive;
@@ -90,16 +74,6 @@ var squadLogger = {
   },
   getCreepBodyParts: function (creep) {
     return creep.body.map((part) => part.type).join(",");
-  },
-  getCreepNameSuffix: function (creep) {
-    let creepNameSuffix = "";
-    if (creep.name.length == 8) {
-      creepNameSuffix = "  ";
-    }
-    if (creep.name.length == 9) {
-      creepNameSuffix = " ";
-    }
-    return creepNameSuffix;
   },
 };
 
