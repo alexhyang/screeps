@@ -1,3 +1,3 @@
-alias sync="cp src/dashboard.js build/dashboard.js"
+alias dashboard="cp src/dashboard.js dist/dashboard.js"
 alias build="rm build/*; cp src/* build/"
-alias deploy="cp src/* dist/"
+alias dist="cp src/* dist/"
