@@ -156,6 +156,11 @@ let MODELS = {
     role: "upgrader",
     body: [WORK, WORK, WORK, WORK, WORK, CARRY, MOVE],
   },
+  UPGRADER_1150: {
+    name: "U115",
+    role: "upgrader",
+    body: Array(10).fill(WORK).concat([CARRY, MOVE, MOVE]),
+  },
   // ======== REPAIRERS ========
   REPAIRER_250: {
     name: "R25",
