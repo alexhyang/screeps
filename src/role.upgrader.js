@@ -36,11 +36,12 @@ var roleUpgrader = {
   },
   /** @param {Creep} creep **/
   obtainEnergy: function (creep) {
-    if (assignCreepToObtainEnergyFromContainer(creep)) {
-      return;
-    } else {
-      assignCreepToObtainEnergyFromSource(creep, UPGRADER_SOURCE_INDEX);
-    }
+    // if (assignCreepToObtainEnergyFromContainer(creep)) {
+    //   return;
+    // } else {
+    //   assignCreepToObtainEnergyFromSource(creep, UPGRADER_SOURCE_INDEX);
+    // }
+    assignCreepToObtainEnergyFromSource(creep, UPGRADER_SOURCE_INDEX);
   },
 };
 
