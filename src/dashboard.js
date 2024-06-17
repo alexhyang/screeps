@@ -5,7 +5,8 @@ let energyCapacityAvailable = Game.rooms[roomNumber].energyCapacityAvailable;
 let parameters = {
   // ======== Room status ========
   ROOM_NUMBER: roomNumber,
-  SPAWN_WITHDRAW_THRESHOLD: energyCapacityAvailable * 0.8,
+  SPAWN_WITHDRAW_THRESHOLD: energyCapacityAvailable * 1.1,
+  CONTAINER_WITHDRAW_THRESHOLD: 800,
   TOP_TOWER: "666fab3114aef66f9cff9d7a",
   RIGHT_TOWER: "666ae566e679a17f17d4a1aa",
   // ======== HARVESTERS ========

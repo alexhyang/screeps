@@ -2,6 +2,7 @@ const {
   assignCreepToObtainEnergyFromSpawn,
   assignCreepToObtainEnergyFromSource,
   withdrawFromSpawnOk,
+  withdrawFromContainerOk,
   assignCreepToObtainEnergyFromContainer,
   obtainEnergy,
 } = require("./squad.resourceManager");
@@ -42,7 +43,10 @@ var roleBuilder = {
   },
   /** @param {Creep} creep **/
   obtainEnergy: function (creep) {
-    if (assignCreepToObtainEnergyFromContainer(creep)) {
+    if (
+      withdrawFromContainerOk() &&
+      assignCreepToObtainEnergyFromContainer(creep)
+    ) {
       return;
     } else if (
       withdrawFromSpawnOk() &&

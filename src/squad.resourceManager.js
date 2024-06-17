@@ -1,10 +1,25 @@
-const { ROOM_NUMBER, SPAWN_WITHDRAW_THRESHOLD } = require("./dashboard");
+const {
+  ROOM_NUMBER,
+  SPAWN_WITHDRAW_THRESHOLD,
+  CONTAINER_WITHDRAW_THRESHOLD,
+} = require("./dashboard");
 
 let resources = {
-  /** @returns {number} */
+  /** @returns {boolean} */
   withdrawFromSpawnOk: function () {
     let energyAvailable = Game.rooms[ROOM_NUMBER].energyAvailable;
     return energyAvailable >= SPAWN_WITHDRAW_THRESHOLD;
+  },
+  /** @returns {boolean} */
+  withdrawFromContainerOk: function () {
+    let containers = Game.spawns["Spawn1"].room.find(FIND_STRUCTURES, {
+      filter: (structure) => structure.structureType == STRUCTURE_CONTAINER,
+    });
+    let container = containers[0];
+    return (
+      container.store.getUsedCapacity(RESOURCE_ENERGY) >=
+      CONTAINER_WITHDRAW_THRESHOLD
+    );
   },
   /**
    * @param {Creep} creep
