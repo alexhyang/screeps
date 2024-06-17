@@ -76,6 +76,32 @@ let resources = {
       return false;
     }
   },
+  /**
+   * @param {Creep} creep
+   * @param {number} sourceIndex the index of source
+   * @returns {boolean} whether the assignment is successful
+   */
+  assignCreepToObtainEnergyFromStorage: function (creep) {
+    var storages = creep.room.find(FIND_STRUCTURES, {
+      filter: (structure) =>
+        structure.structureType == STRUCTURE_STORAGE &&
+        structure.store.getUsedCapacity(RESOURCE_ENERGY) > 0,
+    });
+    if (storages.length > 0) {
+      let storage = storages[0];
+      if (
+        creep.withdraw(storage, RESOURCE_ENERGY) !== OK ||
+        creep.pos.getRangeTo(storage) !== 1
+      ) {
+        creep.moveTo(storage, {
+          visualizePathStyle: { stroke: "#ffaa00" },
+        });
+      }
+      return true;
+    } else {
+      return false;
+    }
+  },
 };
 
 module.exports = resources;

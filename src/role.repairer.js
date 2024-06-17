@@ -4,6 +4,7 @@ const {
   withdrawFromSpawnOk,
   assignCreepToObtainEnergyFromContainer,
   withdrawFromContainerOk,
+  assignCreepToObtainEnergyFromStorage,
 } = require("./squad.resourceManager");
 const {
   REPAIRER_SOURCE_INDEX,
@@ -41,7 +42,9 @@ let roleRepairer = {
     this.repairTargets(creep, targets);
   },
   obtainEnergy: function (creep) {
-    if (
+    if (assignCreepToObtainEnergyFromStorage(creep)) {
+      return;
+    } else if (
       withdrawFromContainerOk() &&
       assignCreepToObtainEnergyFromContainer(creep)
     ) {
@@ -61,7 +64,10 @@ let roleRepairer = {
       STRUCTURE_CONTAINER
     );
     var decayedLinks = this.findDecayedStructure(creep, STRUCTURE_LINK);
-    if (decayedContainers.length > 0) {
+    var decayedStorage = this.findDecayedStructure(creep, STRUCTURE_STORAGE);
+    if (decayedStorage.length > 0) {
+      return decayedStorage;
+    } else if (decayedContainers.length > 0) {
       return decayedContainers;
     } else if (decayedLinks.length > 0) {
       return decayedLinks;
