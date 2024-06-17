@@ -1,5 +1,10 @@
 var squadLogger = require("./logger.squad");
 const { ROOM_NUMBER } = require("./dashboard");
+const {
+  convertNumToMillions,
+  convertNumToThousands,
+  roundTo,
+} = require("./logger.utils");
 
 var logger = {
   log: function () {
@@ -8,25 +13,58 @@ var logger = {
     console.log("\n");
   },
   printLogTitle: function () {
-    let energyAvailable = Game.rooms[ROOM_NUMBER].energyAvailable;
-    let energyCapacityAvailable =
-      Game.rooms[ROOM_NUMBER].energyCapacityAvailable;
-    let energyMeta = `Energy: ${energyAvailable}/${energyCapacityAvailable}`;
-    let controller = Game.rooms[ROOM_NUMBER].controller;
-    let current = controller.progress;
-    let total = controller.progressTotal;
-    let controllerMeta = `Controller (lvl. ${controller.level} ${Math.round(
-      (current / total) * 100
-    )}%: ${current}/${total})`;
     console.log(
       "--------------  " +
         Game.time +
         " // " +
-        energyMeta +
+        this.getEnergyMeta() +
         " | " +
-        controllerMeta +
+        this.getControllerMeta() +
         " -------------"
     );
+  },
+  getEnergyMeta: function () {
+    let energyAvailable = Game.rooms[ROOM_NUMBER].energyAvailable;
+    let energyCapacityAvailable =
+      Game.rooms[ROOM_NUMBER].energyCapacityAvailable;
+    let energyMeta = `Energy: ${energyAvailable}/${energyCapacityAvailable}`;
+    return energyMeta;
+  },
+  getControllerMeta: function () {
+    let controller = Game.rooms[ROOM_NUMBER].controller;
+    let current = this.parseProgress(controller.progress);
+    let total = this.parseProgress(controller.progressTotal);
+    let percentage = roundTo(
+      Math.round((controller.progress / controller.progressTotal) * 100),
+      1
+    );
+    let controllerMeta = `Controller (lvl. ${controller.level}, ${percentage}%: ${current}/${total})`;
+    return controllerMeta;
+  },
+  /**
+   *
+   * @param {number} progress
+   * @returns {string} progress in text form with units "K", "M"
+   */
+  parseProgress: function (progress) {
+    if (progress >= 1000000) {
+      return this.convertNumToMillions(progress, 2) + "M";
+    } else if (progress >= 1000) {
+      return this.convertNumToThousands(progress, 2) + "K";
+    } else {
+      return progress;
+    }
+  },
+  convertNumToThousands: function (num, numOfDecimalPlaces) {
+    return roundTo(num / 1000, numOfDecimalPlaces);
+  },
+  /**
+   * @param {number} num
+   * @param {number} numOfDecimalPlaces
+   * @returns {number} the given number in millions
+   */
+  convertNumToMillions: function (num, numOfDecimalPlaces) {
+    return roundTo(num / 1000000, numOfDecimalPlaces);
   },
 };
 
