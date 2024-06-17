@@ -3,29 +3,30 @@ let roomNumber = "W35N43";
 let energyCapacityAvailable = Game.rooms[roomNumber].energyCapacityAvailable;
 
 let parameters = {
-  // Room status
+  // ======== Room status ========
   ROOM_NUMBER: roomNumber,
   SPAWN_WITHDRAW_THRESHOLD: energyCapacityAvailable * 0.8,
   TOP_TOWER: "666fab3114aef66f9cff9d7a",
   RIGHT_TOWER: "666ae566e679a17f17d4a1aa",
-  // HARVESTERS
+  // ======== HARVESTERS ========
+  // 2 energy pts per WORK part per tick
   HARVESTER_CURRENT_MODEL: MODELS.HARVESTER_550,
   HARVESTER_TEAM_SIZE: 2,
   HARVESTER_SOURCE_INDEX: 1,
-  // MINERS (1 miner600 + 2 upgrader600 for one energy source)
+  // ======== MINERS ========
   MINER_CURRENT_MODEL: MODELS.MINER_600,
   MINER_TEAM_SIZE: 0,
   MINER_SOURCE_INDEX: 0,
-  // BUILDERS
+  // ======== BUILDERS ========
   BUILDER_CURRENT_MODEL: MODELS.BUILDER_350_LARGE,
   BUILDER_TEAM_SIZE: 1,
   BUILDER_SOURCE_INDEX: 0,
-  // UPGRADERS
+  // ======== UPGRADERS ========
   UPGRADER_CURRENT_MODEL: MODELS.UPGRADER_600,
   UPGRADER_TEAM_SIZE: 2,
   UPGRADER_SOURCE_INDEX: 0,
   UPGRADER_ENERGY_SOURCE: "source",
-  // REPAIRERS
+  // ======== REPAIRERS ========
   REPAIRER_CURRENT_MODEL: MODELS.REPAIRER_400,
   REPAIRER_TEAM_SIZE: 3,
   REPAIRER_SOURCE_INDEX: 0,
