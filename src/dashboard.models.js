@@ -28,7 +28,10 @@ let MODELS = {
   HARVESTER_300: {
     name: "H3",
     role: "harvester",
-    body: [WORK, WORK, CARRY, MOVE],
+    body: Array(0)
+      .fill(WORK)
+      .concat(Array(2).fill(CARRY))
+      .concat(Array(4).fill(MOVE)),
   },
   HARVESTER_350_FAST: {
     name: "H35F",
@@ -127,13 +130,8 @@ let MODELS = {
     role: "builder",
     body: [WORK, WORK, CARRY, CARRY, MOVE],
   },
-  BUILDER_400_FAST: {
-    name: "B4F",
-    role: "builder",
-    body: [WORK, WORK, CARRY, CARRY, MOVE, MOVE],
-  },
-  BUILDER_400_LARGE: {
-    name: "B4L",
+  BUILDER_400: {
+    name: "B4",
     role: "builder",
     body: [WORK, WORK, CARRY, CARRY, MOVE, MOVE],
   },
@@ -172,7 +170,18 @@ let MODELS = {
   REPAIRER_400: {
     name: "R4",
     role: "repairer",
-    body: [WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE, MOVE],
+    body: Array(3)
+      .fill(WORK)
+      .concat(Array(1).fill(CARRY))
+      .concat(Array(4).fill(MOVE)),
+  },
+  REPAIRER_500: {
+    name: "R5",
+    role: "repairer",
+    body: Array(3)
+      .fill(WORK)
+      .concat(Array(2).fill(CARRY))
+      .concat(Array(5).fill(MOVE)),
   },
 };
 
