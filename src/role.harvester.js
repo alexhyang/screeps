@@ -20,24 +20,14 @@ var roleHarvester = {
     }
   },
   findTargets: function (creep) {
-    let transferToNonContainer =
-      Game.rooms[ROOM_NUMBER].energyAvailable <
-      Game.rooms[ROOM_NUMBER].energyCapacityAvailable;
     var targets = creep.room.find(FIND_STRUCTURES, {
       filter: (structure) => {
-        if (transferToNonContainer) {
-          return (
-            (structure.structureType == STRUCTURE_EXTENSION ||
-              structure.structureType == STRUCTURE_SPAWN ||
-              structure.structureType == STRUCTURE_TOWER) &&
-            structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0
-          );
-        } else {
-          return (
-            structure.structureType == STRUCTURE_CONTAINER &&
-            structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0
-          );
-        }
+        return (
+          (structure.structureType == STRUCTURE_EXTENSION ||
+            structure.structureType == STRUCTURE_SPAWN ||
+            structure.structureType == STRUCTURE_TOWER) &&
+          structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0
+        );
       },
     });
     return targets;
