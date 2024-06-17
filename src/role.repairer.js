@@ -52,10 +52,21 @@ let roleRepairer = {
     }
   },
   findTargets: function (creep) {
-    var targets = creep.room.find(FIND_STRUCTURES, {
-      filter: this.getPrioritizedStructure,
-    });
-    return targets;
+    var decayedContainers = this.findDecayedStructure(
+      creep,
+      STRUCTURE_CONTAINER
+    );
+    var decayedLinks = this.findDecayedStructure(creep, STRUCTURE_LINK);
+    if (decayedContainers.length > 0) {
+      return decayedContainers;
+    } else if (decayedLinks.length > 0) {
+      return decayedLinks;
+    } else {
+      var targets = creep.room.find(FIND_STRUCTURES, {
+        filter: this.getPrioritizedStructure,
+      });
+      return targets;
+    }
   },
   repairTargets: function (creep, targets) {
     if (targets.length > 0) {
@@ -66,14 +77,20 @@ let roleRepairer = {
       }
     }
   },
+  findDecayedStructure: function (creep, structureType) {
+    let targets = creep.room.find(FIND_STRUCTURES, {
+      filter: (structure) =>
+        structure.structureType == structureType &&
+        structure.hits < structure.hitsMax,
+    });
+    return targets;
+  },
   getPrioritizedStructure: function (structure) {
     let type = structure.structureType;
     let needsRepair =
       structure.hits < structure.hitsMax * REPAIR_HITS_THRESHOLD_RATIO;
     let notMaxHits = structure.hits < structure.hitsMax;
     switch (REPAIR_PRIORITY) {
-      case "container":
-        return type == STRUCTURE_CONTAINER && notMaxHits;
       case "walls":
         return type == STRUCTURE_WALL && needsRepair;
       case "roads":
