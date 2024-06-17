@@ -12,29 +12,39 @@ const {
   UPGRADER_TEAM_SIZE,
   REPAIRER_TEAM_SIZE,
   MINER_TEAM_SIZE,
+  RECRUIT_HARVESTER,
+  RECRUIT_BUILDER,
+  RECRUIT_UPGRADER,
+  RECRUIT_REPAIRER,
+  RECRUIT_MINER,
 } = require("./dashboard");
 
 var squad = {
   recruitSquad: function () {
-    if (this.getHarvesters().length < HARVESTER_TEAM_SIZE) {
+    if (
+      RECRUIT_HARVESTER &&
+      this.getHarvesters().length < HARVESTER_TEAM_SIZE
+    ) {
       squadRecruiter.recruitHarvester();
     }
     if (
+      RECRUIT_BUILDER &&
       this.getBuilders().length < BUILDER_TEAM_SIZE &&
       Object.keys(Game.constructionSites).length > 0
     ) {
       squadRecruiter.recruitBuilder();
     }
-    if (this.getUpgraders().length < UPGRADER_TEAM_SIZE) {
+    if (RECRUIT_UPGRADER && this.getUpgraders().length < UPGRADER_TEAM_SIZE) {
       squadRecruiter.recruitUpgrader();
     }
-    if (this.getRepairers().length < REPAIRER_TEAM_SIZE) {
+    if (RECRUIT_REPAIRER && this.getRepairers().length < REPAIRER_TEAM_SIZE) {
       squadRecruiter.recruitRepairer();
     }
     if (
-      this.getMiners().length < MINER_TEAM_SIZE ||
-      (this.getMiners().length == MINER_TEAM_SIZE &&
-        this.getMiners()[0].ticksToLive < 45)
+      RECRUIT_MINER &&
+      (this.getMiners().length < MINER_TEAM_SIZE ||
+        (this.getMiners().length == MINER_TEAM_SIZE &&
+          this.getMiners()[0].ticksToLive < 45))
     ) {
       // it takes M1150 about 50 seconds to spawn and get ready to work
       squadRecruiter.recruitMiner();
