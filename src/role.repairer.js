@@ -72,12 +72,14 @@ let roleRepairer = {
       structure.hits < structure.hitsMax * REPAIR_HITS_THRESHOLD_RATIO;
     let notMaxHits = structure.hits < structure.hitsMax;
     switch (REPAIR_PRIORITY) {
+      case "container":
+        return type == STRUCTURE_CONTAINER && notMaxHits;
       case "walls":
         return type == STRUCTURE_WALL && needsRepair;
       case "roads":
         return type == STRUCTURE_ROAD && notMaxHits;
       case "ramparts":
-        return type == STRUCTURE_RAMPARTS && notMaxHits;
+        return type == STRUCTURE_RAMPARTS && needsRepair;
       case "buildings":
         return (
           type !== STRUCTURE_WALL &&
