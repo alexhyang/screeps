@@ -10,15 +10,15 @@ var roleHarvester = {
     if (creep.store.getFreeCapacity() > 0) {
       assignCreepToObtainEnergyFromSource(creep, MINER_SOURCE_INDEX);
     } else {
-      let targets = this.findTargets(creep);
+      let targets = this.findTargets(creep, STRUCTURE_CONTAINER);
       this.transferEnergy(creep, targets);
     }
   },
-  findTargets: function (creep) {
+  findTargets: function (creep, structureType) {
     var targets = creep.room.find(FIND_STRUCTURES, {
       filter: (structure) => {
         return (
-          structure.structureType == STRUCTURE_CONTAINER &&
+          structure.structureType == structureType &&
           structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0
         );
       },
