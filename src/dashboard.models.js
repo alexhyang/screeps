@@ -66,15 +66,40 @@ let MODELS = {
     body: [WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE],
   },
   // ======== MINERS ========
+  MINER_200: {
+    name: "M200",
+    role: "miner",
+    body: [WORK, CARRY, MOVE],
+  },
+  MINER_300: {
+    name: "M300",
+    role: "miner",
+    body: Array(2).fill(WORK).concat([CARRY, MOVE]),
+  },
+  MINER_400: {
+    name: "M400",
+    role: "miner",
+    body: Array(3).fill(WORK).concat([CARRY, MOVE]),
+  },
+  MINER_500: {
+    name: "M500",
+    role: "miner",
+    body: Array(4).fill(WORK).concat([CARRY, MOVE]),
+  },
   MINER_600: {
     name: "M600",
     role: "miner",
-    body: [WORK, WORK, WORK, WORK, WORK, CARRY, MOVE],
+    body: Array(5).fill(WORK).concat([CARRY, MOVE]),
   },
   MINER_700: {
     name: "M700",
     role: "miner",
-    body: [WORK, WORK, WORK, WORK, WORK, WORK, CARRY, MOVE],
+    body: Array(6).fill(WORK).concat([CARRY, MOVE]),
+  },
+  MINER_1150: {
+    name: "M1150",
+    role: "miner",
+    body: Array(10).fill(WORK).concat([CARRY, MOVE, MOVE]),
   },
   // ======== BUILDERS ========
   BUILDER_200: {
@@ -143,6 +168,11 @@ let MODELS = {
     name: "R400",
     role: "repairer",
     body: [WORK, WORK, CARRY, MOVE, MOVE, MOVE],
+  },
+  REPAIRER_400: {
+    name: "R400",
+    role: "repairer",
+    body: [WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE, MOVE],
   },
 };
 

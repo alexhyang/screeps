@@ -4,7 +4,16 @@ const {
   UPGRADER_CURRENT_MODEL,
   REPAIRER_CURRENT_MODEL,
   MINER_CURRENT_MODEL,
+  ROOM_NUMBER,
 } = require("./dashboard");
+const {
+  MINER_700,
+  MINER_600,
+  MINER_500,
+  MINER_400,
+  MINER_300,
+  MINER_200,
+} = require("./dashboard.models");
 
 var squadRecruiter = {
   recruitHarvester: function () {
@@ -20,7 +29,21 @@ var squadRecruiter = {
     this.recruitCreep(REPAIRER_CURRENT_MODEL);
   },
   recruitMiner: function () {
-    this.recruitCreep(MINER_CURRENT_MODEL);
+    if (this.getAvailableEnergy() >= 1150) {
+      this.recruitCreep(MINER_CURRENT_MODEL);
+    } else if (this.getAvailableEnergy() >= 700) {
+      this.recruitCreep(MINER_700);
+    } else if (this.getAvailableEnergy() >= 600) {
+      this.recruitCreep(MINER_600);
+    } else if (this.getAvailableEnergy() >= 500) {
+      this.recruitCreep(MINER_500);
+    } else if (this.getAvailableEnergy() >= 400) {
+      this.recruitCreep(MINER_400);
+    } else if (this.getAvailableEnergy() >= 300) {
+      this.recruitCreep(MINER_300);
+    } else {
+      this.recruitCreep(MINER_200);
+    }
   },
 
   /**
@@ -32,6 +55,9 @@ var squadRecruiter = {
     Game.spawns["Spawn1"].spawnCreep(creepModel.body, newName, {
       memory: { role: creepModel.role },
     });
+  },
+  getAvailableEnergy: function () {
+    return Game.rooms[ROOM_NUMBER].energyAvailable;
   },
 };
 
