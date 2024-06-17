@@ -6,6 +6,7 @@ const {
   assignCreepToObtainEnergyFromContainer,
   obtainEnergy,
   assignCreepToObtainEnergyFromStorage,
+  pickupDroppedResources,
 } = require("./squad.resourceManager");
 const { BUILDER_SOURCE_INDEX } = require("./dashboard");
 
@@ -44,7 +45,9 @@ var roleBuilder = {
   },
   /** @param {Creep} creep **/
   obtainEnergy: function (creep) {
-    if (assignCreepToObtainEnergyFromStorage(creep)) {
+    if (pickupDroppedResources(creep)) {
+      return;
+    } else if (assignCreepToObtainEnergyFromStorage(creep)) {
       return;
     } else if (
       withdrawFromContainerOk() &&

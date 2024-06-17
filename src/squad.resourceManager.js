@@ -102,6 +102,19 @@ let resources = {
       return false;
     }
   },
+  pickupDroppedResources(creep) {
+    const target = creep.pos.findClosestByRange(FIND_DROPPED_RESOURCES);
+    if (target) {
+      if (creep.pickup(target) == ERR_NOT_IN_RANGE) {
+        creep.moveTo(target, {
+          visualizePathStyle: { stroke: "#ffffff" },
+        });
+      }
+      return true;
+    } else {
+      return false;
+    }
+  },
 };
 
 module.exports = resources;
