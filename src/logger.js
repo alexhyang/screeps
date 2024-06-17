@@ -18,6 +18,7 @@ var logger = {
         Game.time +
         " // " +
         this.getEnergyMeta() +
+        ` (${this.getContainerMeta()})` +
         " | " +
         this.getControllerMeta() +
         " -------------"
@@ -29,6 +30,14 @@ var logger = {
       Game.rooms[ROOM_NUMBER].energyCapacityAvailable;
     let energyMeta = `Energy: ${energyAvailable}/${energyCapacityAvailable}`;
     return energyMeta;
+  },
+  getContainerMeta: function () {
+    let containers = Game.spawns["Spawn1"].room.find(FIND_STRUCTURES, {
+      filter: (structure) => structure.structureType == STRUCTURE_CONTAINER,
+    });
+    let container = containers[0];
+    let containerMeta = `${container.store.getUsedCapacity(RESOURCE_ENERGY)}`;
+    return containerMeta;
   },
   getControllerMeta: function () {
     let controller = Game.rooms[ROOM_NUMBER].controller;
