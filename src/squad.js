@@ -21,35 +21,11 @@ const {
 
 var squad = {
   recruitSquad: function () {
-    if (
-      RECRUIT_HARVESTER &&
-      this.getHarvesters().length < HARVESTER_TEAM_SIZE
-    ) {
-      squadRecruiter.recruitHarvester();
-    }
-    if (
-      RECRUIT_BUILDER &&
-      this.getBuilders().length < BUILDER_TEAM_SIZE &&
-      Object.keys(Game.constructionSites).length > 0
-    ) {
-      squadRecruiter.recruitBuilder();
-    }
-    if (
-      RECRUIT_UPGRADER &&
-      this.recruitOk(this.getUpgraders(), UPGRADER_TEAM_SIZE, 130)
-    ) {
-      squadRecruiter.recruitUpgrader();
-    }
-    if (RECRUIT_REPAIRER && this.getRepairers().length < REPAIRER_TEAM_SIZE) {
-      squadRecruiter.recruitRepairer();
-    }
-    if (
-      RECRUIT_MINER &&
-      this.recruitOk(this.getMiners(), MINER_TEAM_SIZE, 45)
-    ) {
-      // it takes M1150 about 50 seconds to spawn and get ready to work
-      squadRecruiter.recruitMiner();
-    }
+    this.recruitMiners();
+    this.recruitHarvesters();
+    this.recruitRepairers();
+    this.recruitUpgraders();
+    this.recruitBuilders();
   },
   assignJobs: function () {
     for (var name in Game.creeps) {
@@ -78,7 +54,45 @@ var squad = {
       }
     }
   },
-
+  recruitHarvesters: function () {
+    if (
+      RECRUIT_HARVESTER &&
+      this.recruitOk(this.getHarvesters().length, HARVESTER_TEAM_SIZE, 0)
+    ) {
+      squadRecruiter.recruitHarvester();
+    }
+  },
+  recruitBuilders: function () {
+    if (
+      RECRUIT_BUILDER &&
+      this.recruitOk(this.getBuilders().length, BUILDER_TEAM_SIZE, 0) &&
+      Object.keys(Game.constructionSites).length > 0
+    ) {
+      squadRecruiter.recruitBuilder();
+    }
+  },
+  recruitUpgraders: function () {
+    if (
+      RECRUIT_UPGRADER &&
+      this.recruitOk(this.getUpgraders(), UPGRADER_TEAM_SIZE, 130)
+    ) {
+      squadRecruiter.recruitUpgrader();
+    }
+  },
+  recruitRepairers: function () {
+    if (RECRUIT_REPAIRER && this.getRepairers().length < REPAIRER_TEAM_SIZE) {
+      squadRecruiter.recruitRepairer();
+    }
+  },
+  recruitMiners: function () {
+    if (
+      RECRUIT_MINER &&
+      this.recruitOk(this.getMiners(), MINER_TEAM_SIZE, 45)
+    ) {
+      // it takes M1150 about 50 seconds to spawn and get ready to work
+      squadRecruiter.recruitMiner();
+    }
+  },
   /** @returns {Object<string, Creep>} a hash containing harvesters */
   getHarvesters: function () {
     return this.getTeam("harvester");
@@ -109,7 +123,7 @@ var squad = {
   recruitOk: function (team, teamSize, dyingCreepTickLeft) {
     return (
       team.length < teamSize ||
-      (team.length == teamSize && team[0].ticksToLive < dyingCreepTickLeft)
+      (team.length == teamSize && team[0].ticksToLive <= dyingCreepTickLeft)
     );
   },
 };
