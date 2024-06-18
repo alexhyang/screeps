@@ -53,7 +53,7 @@ var squad = {
     if (
       this.getHarvesters().length < HARVESTER_TEAM_SIZE ||
       (this.getHarvesters().length == HARVESTER_TEAM_SIZE &&
-        this.getHarvesters()[0].ticksToLive < 10)
+        this.getHarvesters()[0].ticksToLive < 0)
     ) {
       squadRecruiter.recruitHarvester();
     }
@@ -72,7 +72,7 @@ var squad = {
     if (
       this.getUpgraders().length < UPGRADER_TEAM_SIZE ||
       (this.getUpgraders().length == UPGRADER_TEAM_SIZE &&
-        this.getUpgraders()[0].ticksToLive < 10)
+        this.getUpgraders()[0].ticksToLive < 100)
     ) {
       squadRecruiter.recruitUpgrader();
     }
