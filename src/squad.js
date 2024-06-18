@@ -12,11 +12,6 @@ const {
   UPGRADER_TEAM_SIZE,
   REPAIRER_TEAM_SIZE,
   MINER_TEAM_SIZE,
-  RECRUIT_HARVESTER,
-  RECRUIT_BUILDER,
-  RECRUIT_UPGRADER,
-  RECRUIT_REPAIRER,
-  RECRUIT_MINER,
 } = require("./dashboard");
 
 var squad = {
@@ -56,16 +51,18 @@ var squad = {
   },
   recruitHarvesters: function () {
     if (
-      RECRUIT_HARVESTER &&
-      this.recruitOk(this.getHarvesters().length, HARVESTER_TEAM_SIZE, 0)
+      this.getHarvesters().length < HARVESTER_TEAM_SIZE ||
+      (this.getHarvesters().length == HARVESTER_TEAM_SIZE &&
+        this.getHarvesters()[0].ticksToLive < 10)
     ) {
       squadRecruiter.recruitHarvester();
     }
   },
   recruitBuilders: function () {
     if (
-      RECRUIT_BUILDER &&
-      this.recruitOk(this.getBuilders().length, BUILDER_TEAM_SIZE, 0) &&
+      (this.getBuilders().length < BUILDER_TEAM_SIZE ||
+        (this.getBuilders().length == BUILDER_TEAM_SIZE &&
+          this.getBuilders()[0].ticksToLive < 10)) &&
       Object.keys(Game.constructionSites).length > 0
     ) {
       squadRecruiter.recruitBuilder();
@@ -73,21 +70,23 @@ var squad = {
   },
   recruitUpgraders: function () {
     if (
-      RECRUIT_UPGRADER &&
-      this.recruitOk(this.getUpgraders(), UPGRADER_TEAM_SIZE, 130)
+      this.getUpgraders().length < UPGRADER_TEAM_SIZE ||
+      (this.getUpgraders().length == UPGRADER_TEAM_SIZE &&
+        this.getUpgraders()[0].ticksToLive < 10)
     ) {
       squadRecruiter.recruitUpgrader();
     }
   },
   recruitRepairers: function () {
-    if (RECRUIT_REPAIRER && this.getRepairers().length < REPAIRER_TEAM_SIZE) {
+    if (this.getRepairers().length < REPAIRER_TEAM_SIZE) {
       squadRecruiter.recruitRepairer();
     }
   },
   recruitMiners: function () {
     if (
-      RECRUIT_MINER &&
-      this.recruitOk(this.getMiners(), MINER_TEAM_SIZE, 45)
+      this.getMiners().length < MINER_TEAM_SIZE ||
+      (this.getMiners().length == MINER_TEAM_SIZE &&
+        this.getMiners()[0].ticksToLive < 45)
     ) {
       // it takes M1150 about 50 seconds to spawn and get ready to work
       squadRecruiter.recruitMiner();
@@ -121,6 +120,8 @@ var squad = {
     return _.filter(Game.creeps, (creep) => creep.memory.role == creepRole);
   },
   recruitOk: function (team, teamSize, dyingCreepTickLeft) {
+    // this.recruitOk() doesn't work in recruitHarvesters(), etc.
+    // fix it later
     return (
       team.length < teamSize ||
       (team.length == teamSize && team[0].ticksToLive <= dyingCreepTickLeft)
