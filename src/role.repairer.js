@@ -6,6 +6,8 @@ const {
   withdrawFromContainerOk,
   assignCreepToObtainEnergyFromStorage,
   pickupDroppedResources,
+  assignCreepToObtainEnergyFromRuin,
+  assignCreepToObtainEnergyFromTombstone,
 } = require("./squad.resourceManager");
 const {
   REPAIRER_SOURCE_INDEX,
@@ -43,7 +45,11 @@ let roleRepairer = {
     this.repairTargets(creep, targets);
   },
   obtainEnergy: function (creep) {
-    if (pickupDroppedResources(creep)) {
+    if (assignCreepToObtainEnergyFromTombstone(creep)) {
+      return;
+    } else if (assignCreepToObtainEnergyFromRuin(creep)) {
+      return;
+    } else if (pickupDroppedResources(creep)) {
       return;
     } else if (assignCreepToObtainEnergyFromStorage(creep)) {
       return;

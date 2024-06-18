@@ -39,6 +39,53 @@ let resources = {
       return false;
     }
   },
+  assignCreepToObtainEnergyFromRuin: function (creep) {
+    var ruin = creep.room.find(FIND_RUINS)[0];
+    if (
+      ruin.store.getUsedCapacity(RESOURCE_ENERGY) > 0 &&
+      (creep.withdraw(ruin, RESOURCE_ENERGY) !== OK ||
+        creep.pos.getRangeTo(ruin) !== 1)
+    ) {
+      creep.moveTo(ruin, {
+        visualizePathStyle: { stroke: "#ffaa00" },
+      });
+      return true;
+    } else {
+      return false;
+    }
+  },
+  assignCreepToObtainEnergyFromTombstone: function (creep) {
+    var tombstones = creep.room.find(FIND_TOMBSTONES);
+    if (tombstones.length > 0) {
+      let tombstone = tombstones[0];
+      if (
+        tombstone.store.getUsedCapacity(RESOURCE_ENERGY) > 0 &&
+        (creep.withdraw(tombstone, RESOURCE_ENERGY) !== OK ||
+          creep.pos.getRangeTo(tombstone) !== 1)
+      ) {
+        creep.moveTo(tombstone, {
+          visualizePathStyle: { stroke: "#ffaa00" },
+        });
+      }
+      return true;
+    } else {
+      return false;
+    }
+  },
+  withdrawEnergyFromStructure: function (creep, findCode) {
+    var ruin = creep.room.find(FIND_RUINS)[0];
+    if (
+      creep.withdraw(ruin, RESOURCE_ENERGY) !== OK ||
+      creep.pos.getRangeTo(ruin) !== 1
+    ) {
+      creep.moveTo(ruin, {
+        visualizePathStyle: { stroke: "#ffaa00" },
+      });
+      return true;
+    } else {
+      return false;
+    }
+  },
   /** @param {Creep} creep **/
   /** @param {number} sourceIndex the index of source **/
   assignCreepToObtainEnergyFromSource: function (creep, sourceIndex) {
