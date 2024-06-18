@@ -5,6 +5,7 @@ const {
   REPAIRER_CURRENT_MODEL,
   MINER_CURRENT_MODEL,
   ROOM_NUMBER,
+  PAUSE_SPAWN,
 } = require("./dashboard");
 const {
   MINER_700,
@@ -49,10 +50,14 @@ var squadRecruiter = {
    */
   recruitCreep: function (creepModel) {
     var newName = creepModel.name + "-" + (Game.time % 10000);
-    console.log(`Spawning new ${creepModel.role}: ` + newName);
-    Game.spawns["Spawn1"].spawnCreep(creepModel.body, newName, {
-      memory: { role: creepModel.role },
-    });
+    if (PAUSE_SPAWN) {
+      console.log(`TEST: Spawning new ${creepModel.role}: ` + newName);
+    } else {
+      console.log(`Spawning new ${creepModel.role}: ` + newName);
+      Game.spawns["Spawn1"].spawnCreep(creepModel.body, newName, {
+        memory: { role: creepModel.role },
+      });
+    }
   },
   getAvailableEnergy: function () {
     return Game.rooms[ROOM_NUMBER].energyAvailable;
