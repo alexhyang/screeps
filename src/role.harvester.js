@@ -2,6 +2,9 @@ const {
   assignCreepToObtainEnergyFromSource,
   assignCreepToObtainEnergyFromContainer,
   assignCreepToObtainEnergyFromTombstone,
+  assignCreepToObtainEnergyFromRuin,
+  assignCreepToObtainEnergyFromStorage,
+  withdrawFromContainerOk,
 } = require("./squad.resourceManager");
 
 const { HARVESTER_SOURCE_INDEX, ROOM_NUMBER } = require("./dashboard");
@@ -11,7 +14,10 @@ var roleHarvester = {
   run: function (creep) {
     if (creep.store.getFreeCapacity() > 0) {
       assignCreepToObtainEnergyFromTombstone(creep) ||
-        assignCreepToObtainEnergyFromContainer(creep) ||
+        assignCreepToObtainEnergyFromRuin(creep) ||
+        (withdrawFromContainerOk() &&
+          assignCreepToObtainEnergyFromContainer(creep)) ||
+        assignCreepToObtainEnergyFromStorage(creep) ||
         assignCreepToObtainEnergyFromSource(creep, HARVESTER_SOURCE_INDEX);
     } else {
       let targets = this.findTargets(creep);
