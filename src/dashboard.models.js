@@ -43,6 +43,14 @@ let MODELS = {
     role: "harvester",
     body: [WORK, WORK, CARRY, CARRY, MOVE],
   },
+  HARVESTER_400: {
+    name: "H4",
+    role: "harvester",
+    body: Array(1)
+      .fill(WORK)
+      .concat(Array(2).fill(CARRY))
+      .concat(Array(4).fill(MOVE)),
+  },
   HARVESTER_400_FAST: {
     name: "H4F",
     role: "harvester",
