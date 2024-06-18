@@ -40,9 +40,12 @@ let resources = {
     }
   },
   assignCreepToObtainEnergyFromRuin: function (creep) {
-    var ruin = creep.room.find(FIND_RUINS)[0];
+    var ruins = creep.room.find(FIND_RUINS, {
+      filter: (r) => r.store.getUsedCapacity(RESOURCE_ENERGY) > 0,
+    });
+    let ruin = ruins[0];
     if (
-      ruin.store.getUsedCapacity(RESOURCE_ENERGY) > 0 &&
+      ruin &&
       (creep.withdraw(ruin, RESOURCE_ENERGY) !== OK ||
         creep.pos.getRangeTo(ruin) !== 1)
     ) {
@@ -55,7 +58,9 @@ let resources = {
     }
   },
   assignCreepToObtainEnergyFromTombstone: function (creep) {
-    var tombstones = creep.room.find(FIND_TOMBSTONES);
+    var tombstones = creep.room.find(FIND_TOMBSTONES, {
+      filter: (t) => t.store.getUsedCapacity(RESOURCE_ENERGY) > 0,
+    });
     let tombstone = tombstones[0];
     if (
       tombstone &&
