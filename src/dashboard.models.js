@@ -164,6 +164,11 @@ let MODELS = {
     role: "upgrader",
     body: [WORK, WORK, WORK, WORK, WORK, CARRY, MOVE],
   },
+  UPGRADER_700: {
+    name: "U7",
+    role: "upgrader",
+    body: [WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE],
+  },
   UPGRADER_1150: {
     name: "U115",
     role: "upgrader",
@@ -173,7 +178,7 @@ let MODELS = {
   REPAIRER_250: {
     name: "R25",
     role: "repairer",
-    body: [WORK, CARRY, MOVE, MOVE],
+    body: [WORK, CARRY, CARRY, MOVE],
   },
   REPAIRER_400: {
     name: "R4",
