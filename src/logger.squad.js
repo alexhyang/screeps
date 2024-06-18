@@ -27,10 +27,22 @@ var squadLogger = {
   },
   printTeamStatusTitle: function (creepRole, teamSize) {
     let paddedTeamName = this.padStr(creepRole + "s", 11);
-    console.log(
+    let spawnCounter =
+      creepRole == "harvester"
+        ? ` (Next in: ${
+            squad.harvesterSpawnCycle - (Game.time % squad.harvesterSpawnCycle)
+          })`
+        : creepRole == "repairer"
+        ? ` (Next in: ${
+            squad.repairerSpawnCycle - (Game.time % squad.repairerSpawnCycle)
+          })`
+        : "";
+    let msg =
       capitalize(paddedTeamName) +
-        ` (life, carry, fatigue): ${teamSize}/${this.getTeamMaxSize(creepRole)}`
-    );
+      ` (life, carry, fatigue): ` +
+      `${teamSize}/${this.getTeamMaxSize(creepRole)}` +
+      spawnCounter;
+    console.log(msg);
   },
   printTeamMembers: function (teamMembers) {
     for (var i in teamMembers) {
