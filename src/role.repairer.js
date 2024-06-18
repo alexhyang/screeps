@@ -45,24 +45,14 @@ let roleRepairer = {
     this.repairTargets(creep, targets);
   },
   obtainEnergy: function (creep) {
-    if (assignCreepToObtainEnergyFromTombstone(creep)) {
-      return;
-    } else if (assignCreepToObtainEnergyFromRuin(creep)) {
-      return;
-    } else if (pickupDroppedResources(creep)) {
-      return;
-    } else if (assignCreepToObtainEnergyFromStorage(creep)) {
-      return;
-    } else if (
-      withdrawFromContainerOk() &&
-      assignCreepToObtainEnergyFromContainer(creep)
-    ) {
-      return;
-    } else if (
-      withdrawFromSpawnOk() &&
-      assignCreepToObtainEnergyFromSpawn(creep)
-    ) {
-      return;
+    if (creep.store.getFreeCapacity() > 0) {
+      pickupDroppedResources(creep) ||
+        assignCreepToObtainEnergyFromTombstone(creep) ||
+        assignCreepToObtainEnergyFromRuin(creep) ||
+        assignCreepToObtainEnergyFromContainer(creep) ||
+        assignCreepToObtainEnergyFromStorage(creep) ||
+        assignCreepToObtainEnergyFromContainer(creep) ||
+        assignCreepToObtainEnergyFromSpawn(creep);
     } else {
       assignCreepToObtainEnergyFromSource(creep, REPAIRER_SOURCE_INDEX);
     }
@@ -115,7 +105,7 @@ let roleRepairer = {
       case "roads":
         return type == STRUCTURE_ROAD && notMaxHits;
       case "ramparts":
-        return type == STRUCTURE_RAMPARTS && needsRepair;
+        return type == STRUCTURE_RAMPART && needsRepair;
       case "infrastructure":
         return (
           type !== STRUCTURE_WALL && type !== STRUCTURE_RAMPART && notMaxHits
