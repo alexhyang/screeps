@@ -12,16 +12,15 @@ const {
   UPGRADER_TEAM_SIZE,
   REPAIRER_TEAM_SIZE,
   MINER_TEAM_SIZE,
+  HARVESTER_SPAWN_DELAY,
+  REPAIRER_SPAWN_DELAY,
+  CREEP_LIFE,
 } = require("./dashboard");
 
-// change delays to 1 when you need immediate spawn after one dies
-let creepLife = 1500;
-let harvesterSpawnDelay = 51;
-let repairerSpawnDelay = 501;
-
 var squad = {
-  harvesterSpawnCycle: creepLife + harvesterSpawnDelay,
-  repairerSpawnCycle: creepLife + repairerSpawnDelay,
+  harvesterSpawnCycle: CREEP_LIFE + HARVESTER_SPAWN_DELAY,
+  // finish container repair at ~1340
+  repairerSpawnCycle: CREEP_LIFE + REPAIRER_SPAWN_DELAY,
   newBuilderReadyTime: 10,
   newMinerReadyTime: 25,
   newUpgraderReadyTime: 30,
