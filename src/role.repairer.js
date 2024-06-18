@@ -116,12 +116,9 @@ let roleRepairer = {
         return type == STRUCTURE_ROAD && notMaxHits;
       case "ramparts":
         return type == STRUCTURE_RAMPARTS && needsRepair;
-      case "buildings":
+      case "infrastructure":
         return (
-          type !== STRUCTURE_WALL &&
-          type !== STRUCTURE_ROAD &&
-          type !== STRUCTURE_RAMPART &&
-          notMaxHits
+          type !== STRUCTURE_WALL && type !== STRUCTURE_RAMPART && notMaxHits
         );
       default:
         return (
