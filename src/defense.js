@@ -1,9 +1,17 @@
 const {
   TOWER_REPAIR_MIN_HITS,
   TOWER_REPAIR_MIN_ENERGY,
+  TOP_TOWER,
+  BOTTOM_TOWER,
+  TOP_TOWER_REPAIR,
+  BOTTOM_TOWER_REPAIR,
 } = require("./dashboard");
 
-var defenses = {
+var defense = {
+  activateTowers: function () {
+    this.activateTower(TOP_TOWER, TOP_TOWER_REPAIR);
+    this.activateTower(BOTTOM_TOWER, BOTTOM_TOWER_REPAIR);
+  },
   activateTower: function (towerId, repair) {
     var tower = Game.getObjectById(towerId);
     if (tower) {
@@ -32,4 +40,4 @@ var defenses = {
   },
 };
 
-module.exports = defenses;
+module.exports = defense;
