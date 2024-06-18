@@ -56,17 +56,16 @@ let resources = {
   },
   assignCreepToObtainEnergyFromTombstone: function (creep) {
     var tombstones = creep.room.find(FIND_TOMBSTONES);
-    if (tombstones.length > 0) {
-      let tombstone = tombstones[0];
-      if (
-        tombstone.store.getUsedCapacity(RESOURCE_ENERGY) > 0 &&
-        (creep.withdraw(tombstone, RESOURCE_ENERGY) !== OK ||
-          creep.pos.getRangeTo(tombstone) !== 1)
-      ) {
-        creep.moveTo(tombstone, {
-          visualizePathStyle: { stroke: "#ffaa00" },
-        });
-      }
+    let tombstone = tombstones[0];
+    if (
+      tombstone &&
+      tombstone.store.getUsedCapacity(RESOURCE_ENERGY) > 0 &&
+      (creep.withdraw(tombstone, RESOURCE_ENERGY) !== OK ||
+        creep.pos.getRangeTo(tombstone) !== 1)
+    ) {
+      creep.moveTo(tombstone, {
+        visualizePathStyle: { stroke: "#ffaa00" },
+      });
       return true;
     } else {
       return false;
