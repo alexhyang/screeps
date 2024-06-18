@@ -18,7 +18,8 @@ var logger = {
         Game.time +
         " // " +
         this.getEnergyMeta() +
-        ` (${this.getContainerMeta()})` +
+        ` (${this.getContainerMeta()}) ` +
+        this.getStorageMeta() +
         " | " +
         this.getControllerMeta() +
         " -------------"
@@ -32,17 +33,24 @@ var logger = {
     return energyMeta;
   },
   getContainerMeta: function () {
-    let containers = Game.spawns["Spawn1"].room.find(FIND_STRUCTURES, {
-      filter: (structure) => structure.structureType == STRUCTURE_CONTAINER,
+    return this.getStructureMeta(STRUCTURE_CONTAINER);
+  },
+  getStorageMeta: function () {
+    return this.getStructureMeta(STRUCTURE_STORAGE);
+  },
+  getStructureMeta: function (structureType) {
+    let targets = Game.spawns["Spawn1"].room.find(FIND_STRUCTURES, {
+      filter: (structure) => structure.structureType == structureType,
     });
-    let container = containers[0];
-    let containerMeta = `${container.store.getUsedCapacity(RESOURCE_ENERGY)}`;
-    return containerMeta;
+    let target = targets[0];
+    let targetUsedCapacity = target.store.getUsedCapacity(RESOURCE_ENERGY);
+    let targetMeta = `${this.parseNumber(targetUsedCapacity)}`;
+    return targetMeta;
   },
   getControllerMeta: function () {
     let controller = Game.rooms[ROOM_NUMBER].controller;
-    let current = this.parseProgress(controller.progress);
-    let total = this.parseProgress(controller.progressTotal);
+    let current = this.parseNumber(controller.progress);
+    let total = this.parseNumber(controller.progressTotal);
     let percentage = roundTo(
       Math.round((controller.progress / controller.progressTotal) * 100),
       1
@@ -52,16 +60,16 @@ var logger = {
   },
   /**
    *
-   * @param {number} progress
+   * @param {number} number
    * @returns {string} progress in text form with units "K", "M"
    */
-  parseProgress: function (progress) {
-    if (progress >= 1000000) {
-      return this.convertNumToMillions(progress, 2) + "M";
-    } else if (progress >= 1000) {
-      return this.convertNumToThousands(progress, 2) + "K";
+  parseNumber: function (number) {
+    if (number >= 1000000) {
+      return this.convertNumToMillions(number, 2) + "M";
+    } else if (number >= 1000) {
+      return this.convertNumToThousands(number, 2) + "K";
     } else {
-      return progress;
+      return number;
     }
   },
   convertNumToThousands: function (num, numOfDecimalPlaces) {
