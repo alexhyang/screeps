@@ -51,8 +51,9 @@ let roleRepairer = {
         assignCreepToObtainEnergyFromRuin(creep) ||
         assignCreepToObtainEnergyFromContainer(creep) ||
         assignCreepToObtainEnergyFromStorage(creep) ||
-        assignCreepToObtainEnergyFromContainer(creep) ||
-        assignCreepToObtainEnergyFromSpawn(creep);
+        (withdrawFromContainerOk() &&
+          assignCreepToObtainEnergyFromContainer(creep)) ||
+        (withdrawFromSpawnOk() && assignCreepToObtainEnergyFromSpawn(creep));
     } else {
       assignCreepToObtainEnergyFromSource(creep, REPAIRER_SOURCE_INDEX);
     }
