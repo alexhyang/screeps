@@ -14,16 +14,18 @@ const {
   MINER_TEAM_SIZE,
 } = require("./dashboard");
 
+// change delays to 1 when you need immediate spawn after one dies
 let creepLife = 1500;
-let harvesterSpawnDelay = 50;
-let harvesterSpawnCycle = creepLife + harvesterSpawnDelay;
-let repairerSpawnDelay = 500;
-let repairerSpawnCycle = creepLife + repairerSpawnDelay;
-let newBuilderReadyTime = 10;
-let newMinerReadyTime = 25;
-let newUpgraderReadyTime = 30;
+let harvesterSpawnDelay = 51;
+let repairerSpawnDelay = 501;
 
 var squad = {
+  harvesterSpawnCycle: creepLife + harvesterSpawnDelay,
+  repairerSpawnCycle: creepLife + repairerSpawnDelay,
+  newBuilderReadyTime: 10,
+  newMinerReadyTime: 25,
+  newUpgraderReadyTime: 30,
+
   recruitSquad: function () {
     this.recruitMiners();
     this.recruitHarvesters();
@@ -61,7 +63,7 @@ var squad = {
   recruitHarvesters: function () {
     if (
       // spawn delay = 50 ticks
-      Game.time % harvesterSpawnCycle == 0 &&
+      Game.time % this.harvesterSpawnCycle == 0 &&
       this.getHarvesters().length < HARVESTER_TEAM_SIZE
     ) {
       squadRecruiter.recruitHarvester();
@@ -72,7 +74,7 @@ var squad = {
       Object.keys(Game.constructionSites).length > 0 &&
       (this.getBuilders().length < BUILDER_TEAM_SIZE ||
         (this.getBuilders().length == BUILDER_TEAM_SIZE &&
-          this.getBuilders()[0].ticksToLive < newBuilderReadyTime))
+          this.getBuilders()[0].ticksToLive < this.newBuilderReadyTime))
     ) {
       squadRecruiter.recruitBuilder();
     }
@@ -81,14 +83,14 @@ var squad = {
     if (
       this.getUpgraders().length < UPGRADER_TEAM_SIZE ||
       (this.getUpgraders().length == UPGRADER_TEAM_SIZE &&
-        this.getUpgraders()[0].ticksToLive < newUpgraderReadyTime)
+        this.getUpgraders()[0].ticksToLive < this.newUpgraderReadyTime)
     ) {
       squadRecruiter.recruitUpgrader();
     }
   },
   recruitRepairers: function () {
     if (
-      Game.time % repairerSpawnCycle == 0 &&
+      Game.time % this.repairerSpawnCycle == 0 &&
       this.getRepairers().length < REPAIRER_TEAM_SIZE
     ) {
       squadRecruiter.recruitRepairer();
@@ -98,7 +100,7 @@ var squad = {
     if (
       this.getMiners().length < MINER_TEAM_SIZE ||
       (this.getMiners().length == MINER_TEAM_SIZE &&
-        this.getMiners()[0].ticksToLive < newMinerReadyTime)
+        this.getMiners()[0].ticksToLive < this.newMinerReadyTime)
     ) {
       // it takes M1150 about 50 seconds to spawn and get ready to work
       squadRecruiter.recruitMiner();
