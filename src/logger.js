@@ -20,9 +20,9 @@ var logger = {
         " // " +
         this.getEnergyMeta() +
         " | " +
-        this.getControllerMeta() +
-        " | " +
         this.getDefensesMeta() +
+        " | " +
+        this.getControllerMeta() +
         " ==="
     );
   },
