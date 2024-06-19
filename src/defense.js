@@ -27,7 +27,7 @@ var defense = {
       if (
         repair &&
         closestDamagedStructure &&
-        tower.store.getUsedCapacity(RESOURCE_ENERGY) >= TOWER_REPAIR_MIN_ENERGY
+        tower.store.getUsedCapacity(RESOURCE_ENERGY) > TOWER_REPAIR_MIN_ENERGY
       ) {
         tower.repair(closestDamagedStructure);
       }
