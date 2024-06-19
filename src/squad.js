@@ -69,8 +69,7 @@ var squad = {
   },
   recruitHarvesters: function () {
     if (
-      // spawn delay = 50 ticks
-      Game.time % this.harvesterSpawnCycle == 0 &&
+      HARVESTER_SPAWN_IMMEDIATELY ||
       this.getHarvesters().length < HARVESTER_TEAM_SIZE
     ) {
       squadRecruiter.recruitHarvester();
