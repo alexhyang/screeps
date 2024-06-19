@@ -1,4 +1,7 @@
 var memoryManager = {
+  /**
+   * Clean memory of died creeps
+   */
   cleanNonExistingCreeps: function () {
     for (var name in Memory.creeps) {
       if (!Game.creeps[name]) {
