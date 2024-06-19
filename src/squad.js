@@ -15,7 +15,11 @@ const {
   HARVESTER_SPAWN_DELAY,
   REPAIRER_SPAWN_DELAY,
   CREEP_LIFE,
+  HARVESTER_SPAWN_IMMEDIATELY,
+  SPAWNING_DIRECTIONS,
+  SPAWN_NAME,
 } = require("./dashboard");
+const { getSpawn } = require("./util.structureFinder");
 
 var squad = {
   harvesterSpawnCycle: CREEP_LIFE + HARVESTER_SPAWN_DELAY,
@@ -31,6 +35,10 @@ var squad = {
     this.recruitRepairers();
     this.recruitUpgraders();
     this.recruitBuilders();
+    let spawn = getSpawn(SPAWN_NAME);
+    if (spawn.spawning) {
+      spawn.spawning.setDirections(SPAWNING_DIRECTIONS);
+    }
   },
   assignJobs: function () {
     for (var name in Game.creeps) {

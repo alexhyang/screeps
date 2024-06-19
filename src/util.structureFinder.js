@@ -2,6 +2,9 @@ const { ROOM_NUMBER } = require("./dashboard");
 let room = Game.rooms[ROOM_NUMBER];
 
 var structureFinder = {
+  getSpawn(spawnName) {
+    return Game.spawns[spawnName];
+  },
   getUnhealthyDefenses: function (minHealthyHits) {
     let unhealthyDefenses = room.find(FIND_STRUCTURES, {
       filter: (s) =>
