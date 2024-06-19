@@ -1,10 +1,11 @@
 var squadLogger = require("./logger.squad");
-const { ROOM_NUMBER } = require("./dashboard");
+const { ROOM_NUMBER, TOWER_REPAIR_MIN_HITS } = require("./dashboard");
+const { roundTo } = require("./logger.utils");
 const {
-  convertNumToMillions,
-  convertNumToThousands,
-  roundTo,
-} = require("./logger.utils");
+  getHealthyDefenses,
+  getUnhealthyDefenses,
+  getTowers,
+} = require("./util.structureFinder");
 
 var logger = {
   log: function () {
@@ -14,22 +15,26 @@ var logger = {
   },
   printLogTitle: function () {
     console.log(
-      "--------------  " +
-        Game.time +
+      "=== " +
+        `${Game.time % 1000000}` +
         " // " +
         this.getEnergyMeta() +
-        ` (${this.getContainerMeta()}) ` +
-        this.getStorageMeta() +
         " | " +
         this.getControllerMeta() +
-        " -------------"
+        " | " +
+        this.getDefensesMeta() +
+        " ==="
     );
   },
   getEnergyMeta: function () {
+    let containerMeta = this.getContainerMeta();
+    let storageMeta = this.getStorageMeta();
     let energyAvailable = Game.rooms[ROOM_NUMBER].energyAvailable;
     let energyCapacityAvailable =
       Game.rooms[ROOM_NUMBER].energyCapacityAvailable;
-    let energyMeta = `Energy: ${energyAvailable}/${energyCapacityAvailable}`;
+    let energyMeta =
+      `Energy (${containerMeta}, ${storageMeta}): ` +
+      `${energyAvailable}/${energyCapacityAvailable}`;
     return energyMeta;
   },
   getContainerMeta: function () {
@@ -37,6 +42,27 @@ var logger = {
   },
   getStorageMeta: function () {
     return this.getStructureMeta(STRUCTURE_STORAGE);
+  },
+  getDefensesMeta: function () {
+    let numHealthyWallsRamparts = getHealthyDefenses(
+      TOWER_REPAIR_MIN_HITS
+    ).length;
+    let numUnhealthyWallsRamparts = getUnhealthyDefenses(
+      TOWER_REPAIR_MIN_HITS
+    ).length;
+    let towerRepairProgress =
+      numHealthyWallsRamparts +
+      "/" +
+      `${numHealthyWallsRamparts + numUnhealthyWallsRamparts}`;
+    let towerAvailableEnergy = _.map(getTowers(), (t) =>
+      t.store.getUsedCapacity(RESOURCE_ENERGY)
+    );
+
+    let defenseMeta =
+      `Towers (${towerAvailableEnergy}) ` +
+      `WallsRamparts (${this.parseNumber(TOWER_REPAIR_MIN_HITS)}): ` +
+      towerRepairProgress;
+    return defenseMeta;
   },
   getStructureMeta: function (structureType) {
     let targets = Game.spawns["Spawn1"].room.find(FIND_STRUCTURES, {
@@ -55,7 +81,9 @@ var logger = {
       Math.round((controller.progress / controller.progressTotal) * 100),
       1
     );
-    let controllerMeta = `Controller (lvl. ${controller.level}, ${percentage}%: ${current}/${total})`;
+    let controllerMeta =
+      `Controller (${controller.level}): ` +
+      `${percentage}%: ${current}/${total}`;
     return controllerMeta;
   },
   /**
