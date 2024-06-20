@@ -15,7 +15,6 @@ var squadLogger = {
     this.printTeamStatus("upgrader");
     this.printTeamStatus("repairer");
     this.printTeamStatus("miner");
-    this.printTeamStatus("picker");
   },
   /**
    * @param {string} creepRole
@@ -27,16 +26,12 @@ var squadLogger = {
   },
   printTeamStatusTitle: function (creepRole, teamSize) {
     let paddedTeamName = this.padStr(creepRole + "s", 11);
-    let spawnCounter =
-      creepRole == "harvester"
-        ? ` (Next in: ${
-            squad.harvesterSpawnCycle - (Game.time % squad.harvesterSpawnCycle)
-          })`
-        : creepRole == "repairer"
-        ? ` (Next in: ${
-            squad.repairerSpawnCycle - (Game.time % squad.repairerSpawnCycle)
-          })`
-        : "";
+    let spawnCounter = "";
+    if (creepRole == "repairer") {
+      spawnCounter = ` (Next in: ${
+        squad.repairerSpawnCycle - (Game.time % squad.repairerSpawnCycle)
+      })`;
+    }
     let msg =
       capitalize(paddedTeamName) +
       ` (life, carry, fatigue): ` +
