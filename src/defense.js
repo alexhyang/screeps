@@ -33,7 +33,7 @@ var defense = {
       }
 
       var closestHostile = tower.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
-      if (closestHostile) {
+      if (closestHostile && tower.pos.getRangeTo(closestHostile) <= 20) {
         tower.attack(closestHostile);
       }
     }
