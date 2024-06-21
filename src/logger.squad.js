@@ -5,8 +5,9 @@ const {
   REPAIRER_TEAM_SIZE,
   MINER_TEAM_SIZE,
 } = require("./dashboard");
-var squad = require("./squad");
+const squadRecruiter = require("./squad.recruiter");
 const { capitalize } = require("./logger.utils");
+const { getTeam } = require("./util.creepFinder");
 
 var squadLogger = {
   log: function () {
@@ -20,7 +21,7 @@ var squadLogger = {
    * @param {string} creepRole
    */
   printTeamStatus: function (creepRole) {
-    let teamMembers = squad.getTeam(creepRole);
+    let teamMembers = getTeam(creepRole);
     this.printTeamStatusTitle(creepRole, teamMembers.length);
     this.printTeamMembers(teamMembers);
   },
@@ -29,7 +30,8 @@ var squadLogger = {
     let spawnCounter = "";
     if (creepRole == "repairer") {
       spawnCounter = ` (Next in: ${
-        squad.repairerSpawnCycle - (Game.time % squad.repairerSpawnCycle)
+        squadRecruiter.repairerSpawnCycle -
+        (Game.time % squadRecruiter.repairerSpawnCycle)
       })`;
     }
     let msg =
