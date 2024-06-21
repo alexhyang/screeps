@@ -18,9 +18,6 @@ function recruitCreep(creepModel, creepRole) {
     console.log(`TEST: Spawning new ${creepRole}: ` + newCreepName);
   } else {
     console.log(`Spawning new ${creepRole}: ` + newCreepName);
-    console.log(getBodyParts(creepModel));
-    console.log(getBodyParts(creepModel).length);
-    console.log(typeof getBodyParts(creepModel));
     getSpawn("Spawn1").spawnCreep(getBodyParts(creepModel), newCreepName, {
       memory: { role: creepRole },
     });
