@@ -6,12 +6,8 @@ const {
   roleMiner,
   rolePicker,
 } = require("./role");
-var squadRecruiter = require("./squad.recruiter");
 
 var squad = {
-  recruitSquad: function () {
-    squadRecruiter.run();
-  },
   assignJobs: function () {
     for (var name in Game.creeps) {
       var creep = Game.creeps[name];
