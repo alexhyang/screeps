@@ -7,7 +7,7 @@ const {
 } = require("./dashboard");
 const squadRecruiter = require("./squad.recruiter");
 const { capitalize } = require("./logger.utils");
-const { getTeam } = require("./util.creepFinder");
+const { getTeam } = require("./squad");
 
 var squadLogger = {
   log: function () {

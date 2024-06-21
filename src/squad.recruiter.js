@@ -1,5 +1,5 @@
 const dashboard = require("./dashboard");
-const { getTeam } = require("./util.creepFinder");
+const { getTeam } = require("./squad");
 const { getBodyParts } = require("./util.modelManager");
 const { getSpawn } = require("./util.structureFinder");
 
