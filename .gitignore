@@ -3,3 +3,4 @@ tutorial-*/
 node_modules/
 build/
 dist/
+*.xlsx
