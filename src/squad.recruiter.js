@@ -13,7 +13,7 @@ let newUpgraderReadyTime = 57;
  * @param {string} creepRole
  */
 function recruitCreep(creepModel, creepRole) {
-  var newCreepName = creepModel.name + "-" + (Game.time % 1000);
+  var newCreepName = creepModel.name + "-" + (Game.time % 100);
   if (dashboard.DEBUG_SPAWN) {
     console.log(`TEST: Spawning new ${creepRole}: ` + newCreepName);
   } else {
@@ -35,7 +35,8 @@ function recruitBuilders() {
   if (
     Object.keys(Game.constructionSites).length > 0 &&
     (builders.length < dashboard.BUILDER_TEAM_SIZE ||
-      (builders.length == dashboard.BUILDER_TEAM_SIZE &&
+      (builders.length != 0 &&
+        builders.length == dashboard.BUILDER_TEAM_SIZE &&
         builders[0].ticksToLive < newBuilderReadyTime))
   ) {
     recruitCreep(dashboard.BUILDER_CURRENT_MODEL, "builder");
@@ -46,7 +47,8 @@ function recruitUpgraders() {
   let upgraders = getTeam("upgrader");
   if (
     upgraders.length < dashboard.UPGRADER_TEAM_SIZE ||
-    (upgraders.length == dashboard.UPGRADER_TEAM_SIZE &&
+    (upgraders.length !== 0 &&
+      upgraders.length == dashboard.UPGRADER_TEAM_SIZE &&
       upgraders[0].ticksToLive < newUpgraderReadyTime)
   ) {
     recruitCreep(dashboard.UPGRADER_CURRENT_MODEL, "upgrader");
@@ -81,7 +83,7 @@ var squadRecruiter = {
     recruitRepairers();
     recruitBuilders();
     let spawn = getSpawn(dashboard.SPAWN_NAME);
-    if (spawn.spawning) {
+    if (spawn && spawn.spawning) {
       spawn.spawning.setDirections(dashboard.SPAWNING_DIRECTIONS);
     }
   },
