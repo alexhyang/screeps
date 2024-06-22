@@ -1,12 +1,14 @@
 const { ROOM_NUMBER } = require("./dashboard");
-let room = Game.rooms[ROOM_NUMBER];
 
-function getStructure(structureType, filter = true) {
-  let targets = room.find(FIND_STRUCTURES, {
-    filter: (s) => s.structureType == structureType && filter,
+/**
+ * The shorthand for room.find(FIND_STRUCTURES, filter)
+ * @param {string} structureType an array of structure types
+ * @returns structure(s) of the given type
+ */
+function getStructures(structureType, roomName = ROOM_NUMBER) {
+  return Game.rooms[roomName].find(FIND_STRUCTURES, {
+    filter: { structureType: structureType },
   });
-  console.log(targets);
-  return targets;
 }
 
 /**
@@ -14,16 +16,20 @@ function getStructure(structureType, filter = true) {
  * @param {string} spawnName name of the spawn
  * @returns {StructureSpawn} spawn with the given name
  */
-const getSpawn = (spawnName) => {
+const getSpawn = (spawnName = "Spawn1") => {
   return Game.spawns[spawnName];
 };
 
-const getController = () => {
-  return room.controller;
+const getController = (roomName = ROOM_NUMBER) => {
+  return Game.rooms[roomName].controller;
 };
 
-const getStorage = () => {
-  return room.storage;
+const getContainers = () => {
+  return getStructure(STRUCTURE_CONTAINER);
+};
+
+const getStorage = (roomName = ROOM_NUMBER) => {
+  return Game.rooms[roomName].storage;
 };
 
 /**
@@ -31,8 +37,8 @@ const getStorage = () => {
  * @param {number} minHealthyHits minimum hits of healthy defenses
  * @returns {Object.<string, Structure>} unhealthy walls and ramparts
  */
-const getUnhealthyDefenses = (minHealthyHits) => {
-  let unhealthyDefenses = room.find(FIND_STRUCTURES, {
+const getUnhealthyDefenses = (minHealthyHits, roomName = ROOM_NUMBER) => {
+  let unhealthyDefenses = Game.rooms[roomName].find(FIND_STRUCTURES, {
     filter: (s) =>
       (s.structureType == STRUCTURE_WALL ||
         s.structureType == STRUCTURE_RAMPART) &&
@@ -46,8 +52,8 @@ const getUnhealthyDefenses = (minHealthyHits) => {
  * @param {number} minHealthyHits minimum hits of healthy defenses
  * @returns {Object.<string, Structure>} unhealthy walls and ramparts
  */
-const getHealthyDefenses = (minHealthyHits) => {
-  let healthyDefenses = room.find(FIND_STRUCTURES, {
+const getHealthyDefenses = (minHealthyHits, roomName = ROOM_NUMBER) => {
+  let healthyDefenses = Game.rooms[roomName].find(FIND_STRUCTURES, {
     filter: (s) =>
       (s.structureType == STRUCTURE_WALL ||
         s.structureType == STRUCTURE_RAMPART) &&
@@ -57,10 +63,11 @@ const getHealthyDefenses = (minHealthyHits) => {
 };
 
 module.exports = {
-  getStructure,
+  getStructures,
   getSpawn,
   getController,
   getStorage,
+  getContainers,
   getUnhealthyDefenses,
   getHealthyDefenses,
 };

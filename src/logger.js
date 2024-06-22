@@ -4,9 +4,13 @@ const { roundTo, parseNumber } = require("./logger.utils");
 const {
   getHealthyDefenses,
   getUnhealthyDefenses,
-  getStructure,
+  getStructures,
   getController,
 } = require("./util.structureFinder");
+const {
+  getEnergyAvailable,
+  getEnergyCapacityAvailable,
+} = require("./squad.resourceManager");
 
 const printLogTitle = () => {
   console.log(
@@ -25,8 +29,8 @@ const printLogTitle = () => {
 const getEnergyMeta = () => {
   let containerMeta = getContainerMeta();
   let storageMeta = getStorageMeta();
-  let energyAvailable = Game.rooms[ROOM_NUMBER].energyAvailable;
-  let energyCapacityAvailable = Game.rooms[ROOM_NUMBER].energyCapacityAvailable;
+  let energyAvailable = getEnergyAvailable();
+  let energyCapacityAvailable = getEnergyCapacityAvailable();
   let energyMeta =
     `Energy (${containerMeta}, ${storageMeta}): ` +
     `${energyAvailable}/${energyCapacityAvailable}`;
@@ -44,7 +48,7 @@ const getDefensesMeta = () => {
     numHealthyWallsRamparts +
     "/" +
     `${numHealthyWallsRamparts + numUnhealthyWallsRamparts}`;
-  let towerAvailableEnergy = _.map(getStructure(STRUCTURE_TOWER), (t) =>
+  let towerAvailableEnergy = _.map(getStructures(STRUCTURE_TOWER), (t) =>
     t.store.getUsedCapacity(RESOURCE_ENERGY)
   );
 
@@ -77,10 +81,13 @@ const getStorageMeta = () => {
 };
 
 const getStructureMeta = (structureType) => {
-  let target = getStructure(structureType)[0];
-  let targetUsedCapacity = target.store.getUsedCapacity(RESOURCE_ENERGY);
-  let targetMeta = `${parseNumber(targetUsedCapacity)}`;
-  return targetMeta;
+  let target = getStructures(structureType)[0];
+  if (target) {
+    let targetUsedCapacity = target.store.getUsedCapacity(RESOURCE_ENERGY);
+    let targetMeta = `${parseNumber(targetUsedCapacity)}`;
+    return targetMeta;
+  }
+  return;
 };
 
 module.exports = {

@@ -3,169 +3,160 @@ const {
   SPAWN_WITHDRAW_THRESHOLD,
   CONTAINER_WITHDRAW_THRESHOLD,
 } = require("./dashboard");
+const { getContainer, getSpawn } = require("./util.structureFinder");
 
-let resources = {
-  /** @returns {boolean} */
-  withdrawFromSpawnOk: function () {
-    let energyAvailable = Game.rooms[ROOM_NUMBER].energyAvailable;
-    return energyAvailable >= SPAWN_WITHDRAW_THRESHOLD;
-  },
-  /** @returns {boolean} */
-  withdrawFromContainerOk: function () {
-    let containers = Game.spawns["Spawn1"].room.find(FIND_STRUCTURES, {
-      filter: (structure) => structure.structureType == STRUCTURE_CONTAINER,
-    });
-    let container = containers[0];
+/**
+ * @param {number} roomName
+ * @returns the available energy of room with the given name
+ */
+const getEnergyAvailable = (roomName = ROOM_NUMBER) => {
+  return Game.rooms[roomName].energyAvailable;
+};
+
+/**
+ * @param {number} roomName
+ * @returns the available energy capacity of room with the given name
+ */
+const getEnergyCapacityAvailable = (roomNumber = ROOM_NUMBER) => {
+  return Game.rooms[roomNumber].energyCapacityAvailable;
+};
+
+/**
+ * @returns {boolean} true if it is okay to withdraw from spawn(s)
+ **/
+const withdrawFromSpawnOk = () => {
+  let energyAvailable = getEnergyAvailable();
+  return energyAvailable >= SPAWN_WITHDRAW_THRESHOLD;
+};
+
+/**
+ * @returns {boolean} true if it is okay to withdraw from container(s)
+ **/
+const withdrawFromContainerOk = () => {
+  let container = getContainer()[0];
+  if (container) {
     return (
       container.store.getUsedCapacity(RESOURCE_ENERGY) >=
       CONTAINER_WITHDRAW_THRESHOLD
     );
-  },
-  /**
-   * @param {Creep} creep
-   * @returns {boolean} whether the assignment is successful
-   */
-  assignCreepToObtainEnergyFromSpawn: function (creep) {
-    var spawn = creep.room.find(FIND_MY_SPAWNS)[0];
-    if (
-      creep.withdraw(spawn, RESOURCE_ENERGY) !== OK ||
-      creep.pos.getRangeTo(spawn) !== 1
-    ) {
-      creep.moveTo(spawn, {
-        visualizePathStyle: { stroke: "#ffaa00" },
-      });
-      return true;
-    } else {
-      return false;
-    }
-  },
-  assignCreepToObtainEnergyFromRuin: function (creep) {
-    var ruins = creep.room.find(FIND_RUINS, {
-      filter: (r) => r.store.getUsedCapacity(RESOURCE_ENERGY) > 0,
-    });
-    let ruin = ruins[0];
-    if (
-      ruin &&
-      (creep.withdraw(ruin, RESOURCE_ENERGY) !== OK ||
-        creep.pos.getRangeTo(ruin) !== 1)
-    ) {
-      creep.moveTo(ruin, {
-        visualizePathStyle: { stroke: "#ffaa00" },
-      });
-      return true;
-    } else {
-      return false;
-    }
-  },
-  assignCreepToObtainEnergyFromTombstone: function (creep) {
-    var tombstones = creep.room.find(FIND_TOMBSTONES, {
-      filter: (t) => t.store.getUsedCapacity(RESOURCE_ENERGY) > 0,
-    });
-    let tombstone = tombstones[0];
-    if (
-      tombstone &&
-      tombstone.store.getUsedCapacity(RESOURCE_ENERGY) > 0 &&
-      (creep.withdraw(tombstone, RESOURCE_ENERGY) !== OK ||
-        creep.pos.getRangeTo(tombstone) !== 1)
-    ) {
-      creep.moveTo(tombstone, {
-        visualizePathStyle: { stroke: "#ffaa00" },
-      });
-      return true;
-    } else {
-      return false;
-    }
-  },
-  withdrawEnergyFromStructure: function (creep, findCode) {
-    var ruin = creep.room.find(FIND_RUINS)[0];
-    if (
-      creep.withdraw(ruin, RESOURCE_ENERGY) !== OK ||
-      creep.pos.getRangeTo(ruin) !== 1
-    ) {
-      creep.moveTo(ruin, {
-        visualizePathStyle: { stroke: "#ffaa00" },
-      });
-      return true;
-    } else {
-      return false;
-    }
-  },
-  /** @param {Creep} creep **/
-  /** @param {number} sourceIndex the index of source **/
-  assignCreepToObtainEnergyFromSource: function (creep, sourceIndex) {
-    var sources = creep.room.find(FIND_SOURCES);
-    if (creep.harvest(sources[sourceIndex]) == ERR_NOT_IN_RANGE) {
-      creep.moveTo(sources[sourceIndex], {
-        visualizePathStyle: { stroke: "#ffaa00" },
-      });
-    }
-  },
-  /**
-   * @param {Creep} creep
-   * @param {number} sourceIndex the index of source
-   * @returns {boolean} whether the assignment is successful
-   */
-  assignCreepToObtainEnergyFromContainer: function (creep) {
-    var containers = creep.room.find(FIND_STRUCTURES, {
-      filter: (structure) =>
-        structure.structureType == STRUCTURE_CONTAINER &&
-        structure.store.getUsedCapacity(RESOURCE_ENERGY) > 0,
-    });
-    _.sortBy(containers, (c) => c.store.getFreeCapacity());
-    if (containers.length > 0) {
-      let container = containers[containers.length - 1];
-      if (
-        creep.withdraw(container, RESOURCE_ENERGY) !== OK ||
-        creep.pos.getRangeTo(container) !== 1
-      ) {
-        creep.moveTo(container, {
-          visualizePathStyle: { stroke: "#ffaa00" },
-        });
-      }
-      return true;
-    } else {
-      return false;
-    }
-  },
-  /**
-   * @param {Creep} creep
-   * @param {number} sourceIndex the index of source
-   * @returns {boolean} whether the assignment is successful
-   */
-  assignCreepToObtainEnergyFromStorage: function (creep) {
-    var storages = creep.room.find(FIND_STRUCTURES, {
-      filter: (structure) =>
-        structure.structureType == STRUCTURE_STORAGE &&
-        structure.store.getUsedCapacity(RESOURCE_ENERGY) > 0,
-    });
-    if (storages.length > 0) {
-      let storage = storages[0];
-      if (
-        creep.withdraw(storage, RESOURCE_ENERGY) !== OK ||
-        creep.pos.getRangeTo(storage) !== 1
-      ) {
-        creep.moveTo(storage, {
-          visualizePathStyle: { stroke: "#ffaa00" },
-        });
-      }
-      return true;
-    } else {
-      return false;
-    }
-  },
-  pickupDroppedResources(creep) {
-    const target = creep.pos.findClosestByRange(FIND_DROPPED_RESOURCES);
-    if (target) {
-      if (creep.pickup(target) == ERR_NOT_IN_RANGE) {
-        creep.moveTo(target, {
-          visualizePathStyle: { stroke: "#ffffff" },
-        });
-      }
-      return true;
-    } else {
-      return false;
-    }
-  },
+  }
+  return false;
 };
 
-module.exports = resources;
+const harvestFromClosestDead = (creep, findCode) => {
+  var target = creep.pos.findClosestByRange(findCode, {
+    filter: (t) => t.store.getUsedCapacity(RESOURCE_ENERGY) > 0,
+  });
+  if (
+    (target && creep.withdraw(target, RESOURCE_ENERGY) !== OK) ||
+    creep.pos.getRangeTo(target) !== 1
+  ) {
+    creep.moveTo(target, {
+      visualizePathStyle: { stroke: "#ffaa00" },
+    });
+    return true;
+  }
+  return false;
+};
+
+const assignCreepToObtainEnergyFromRuin = (creep) => {
+  return harvestFromClosestDead(creep, FIND_RUINS);
+};
+
+const assignCreepToObtainEnergyFromTombstone = (creep) => {
+  return harvestFromClosestDead(creep, FIND_TOMBSTONES);
+};
+
+/**
+ * @param {Creep} creep
+ * @returns {boolean} whether the assignment is successful
+ */
+const assignCreepToObtainEnergyFromSpawn = (creep) => {
+  var spawn = getSpawn();
+  if (
+    creep.withdraw(spawn, RESOURCE_ENERGY) !== OK ||
+    creep.pos.getRangeTo(spawn) !== 1
+  ) {
+    creep.moveTo(spawn, {
+      visualizePathStyle: { stroke: "#ffaa00" },
+    });
+    return true;
+  }
+  return false;
+};
+
+/** @param {Creep} creep **/
+/** @param {number} sourceIndex the index of source **/
+const assignCreepToObtainEnergyFromSource = (creep, sourceIndex) => {
+  var sources = creep.room.find(FIND_SOURCES);
+  if (creep.harvest(sources[sourceIndex]) == ERR_NOT_IN_RANGE) {
+    creep.moveTo(sources[sourceIndex], {
+      visualizePathStyle: { stroke: "#ffaa00" },
+    });
+  }
+};
+
+/**
+ * @param {Creep} creep
+ * @param {number} sourceIndex the index of source
+ * @returns {boolean} whether the assignment is successful
+ */
+const assignCreepToObtainEnergyFromContainer = (creep) => {
+  var containers = creep.room.find(FIND_STRUCTURES, {
+    filter: (structure) =>
+      structure.structureType == STRUCTURE_CONTAINER &&
+      structure.store.getUsedCapacity(RESOURCE_ENERGY) > 0,
+  });
+  _.sortBy(containers, (c) => c.store.getFreeCapacity());
+  if (containers.length > 0) {
+    let container = containers[containers.length - 1];
+    if (
+      creep.withdraw(container, RESOURCE_ENERGY) !== OK ||
+      creep.pos.getRangeTo(container) !== 1
+    ) {
+      creep.moveTo(container, {
+        visualizePathStyle: { stroke: "#ffaa00" },
+      });
+    }
+    return true;
+  } else {
+    return false;
+  }
+};
+
+/**
+ * @param {Creep} creep
+ * @param {number} sourceIndex the index of source
+ * @returns {boolean} whether the assignment is successful
+ */
+const assignCreepToObtainEnergyFromStorage = (creep) => {
+  return harvestFromClosestDead();
+};
+
+const pickupDroppedResources = (creep) => {
+  const target = creep.pos.findClosestByRange(FIND_DROPPED_RESOURCES);
+  if (target) {
+    if (creep.pickup(target) == ERR_NOT_IN_RANGE) {
+      creep.moveTo(target, {
+        visualizePathStyle: { stroke: "#ffffff" },
+      });
+    }
+    return true;
+  } else {
+    return false;
+  }
+};
+
+module.exports = {
+  getEnergyAvailable,
+  getEnergyCapacityAvailable,
+  pickupDroppedResources,
+  assignCreepToObtainEnergyFromTombstone,
+  assignCreepToObtainEnergyFromRuin,
+  assignCreepToObtainEnergyFromContainer,
+  assignCreepToObtainEnergyFromStorage,
+  assignCreepToObtainEnergyFromSpawn,
+  assignCreepToObtainEnergyFromSource,
+  withdrawFromContainerOk,
+  withdrawFromSpawnOk,
+};
