@@ -39,7 +39,8 @@ var squadLogger = {
       let bodyParts = this.getCreepBodyParts(teamMember);
       let paddedCreepName = this.padStr(teamMember.name, 12);
       let paddedCreepMeta = this.padStr(creepMeta, 21);
-      let printMsg = `  ${paddedCreepName}${paddedCreepMeta} ${bodyParts}`;
+      let pos = teamMember.pos;
+      let printMsg = `  ${paddedCreepName}${paddedCreepMeta} ${bodyParts} ${pos}`;
       console.log(printMsg);
     }
   },
