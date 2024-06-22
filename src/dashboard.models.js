@@ -16,21 +16,33 @@ let MODELS = {
     name: "W4",
     body: { work: 4, carry: 1, move: 1 },
   },
+  WORKER_4B: {
+    name: "W4B",
+    body: { work: 4, carry: 1, move: 2 },
+  },
+  WORKER_4C: {
+    name: "W4C",
+    body: { work: 4, carry: 1, move: 3 },
+  },
   WORKER_5: {
     name: "W5",
     body: { work: 5, carry: 1, move: 1 },
   },
-  WORKER_5M2: {
-    name: "W5",
+  WORKER_5B: {
+    name: "W5B",
     body: { work: 5, carry: 1, move: 2 },
   },
-  WORKER_5M3: {
-    name: "W5A",
+  WORKER_5C: {
+    name: "W5C",
     body: { work: 5, carry: 1, move: 3 },
   },
-  WORKER_6: {
-    name: "W6",
-    body: { work: 6, carry: 1, move: 1 },
+  WORKER_6B: {
+    name: "W6B",
+    body: { work: 6, carry: 1, move: 2 },
+  },
+  WORKER_6C: {
+    name: "W6C",
+    body: { work: 6, carry: 1, move: 3 },
   },
   // ======== CARRIERS ========
   CARRIER_1: {
