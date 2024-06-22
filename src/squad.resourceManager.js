@@ -43,6 +43,16 @@ const withdrawFromContainerOk = () => {
   return false;
 };
 
+const transferEnergyToTarget = (creep, target) => {
+  if (target) {
+    if (creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+      creep.moveTo(target, {
+        visualizePathStyle: { stroke: "#ffffff" },
+      });
+    }
+  }
+};
+
 const harvestFromClosestDead = (creep, findCode) => {
   var target = creep.pos.findClosestByRange(findCode, {
     filter: (t) => t.store.getUsedCapacity(RESOURCE_ENERGY) > 0,
@@ -159,4 +169,5 @@ module.exports = {
   assignCreepToObtainEnergyFromSource,
   withdrawFromContainerOk,
   withdrawFromSpawnOk,
+  transferEnergyToTarget,
 };
