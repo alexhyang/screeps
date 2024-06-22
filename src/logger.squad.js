@@ -5,7 +5,6 @@ const {
   REPAIRER_TEAM_SIZE,
   MINER_TEAM_SIZE,
 } = require("./dashboard");
-const squadRecruiter = require("./squad.recruiter");
 const { capitalize } = require("./logger.utils");
 const { getTeam } = require("./squad");
 
@@ -27,18 +26,10 @@ var squadLogger = {
   },
   printTeamStatusTitle: function (creepRole, teamSize) {
     let paddedTeamName = this.padStr(creepRole + "s", 11);
-    let spawnCounter = "";
-    if (creepRole == "repairer") {
-      spawnCounter = ` (Next in: ${
-        squadRecruiter.repairerSpawnCycle -
-        (Game.time % squadRecruiter.repairerSpawnCycle)
-      })`;
-    }
     let msg =
       capitalize(paddedTeamName) +
       ` (life, carry, fatigue): ` +
-      `${teamSize}/${this.getTeamMaxSize(creepRole)}` +
-      spawnCounter;
+      `${teamSize}/${this.getTeamMaxSize(creepRole)}`;
     console.log(msg);
   },
   printTeamMembers: function (teamMembers) {

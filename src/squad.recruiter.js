@@ -54,10 +54,7 @@ function recruitUpgraders() {
 }
 
 function recruitRepairers() {
-  if (
-    Game.time % squadRecruiter.repairerSpawnCycle == 0 &&
-    getTeam("repairer").length < dashboard.REPAIRER_TEAM_SIZE
-  ) {
+  if (getTeam("repairer").length < dashboard.REPAIRER_TEAM_SIZE) {
     recruitCreep(dashboard.REPAIRER_CURRENT_MODEL, "repairer");
   }
 }
