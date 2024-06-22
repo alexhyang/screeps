@@ -3,7 +3,7 @@ const {
   SPAWN_WITHDRAW_THRESHOLD,
   CONTAINER_WITHDRAW_THRESHOLD,
 } = require("./dashboard");
-const { getContainer, getSpawn } = require("./util.structureFinder");
+const { getContainers, getSpawn } = require("./util.structureFinder");
 
 /**
  * @param {number} roomName
@@ -33,7 +33,7 @@ const withdrawFromSpawnOk = () => {
  * @returns {boolean} true if it is okay to withdraw from container(s)
  **/
 const withdrawFromContainerOk = () => {
-  let container = getContainer()[0];
+  let container = getContainers()[0];
   if (container) {
     return (
       container.store.getUsedCapacity(RESOURCE_ENERGY) >=
@@ -58,8 +58,9 @@ const harvestFromClosestDead = (creep, findCode) => {
     filter: (t) => t.store.getUsedCapacity(RESOURCE_ENERGY) > 0,
   });
   if (
-    (target && creep.withdraw(target, RESOURCE_ENERGY) !== OK) ||
-    creep.pos.getRangeTo(target) !== 1
+    target !== null &&
+    (creep.withdraw(target, RESOURCE_ENERGY) !== OK ||
+      creep.pos.getRangeTo(target) !== 1)
   ) {
     creep.moveTo(target, {
       visualizePathStyle: { stroke: "#ffaa00" },
@@ -140,7 +141,7 @@ const assignCreepToObtainEnergyFromContainer = (creep) => {
  * @returns {boolean} whether the assignment is successful
  */
 const assignCreepToObtainEnergyFromStorage = (creep) => {
-  return harvestFromClosestDead();
+  return harvestFromClosestDead(creep);
 };
 
 const pickupDroppedResources = (creep) => {
