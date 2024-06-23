@@ -12,10 +12,16 @@ function getStructures(structureType, room = defaultRoom) {
   });
 }
 
+/**
+ * Find if a given structure has free capacity
+ * @param {Structure} structure structure in room
+ * @returns true if structure has free capacity, false otherwise
+ */
 function structureHasFreeCapacity(structure) {
   if (structure) {
     return structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
   }
+  return false;
 }
 
 /**
@@ -27,26 +33,32 @@ const getSpawnByName = (spawnName = "Spawn1") => {
   return Game.spawns[spawnName];
 };
 
+/** Find all spawns in the given room */
 const getSpawns = (room = defaultRoom) => {
   return getStructures(STRUCTURE_SPAWN, room);
 };
 
+/** Find the controller in the given room */
 const getController = (room = defaultRoom) => {
   return room.controller;
 };
 
+/** Find all containers in the given room */
 const getContainers = (room = defaultRoom) => {
   return getStructures(STRUCTURE_CONTAINER, room);
 };
 
+/** Find the storage in the given room */
 const getStorage = (room = defaultRoom) => {
   return room.storage;
 };
 
+/** Find all towers in the given room */
 const getTowers = (room = defaultRoom) => {
   return getStructures(STRUCTURE_TOWER, room);
 };
 
+/** Find all extensions in the given room */
 const getExtensions = (room = defaultRoom) => {
   return getStructures(STRUCTURE_EXTENSION, room);
 };
