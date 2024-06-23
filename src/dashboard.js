@@ -1,4 +1,4 @@
-const MODELS = require("./dashboard.models");
+const MODELS = require("./squad.creepModels");
 
 let roomConfig = {
   CREEP_LIFE: 1500,

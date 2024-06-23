@@ -1,6 +1,6 @@
 const roomConfig = require("./dashboard");
 const { getTeam } = require("./squad");
-const { getBodyParts } = require("./util.modelManager");
+const { getBodyParts } = require("./squad.creepModelAnalyzer");
 const { getSpawnByName } = require("./util.structureFinder");
 
 // TODO: better define creepModel in JSDocs
