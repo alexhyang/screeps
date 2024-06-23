@@ -1,7 +1,7 @@
-const roomW36N43 = require("./dashboard");
+const roomConfig = require("./dashboard");
 const { getTeam } = require("./squad");
 const { getBodyParts } = require("./util.modelManager");
-const { getSpawn } = require("./util.structureFinder");
+const { getSpawnByName } = require("./util.structureFinder");
 
 // TODO: better define creepModel in JSDocs
 /**
@@ -10,15 +10,20 @@ const { getSpawn } = require("./util.structureFinder");
  *   model with name and body parts
  * @param {string} creepRole the role to assign to the creep
  */
-function recruitCreep(creepModel, creepRole, spawn = "Spawn1") {
+function recruitCreep(creepModel, creepRole, roomName) {
+  let spawnName = roomConfig[roomName].SPAWN_NAME;
   var newCreepName = creepModel.name + "-" + (Game.time % 100);
-  if (roomW36N43.DEBUG_SPAWN) {
+  if (roomConfig[roomName].DEBUG_SPAWN) {
     console.log(`TEST: Spawning new ${creepRole}: ` + newCreepName);
   } else {
     console.log(`Spawning new ${creepRole}: ` + newCreepName);
-    getSpawn(spawn).spawnCreep(getBodyParts(creepModel), newCreepName, {
-      memory: { role: creepRole },
-    });
+    getSpawnByName(spawnName).spawnCreep(
+      getBodyParts(creepModel),
+      newCreepName,
+      {
+        memory: { role: creepRole },
+      }
+    );
   }
 }
 
@@ -39,76 +44,80 @@ function recruitInAdvanceOk(currentTeam, maxTeamSize, newCreepReadyTime) {
 }
 
 /** Recruit harvesters */
-function recruitHarvesters() {
-  if (getTeam("harvester").length < roomW36N43.HARVESTER_TEAM_SIZE) {
-    recruitCreep(roomW36N43.HARVESTER_CURRENT_MODEL, "harvester");
+function recruitHarvesters(roomName) {
+  if (
+    getTeam("harvester", roomName).length <
+    roomConfig[roomName].HARVESTER_TEAM_SIZE
+  ) {
+    recruitCreep(roomConfig[roomName].HARVESTER_CURRENT_MODEL, "harvester");
   }
 }
 
 /** Recruit builders */
-function recruitBuilders() {
+function recruitBuilders(roomName) {
   if (
     Object.keys(Game.constructionSites).length > 0 &&
     recruitInAdvanceOk(
-      getTeam("builder"),
-      roomW36N43.BUILDER_TEAM_SIZE,
-      roomW36N43.NEW_BUILDER_READY_TIME
+      getTeam("builder", roomName),
+      roomConfig[roomName].BUILDER_TEAM_SIZE,
+      roomConfig[roomName].NEW_BUILDER_READY_TIME
     )
   ) {
-    recruitCreep(roomW36N43.BUILDER_CURRENT_MODEL, "builder");
+    recruitCreep(roomConfig[roomName].BUILDER_CURRENT_MODEL, "builder");
   }
 }
 
 /** Recruit upgraders */
-function recruitUpgraders() {
+function recruitUpgraders(roomName) {
   if (
     recruitInAdvanceOk(
-      getTeam("upgrader"),
-      roomW36N43.UPGRADER_TEAM_SIZE,
-      roomW36N43.NEW_UPGRADER_READY_TIME
+      getTeam("upgrader", roomName),
+      roomConfig[roomName].UPGRADER_TEAM_SIZE,
+      roomConfig[roomName].NEW_UPGRADER_READY_TIME
     )
   ) {
-    recruitCreep(roomW36N43.UPGRADER_CURRENT_MODEL, "upgrader");
+    recruitCreep(roomConfig[roomName].UPGRADER_CURRENT_MODEL, "upgrader");
   }
 }
 
 /** Recruit repairers */
-function recruitRepairers() {
+function recruitRepairers(roomName) {
   if (
-    getTeam("repairer").length < roomW36N43.REPAIRER_TEAM_SIZE &&
-    Game.time % roomW36N43.REPAIRER_RESPAWN_GAP == 0
+    getTeam("repairer").length < roomConfig[roomName].REPAIRER_TEAM_SIZE &&
+    Game.time % roomConfig[roomName].REPAIRER_RESPAWN_GAP == 0
   ) {
-    recruitCreep(roomW36N43.REPAIRER_CURRENT_MODEL, "repairer");
+    recruitCreep(roomConfig[roomName].REPAIRER_CURRENT_MODEL, "repairer");
   }
 }
 
 /** Recruit miners */
-function recruitMiners() {
+function recruitMiners(roomName) {
   if (
     recruitInAdvanceOk(
-      getTeam("miner"),
-      roomW36N43.MINER_TEAM_SIZE,
-      roomW36N43.NEW_MINER_READY_TIME
+      getTeam("miner", roomName),
+      roomConfig[roomName].MINER_TEAM_SIZE,
+      roomConfig[roomName].NEW_MINER_READY_TIME
     )
   ) {
-    recruitCreep(roomW36N43.MINER_CURRENT_MODEL, "miner");
+    recruitCreep(roomConfig[roomName].MINER_CURRENT_MODEL, "miner");
   }
 }
 
 var squadRecruiter = {
-  repairerSpawnCycle: roomW36N43.CREEP_LIFE + roomW36N43.REPAIRER_SPAWN_DELAY,
+  repairerSpawnCycle: roomConfig.CREEP_LIFE + roomConfig.REPAIRER_SPAWN_DELAY,
 
-  run: () => {
-    recruitHarvesters();
-    recruitMiners();
-    recruitUpgraders();
-    recruitRepairers();
-    recruitBuilders();
-    let spawn = getSpawn(roomW36N43.SPAWN_NAME);
+  run: (roomName) => {
+    recruitHarvesters(roomName);
+    recruitMiners(roomName);
+    recruitUpgraders(roomName);
+    recruitRepairers(roomName);
+    recruitBuilders(roomName);
+    let spawn = getSpawnByName(roomConfig[roomName].SPAWN_NAME);
     if (spawn && spawn.spawning) {
-      spawn.spawning.setDirections(roomW36N43.SPAWNING_DIRECTIONS);
+      spawn.spawning.setDirections(roomConfig[roomName].SPAWNING_DIRECTIONS);
     }
   },
+  recruitCreep,
 };
 
 module.exports = squadRecruiter;

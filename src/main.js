@@ -7,7 +7,8 @@ const squadRecruiter = require("./squad.recruiter");
 module.exports.loop = function () {
   memoryManager.cleanNonExistingCreeps();
   defense.activateTowers();
-  squadRecruiter.run();
+  squadRecruiter.run("W35N43");
+  squadRecruiter.run("W36N43");
   squad.assignJobs();
   logger.log();
 };

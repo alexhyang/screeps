@@ -43,8 +43,11 @@ const assignJobs = () => {
  * @param {string} creepRole
  * @returns {Object<string, Creep>} a hash containing creeps given their role
  **/
-const getTeam = (creepRole) => {
-  return _.filter(Game.creeps, (creep) => creep.memory.role == creepRole);
+const getTeam = (creepRole, roomName) => {
+  return _.filter(
+    Game.creeps,
+    (creep) => creep.memory.role == creepRole && creep.room.name == roomName
+  );
 };
 
 /**
