@@ -56,8 +56,31 @@ const getCreep = (creepName) => {
   return Game.creeps[creepName];
 };
 
+/**
+ * Change the role of a creep with given name
+ * @param {string} creepName name of the creep
+ * @param {string} newRole new role
+ */
+const changeCreepRoleByName = (creepName, newRole) => {
+  let creep = getCreep(creepName);
+  if (creep) {
+    changeCreepRole(creep, newRole);
+  }
+};
+
+/**
+ * Change the role of a creep
+ * @param {Creep} creep
+ * @param {string} newRole new role
+ */
+const changeCreepRole = (creep, newRole) => {
+  creep.memory = { role: newRole };
+};
+
 module.exports = {
   assignJobs,
   getTeam,
   getCreep,
+  changeCreepRoleByName,
+  changeCreepRole,
 };
