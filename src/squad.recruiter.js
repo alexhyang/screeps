@@ -8,9 +8,12 @@ let newBuilderReadyTime = 10;
 let newMinerReadyTime = 25;
 let newUpgraderReadyTime = 57;
 
+// TODO: better define creepModel in JSDocs
 /**
- * @param {object.<string, object.<string, number>>} creepModel
- * @param {string} creepRole
+ * Recruit a creep to given role with desired model design
+ * @param {object.<string, object.<string, number>>} creepModel the creep
+ *   model with name and body parts
+ * @param {string} creepRole the role to assign to the creep
  */
 function recruitCreep(creepModel, creepRole) {
   var newCreepName = creepModel.name + "-" + (Game.time % 100);
@@ -24,12 +27,14 @@ function recruitCreep(creepModel, creepRole) {
   }
 }
 
+/** Recruit harvesters */
 function recruitHarvesters() {
   if (getTeam("harvester").length < dashboard.HARVESTER_TEAM_SIZE) {
     recruitCreep(dashboard.HARVESTER_CURRENT_MODEL, "harvester");
   }
 }
 
+/** Recruit builders */
 function recruitBuilders() {
   let builders = getTeam("builder");
   if (
@@ -43,6 +48,7 @@ function recruitBuilders() {
   }
 }
 
+/** Recruit upgraders */
 function recruitUpgraders() {
   let upgraders = getTeam("upgrader");
   if (
@@ -55,12 +61,14 @@ function recruitUpgraders() {
   }
 }
 
+/** Recruit repairers */
 function recruitRepairers() {
   if (getTeam("repairer").length < dashboard.REPAIRER_TEAM_SIZE) {
     recruitCreep(dashboard.REPAIRER_CURRENT_MODEL, "repairer");
   }
 }
 
+/** Recruit miners */
 function recruitMiners() {
   let miners = getTeam("miner");
   if (
