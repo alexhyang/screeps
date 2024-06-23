@@ -7,16 +7,22 @@ const { MINER_SOURCE_INDEX } = require("./dashboard");
 const {
   getContainers,
   structureHasFreeCapacity,
+  getSpawns,
 } = require("./util.structureFinder");
 
 const findTarget = (creep) => {
   if (creep) {
-    let containersNotFull = _.filter(getContainers(), structureHasFreeCapacity);
+    let containersNotFull = _.filter(
+      getContainers(creep.room),
+      structureHasFreeCapacity
+    );
     if (containersNotFull.length > 0) {
       return creep.pos.findClosestByRange(containersNotFull);
     }
-
-    var spawnsNotFull = _.filter(getSpawns(), structureHasFreeCapacity);
+    var spawnsNotFull = _.filter(
+      getSpawns(creep.room),
+      structureHasFreeCapacity
+    );
     if (spawnsNotFull.length > 0) {
       return creep.pos.findClosestByRange(spawnsNotFull);
     }

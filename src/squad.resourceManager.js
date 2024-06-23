@@ -3,7 +3,7 @@ const {
   SPAWN_WITHDRAW_THRESHOLD,
   CONTAINER_WITHDRAW_THRESHOLD,
 } = require("./dashboard");
-const { getContainers, getSpawn } = require("./util.structureFinder");
+const { getContainers, getSpawnByName } = require("./util.structureFinder");
 
 /**
  * @param {number} roomName
@@ -83,7 +83,7 @@ const assignCreepToObtainEnergyFromTombstone = (creep) => {
  * @returns {boolean} whether the assignment is successful
  */
 const assignCreepToObtainEnergyFromSpawn = (creep) => {
-  var spawn = getSpawn();
+  var spawn = getSpawnByName();
   if (
     creep.withdraw(spawn, RESOURCE_ENERGY) !== OK ||
     creep.pos.getRangeTo(spawn) !== 1
@@ -105,6 +105,7 @@ const assignCreepToObtainEnergyFromSource = (creep, sourceIndex) => {
       visualizePathStyle: { stroke: "#ffaa00" },
     });
   }
+  return true;
 };
 
 /**

@@ -6,6 +6,7 @@ const {
   assignCreepToObtainEnergyFromStorage,
   withdrawFromContainerOk,
   transferEnergyToTarget,
+  pickupDroppedResources,
 } = require("./squad.resourceManager");
 
 const { HARVESTER_SOURCE_INDEX } = require("./dashboard");
@@ -19,22 +20,34 @@ const {
 
 const findTarget = (creep) => {
   if (creep) {
-    var extensionsNotFull = _.filter(getExtensions(), structureHasFreeCapacity);
+    var extensionsNotFull = _.filter(
+      getExtensions(creep.room),
+      structureHasFreeCapacity
+    );
     if (extensionsNotFull.length > 0) {
       return creep.pos.findClosestByRange(extensionsNotFull);
     }
 
-    var spawnsNotFull = _.filter(getSpawns(), structureHasFreeCapacity);
+    var spawnsNotFull = _.filter(
+      getSpawns(creep.room),
+      structureHasFreeCapacity
+    );
     if (spawnsNotFull.length > 0) {
       return creep.pos.findClosestByRange(spawnsNotFull);
     }
 
-    var towersNotFull = _.filter(getTowers(), structureHasFreeCapacity);
+    var towersNotFull = _.filter(
+      getTowers(creep.room),
+      structureHasFreeCapacity
+    );
     if (towersNotFull.length > 0) {
       return towersNotFull;
     }
 
-    return getStorage();
+    var storage = getStorage(creep.room);
+    if (storage) {
+      return storage;
+    }
   }
 };
 
@@ -42,7 +55,8 @@ var roleHarvester = {
   /** @param {Creep} creep **/
   run: function (creep) {
     if (creep.store.getFreeCapacity() > creep.store.getCapacity() * 0.7) {
-      assignCreepToObtainEnergyFromTombstone(creep) ||
+      pickupDroppedResources(creep) ||
+        assignCreepToObtainEnergyFromTombstone(creep) ||
         assignCreepToObtainEnergyFromRuin(creep) ||
         (withdrawFromContainerOk() &&
           assignCreepToObtainEnergyFromContainer(creep)) ||

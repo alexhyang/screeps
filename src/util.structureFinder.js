@@ -1,35 +1,54 @@
 const { ROOM_NUMBER } = require("./dashboard");
+let defaultRoom = Game.rooms[ROOM_NUMBER];
 
 /**
  * The shorthand for room.find(FIND_STRUCTURES, filter)
  * @param {string} structureType an array of structure types
  * @returns structure(s) of the given type
  */
-function getStructures(structureType, roomName = ROOM_NUMBER) {
-  return Game.rooms[roomName].find(FIND_STRUCTURES, {
+function getStructures(structureType, room = defaultRoom) {
+  return room.find(FIND_STRUCTURES, {
     filter: { structureType: structureType },
   });
+}
+
+function structureHasFreeCapacity(structure) {
+  if (structure) {
+    return structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
+  }
 }
 
 /**
  * Find the spawn with given spawn name
  * @param {string} spawnName name of the spawn
- * @returns {StructureSpawn} spawn with the given name
+ * @returns {StructureSpawn} spawn with the given name, "Spawn1" by default
  */
-const getSpawn = (spawnName = "Spawn1") => {
+const getSpawnByName = (spawnName = "Spawn1") => {
   return Game.spawns[spawnName];
 };
 
-const getController = (roomName = ROOM_NUMBER) => {
-  return Game.rooms[roomName].controller;
+const getSpawns = (room = defaultRoom) => {
+  return getStructures(STRUCTURE_SPAWN, room);
 };
 
-const getContainers = () => {
-  return getStructure(STRUCTURE_CONTAINER);
+const getController = (room = defaultRoom) => {
+  return room.controller;
 };
 
-const getStorage = (roomName = ROOM_NUMBER) => {
-  return Game.rooms[roomName].storage;
+const getContainers = (room = defaultRoom) => {
+  return getStructures(STRUCTURE_CONTAINER, room);
+};
+
+const getStorage = (room = defaultRoom) => {
+  return room.storage;
+};
+
+const getTowers = (room = defaultRoom) => {
+  return getStructures(STRUCTURE_TOWER, room);
+};
+
+const getExtensions = (room = defaultRoom) => {
+  return getStructures(STRUCTURE_EXTENSION, room);
 };
 
 /**
@@ -64,10 +83,14 @@ const getHealthyDefenses = (minHealthyHits, roomName = ROOM_NUMBER) => {
 
 module.exports = {
   getStructures,
-  getSpawn,
+  structureHasFreeCapacity,
+  getSpawnByName,
+  getSpawns,
+  getExtensions,
   getController,
   getStorage,
   getContainers,
+  getTowers,
   getUnhealthyDefenses,
   getHealthyDefenses,
 };
