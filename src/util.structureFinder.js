@@ -1,5 +1,5 @@
-const { ROOM_NUMBER } = require("./dashboard");
-let defaultRoom = Game.rooms[ROOM_NUMBER];
+const { DEFAULT_ROOM } = require("./dashboard");
+let defaultRoom = Game.rooms[DEFAULT_ROOM];
 
 /**
  * The shorthand for room.find(FIND_STRUCTURES, filter)
@@ -17,9 +17,9 @@ function getStructures(structureType, room = defaultRoom) {
  * @param {Structure} structure structure in room
  * @returns true if structure has free capacity, false otherwise
  */
-function structureHasFreeCapacity(structure) {
+function structureHasFreeCapacity(structure, resourceType = RESOURCE_ENERGY) {
   if (structure) {
-    return structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
+    return structure.store.getFreeCapacity(resourceType) > 0;
   }
   return false;
 }
@@ -66,10 +66,11 @@ const getExtensions = (room = defaultRoom) => {
 /**
  * Find all unhealthy walls and ramparts
  * @param {number} minHealthyHits minimum hits of healthy defenses
+ * @param {Room} room search in the given room
  * @returns {Object.<string, Structure>} unhealthy walls and ramparts
  */
-const getUnhealthyDefenses = (minHealthyHits, roomName = ROOM_NUMBER) => {
-  let unhealthyDefenses = Game.rooms[roomName].find(FIND_STRUCTURES, {
+const getUnhealthyDefenses = (minHealthyHits, room = defaultRoom) => {
+  let unhealthyDefenses = room.find(FIND_STRUCTURES, {
     filter: (s) =>
       (s.structureType == STRUCTURE_WALL ||
         s.structureType == STRUCTURE_RAMPART) &&
@@ -81,10 +82,11 @@ const getUnhealthyDefenses = (minHealthyHits, roomName = ROOM_NUMBER) => {
 /**
  * Find all healthy walls and ramparts
  * @param {number} minHealthyHits minimum hits of healthy defenses
+ * @param {Room} room search in the given room
  * @returns {Object.<string, Structure>} unhealthy walls and ramparts
  */
-const getHealthyDefenses = (minHealthyHits, roomName = ROOM_NUMBER) => {
-  let healthyDefenses = Game.rooms[roomName].find(FIND_STRUCTURES, {
+const getHealthyDefenses = (minHealthyHits, room = defaultRoom) => {
+  let healthyDefenses = room.find(FIND_STRUCTURES, {
     filter: (s) =>
       (s.structureType == STRUCTURE_WALL ||
         s.structureType == STRUCTURE_RAMPART) &&
