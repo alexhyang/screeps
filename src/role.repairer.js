@@ -1,23 +1,6 @@
-const {
-  assignCreepToObtainEnergyFromSpawn,
-  assignCreepToObtainEnergyFromSource,
-  withdrawFromSpawnOk,
-  assignCreepToObtainEnergyFromContainer,
-  withdrawFromContainerOk,
-  assignCreepToObtainEnergyFromStorage,
-  pickupDroppedResources,
-  assignCreepToObtainEnergyFromRuin,
-  assignCreepToObtainEnergyFromTombstone,
-} = require("./squad.resourceManager");
-const {
-  REPAIRER_SOURCE_INDEX,
-  REPAIR_PRIORITY,
-  REPAIR_HITS_THRESHOLD_RATIO,
-  REPAIR_REGION_X_LOWER,
-  REPAIR_REGION_X_UPPER,
-  REPAIR_REGION_Y_LOWER,
-  REPAIR_REGION_Y_UPPER,
-} = require("./dashboard");
+const roomConfig = require("./dashboard");
+const { obtainResource, repairTarget } = require("./role.creepManager");
+const { getDecayedStructures } = require("./util.structureFinder");
 
 const updateRepairingStatus = (creep) => {
   if (creep.memory.repairing && creep.store[RESOURCE_ENERGY] == 0) {
@@ -33,28 +16,30 @@ const updateRepairingStatus = (creep) => {
 
 const repairConstruction = (creep) => {
   let targets = findTargets(creep).sort((a, b) => a.hits - b.hits);
-  repairTargets(creep, targets);
+  repairTarget(creep, targets[0]);
 };
 
 const obtainEnergy = (creep) => {
-  if (creep.store.getFreeCapacity() > 0) {
-    pickupDroppedResources(creep) ||
-      assignCreepToObtainEnergyFromTombstone(creep) ||
-      assignCreepToObtainEnergyFromRuin(creep) ||
-      assignCreepToObtainEnergyFromContainer(creep) ||
-      assignCreepToObtainEnergyFromStorage(creep) ||
-      (withdrawFromContainerOk() &&
-        assignCreepToObtainEnergyFromContainer(creep)) ||
-      (withdrawFromSpawnOk() && assignCreepToObtainEnergyFromSpawn(creep));
-  } else {
-    assignCreepToObtainEnergyFromSource(creep, REPAIRER_SOURCE_INDEX);
-  }
+  obtainResource(
+    creep,
+    [
+      "droppedResources",
+      "tombstone",
+      "ruin",
+      "container",
+      "storage",
+      "container",
+      "spawn",
+      "source",
+    ],
+    roomConfig[creep.room.name].REPAIRER_SOURCE_INDEX
+  );
 };
 
 const findTargets = (creep) => {
-  var decayedContainers = findDecayedStructure(creep, STRUCTURE_CONTAINER);
-  var decayedLinks = findDecayedStructure(creep, STRUCTURE_LINK);
-  var decayedStorage = findDecayedStructure(creep, STRUCTURE_STORAGE);
+  var decayedContainers = getDecayedStructures(creep.room, STRUCTURE_CONTAINER);
+  var decayedLinks = getDecayedStructures(creep.room, STRUCTURE_LINK);
+  var decayedStorage = getDecayedStructures(creep.room, STRUCTURE_STORAGE);
   if (decayedStorage.length > 0) {
     return decayedStorage;
   } else if (decayedContainers.length > 0) {
@@ -63,32 +48,21 @@ const findTargets = (creep) => {
     return decayedLinks;
   } else {
     var targets = creep.room.find(FIND_STRUCTURES, {
-      filter: getPrioritizedStructure,
+      filter: (s) => getPrioritizedStructure(creep, s),
     });
     return targets;
   }
 };
 
-const repairTargets = (creep, targets) => {
-  if (targets.length > 0) {
-    if (creep.repair(targets[0]) == ERR_NOT_IN_RANGE) {
-      creep.moveTo(targets[0], {
-        visualizePathStyle: { stroke: "#ffffff" },
-      });
-    }
-  }
-};
-
-const findDecayedStructure = (creep, structureType) => {
-  let targets = creep.room.find(FIND_STRUCTURES, {
-    filter: (structure) =>
-      structure.structureType == structureType &&
-      structure.hits < structure.hitsMax,
-  });
-  return targets;
-};
-
-const getPrioritizedStructure = (structure) => {
+const getPrioritizedStructure = (creep, structure) => {
+  const {
+    REPAIR_PRIORITY,
+    REPAIR_HITS_THRESHOLD_RATIO,
+    REPAIR_REGION_X_LOWER,
+    REPAIR_REGION_X_UPPER,
+    REPAIR_REGION_Y_LOWER,
+    REPAIR_REGION_Y_UPPER,
+  } = roomConfig[creep.room.name];
   let type = structure.structureType;
   let needsRepair =
     structure.hits < structure.hitsMax * REPAIR_HITS_THRESHOLD_RATIO;

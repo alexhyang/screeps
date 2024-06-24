@@ -1,9 +1,5 @@
-const {
-  assignCreepToObtainEnergyFromSource,
-  transferEnergyToTarget,
-} = require("./squad.resourceManager");
-
-const { MINER_SOURCE_INDEX } = require("./dashboard");
+const roomConfig = require("./dashboard");
+const { obtainResource } = require("./role.creepManager");
 const {
   getContainers,
   structureHasFreeCapacity,
@@ -29,11 +25,15 @@ const findTarget = (creep) => {
   }
 };
 
-var roleHarvester = {
+var roleMiner = {
   /** @param {Creep} creep **/
   run: function (creep) {
     if (creep.store.getFreeCapacity() > 0) {
-      assignCreepToObtainEnergyFromSource(creep, MINER_SOURCE_INDEX);
+      obtainResource(
+        creep,
+        ["source"],
+        roomConfig[creep.room.name].MINER_SOURCE_INDEX
+      );
     } else {
       let target = findTarget(creep);
       transferEnergyToTarget(creep, target);
@@ -41,4 +41,4 @@ var roleHarvester = {
   },
 };
 
-module.exports = roleHarvester;
+module.exports = roleMiner;

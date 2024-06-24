@@ -1,15 +1,5 @@
-const {
-  assignCreepToObtainEnergyFromSpawn,
-  assignCreepToObtainEnergyFromSource,
-  withdrawFromSpawnOk,
-  withdrawFromContainerOk,
-  assignCreepToObtainEnergyFromContainer,
-  assignCreepToObtainEnergyFromStorage,
-  pickupDroppedResources,
-  assignCreepToObtainEnergyFromRuin,
-  assignCreepToObtainEnergyFromTombstone,
-} = require("./squad.resourceManager");
-const { BUILDER_SOURCE_INDEX, BUILD_PRIORITY } = require("./dashboard");
+const roomConfig = require("./dashboard");
+const { obtainResource } = require("./role.creepManager");
 
 /** @param {Creep} creep **/
 const updateBuildingStatus = (creep) => {
@@ -24,12 +14,11 @@ const updateBuildingStatus = (creep) => {
   }
 };
 
-const buildConstructionSite = (creep, structureType = "none") => {
-  let filter;
-  if (structureType == "none") {
-    filter = (s) => true;
-  } else {
-    filter = (s) => s.structureType === structureType;
+const buildConstructionSite = (creep) => {
+  let filter = (s) => true;
+  let buildingPriority = roomConfig[creep.room].BUILD_PRIORITY;
+  if (buildingPriority !== "none") {
+    filter = (s) => s.structureType === buildingPriority;
   }
   let target = creep.pos.findClosestByRange(FIND_CONSTRUCTION_SITES, {
     filter: filter,
@@ -41,20 +30,29 @@ const buildConstructionSite = (creep, structureType = "none") => {
 
 /** @param {Creep} creep **/
 const obtainEnergy = (creep) => {
-  if (creep.store.getFreeCapacity() > 0) {
-    pickupDroppedResources(creep) ||
-      assignCreepToObtainEnergyFromTombstone(creep) ||
-      assignCreepToObtainEnergyFromRuin(creep) ||
-      assignCreepToObtainEnergyFromStorage(creep) ||
-      (withdrawFromContainerOk() &&
-        assignCreepToObtainEnergyFromContainer(creep)) ||
-      (withdrawFromSpawnOk() && assignCreepToObtainEnergyFromSpawn(creep));
-  } else {
-    assignCreepToObtainEnergyFromSource(creep, BUILDER_SOURCE_INDEX);
-  }
+  obtainResource(
+    creep,
+    [
+      "droppedResources",
+      "tombstone",
+      "ruin",
+      "storage",
+      "container",
+      "spawn",
+      "source",
+    ],
+    roomConfig[creep.room.name].BUILDER_SOURCE_INDEX
+  );
 };
 
 const build = (creep, target) => {
+  if (creep.build(target) == ERR_NOT_IN_RANGE) {
+    creep.moveTo(target, { visualizePathStyle: { stroke: "#ffffff" } });
+  }
+};
+
+const buildById = (creep, targetId) => {
+  var target = Game.getObjectById(targetId);
   if (creep.build(target) == ERR_NOT_IN_RANGE) {
     creep.moveTo(target, { visualizePathStyle: { stroke: "#ffffff" } });
   }
@@ -65,11 +63,12 @@ var roleBuilder = {
   run: function (creep) {
     updateBuildingStatus(creep);
     if (creep.memory.building) {
-      buildConstructionSite(creep, BUILD_PRIORITY);
+      buildConstructionSite(creep);
     } else {
       obtainEnergy(creep);
     }
   },
+  buildById,
 };
 
 module.exports = roleBuilder;

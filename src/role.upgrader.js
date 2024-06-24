@@ -1,9 +1,5 @@
-const {
-  assignCreepToObtainEnergyFromSource,
-  assignCreepToObtainEnergyFromContainer,
-  assignCreepToObtainEnergyFromSpawn,
-} = require("./squad.resourceManager");
-const { UPGRADER_SOURCE_INDEX } = require("./dashboard");
+const roomConfig = require("./dashboard");
+const { obtainResource } = require("./role.creepManager");
 
 const updateUpgradingStatus = (creep) => {
   if (creep.memory.upgrading && creep.store[RESOURCE_ENERGY] == 0) {
@@ -28,9 +24,11 @@ const upgradeController = (creep) => {
 
 /** @param {Creep} creep **/
 const obtainEnergy = (creep) => {
-  assignCreepToObtainEnergyFromContainer(creep) ||
-    assignCreepToObtainEnergyFromSpawn(creep) ||
-    assignCreepToObtainEnergyFromSource(creep, UPGRADER_SOURCE_INDEX);
+  obtainResource(
+    creep,
+    ["droppedResources", "tombstone", "ruin", "container", "spawn", "source"],
+    roomConfig[creep.room.name].UPGRADER_SOURCE_INDEX
+  );
 };
 
 var roleUpgrader = {
