@@ -30,7 +30,7 @@ const printTeamStatusTitle = (creepRole, teamSize, roomName) => {
     creepRole == "builder" &&
     Object.keys(
       _.filter(Game.constructionSites, (s) => s.room.name == roomName)
-    ).length > 0
+    ).length == 0
   ) {
     msg += " (no construction sites)";
   }

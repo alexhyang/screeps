@@ -16,7 +16,7 @@ const updateBuildingStatus = (creep) => {
 
 const buildConstructionSite = (creep) => {
   let filter = (s) => true;
-  let buildingPriority = roomConfig[creep.room].BUILD_PRIORITY;
+  let buildingPriority = roomConfig[creep.room.name].BUILD_PRIORITY;
   if (buildingPriority !== "none") {
     filter = (s) => s.structureType === buildingPriority;
   }

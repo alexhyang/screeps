@@ -1,5 +1,5 @@
 const roomConfig = require("./dashboard");
-const { obtainResource } = require("./role.creepManager");
+const { obtainResource, transferTo } = require("./role.creepManager");
 const {
   getContainers,
   structureHasFreeCapacity,
@@ -34,7 +34,7 @@ var roleMiner = {
       );
     } else {
       let target = findTarget(creep);
-      transferEnergyToTarget(creep, target);
+      transferTo(creep, target);
     }
   },
 };
