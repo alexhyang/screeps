@@ -170,7 +170,7 @@ const pickupDroppedResources = (creep) => {
  * @returns {boolean} true if the withdraw is successful, false otherwise
  */
 const withdrawFromTombstone = (creep) => {
-  let closestTombstone = findClosestDyingWithResource(crepe, FIND_TOMBSTONES);
+  let closestTombstone = findClosestDyingWithResource(creep, FIND_TOMBSTONES);
   if (
     closestTombstone &&
     creep.pos.getRangeTo(closestTombstone) < closestTombstone.ticksToDecay
