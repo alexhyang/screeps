@@ -1,13 +1,10 @@
-const { DEFAULT_ROOM } = require("./dashboard");
-let defaultRoom = Game.rooms[DEFAULT_ROOM];
-
 /**
  * Find all structures of specified type in the room
  * @param {string} structureType
- * @param {Room} room Game.rooms[DEFAULT_ROOM] by default
+ * @param {Room} room
  * @returns {Structure[]} an array of structures, or undefined if not found
  */
-function getStructures(structureType, room = defaultRoom) {
+function getStructures(structureType, room) {
   return room.find(FIND_STRUCTURES, {
     filter: { structureType: structureType },
   });
@@ -41,70 +38,70 @@ function structureHasResource(structure, resourceType = RESOURCE_ENERGY) {
 
 /**
  * Find the spawn with given spawn name
- * @param {string} spawnName "Spawn1" by default
+ * @param {string} spawnName
  * @returns {StructureSpawn} the spawn with the given name,
  *    or undefined if not found
  */
-const getSpawnByName = (spawnName = "Spawn1") => {
+const getSpawnByName = (spawnName) => {
   return Game.spawns[spawnName];
 };
 
 /**
  * Find all spawns in the given room
- * @param {Room} room Game.rooms[DEFAULT_ROOM] by default
+ * @param {Room} room
  * @returns {StructureSpawn[]} an array of spawns in the room,
  *    or undefined if not found
  */
-const getSpawns = (room = defaultRoom) => {
+const getSpawns = (room) => {
   return getStructures(STRUCTURE_SPAWN, room);
 };
 
 /**
  * Find the controller in the given room
- * @param {Room} room Game.rooms[DEFAULT_ROOM] by default
+ * @param {Room} room
  * @returns {StructureController} the controller in the room,
  *    or undefined if not found
  */
-const getController = (room = defaultRoom) => {
+const getController = (room) => {
   return room.controller;
 };
 
 /**
  * Find all containers in the given room
- * @param {Room} room Game.rooms[DEFAULT_ROOM] by default
+ * @param {Room} room
  * @returns {StructureContainer[]} an array of containers in the room,
  *    or undefined if not found
  */
-const getContainers = (room = defaultRoom) => {
+const getContainers = (room) => {
   return getStructures(STRUCTURE_CONTAINER, room);
 };
 
 /**
  * Find the storage in the given room
- * @param {Room} room Game.rooms[DEFAULT_ROOM] by default
+ * @param {Room} room
  * @returns {StructureStorage} the storage in the room,
  *    or undefined if not found
  */
-const getStorage = (room = defaultRoom) => {
+const getStorage = (room) => {
   return room.storage;
 };
 
 /**
  * Find all towers in the given room
- * @param {Room} room Game.rooms[DEFAULT_ROOM] by default
+ * @param {Room} room
  * @returns {StructureTower[]} an array of towers in the room,
  *    or undefined if not found
  */
-const getTowers = (room = defaultRoom) => {
+const getTowers = (room) => {
   return getStructures(STRUCTURE_TOWER, room);
 };
 
 /** Find all extensions in the given room
- * @param {Room} room Game.rooms[DEFAULT_ROOM] by default
+ * @param {Room} room
  * @returns {StructureTower[]} an array of extensions in the room,
  *    or undefined if not found
  */
-const getExtensions = (room = defaultRoom) => {
+const getExtensions = (room) => {
   return getStructures(STRUCTURE_EXTENSION, room);
 };
 
@@ -115,7 +112,7 @@ const getExtensions = (room = defaultRoom) => {
  * @returns {StructureDefenses[]} an array of unhealthy walls and ramparts,
  *    or undefined if not found
  */
-const getUnhealthyDefenses = (minHealthyHits, room = defaultRoom) => {
+const getUnhealthyDefenses = (minHealthyHits, room) => {
   let unhealthyDefenses = room.find(FIND_STRUCTURES, {
     filter: (s) =>
       (s.structureType == STRUCTURE_WALL ||
@@ -132,7 +129,7 @@ const getUnhealthyDefenses = (minHealthyHits, room = defaultRoom) => {
  * @returns {StructureDefenses[]} an array of healthy walls and ramparts,
  *    or undefined if not found
  */
-const getHealthyDefenses = (minHealthyHits, room = defaultRoom) => {
+const getHealthyDefenses = (minHealthyHits, room) => {
   let healthyDefenses = room.find(FIND_STRUCTURES, {
     filter: (s) =>
       (s.structureType == STRUCTURE_WALL ||
