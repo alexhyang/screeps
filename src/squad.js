@@ -4,7 +4,6 @@ const {
   roleBuilder,
   roleRepairer,
   roleMiner,
-  rolePicker,
 } = require("./role");
 
 /**
@@ -28,9 +27,6 @@ const assignJobs = () => {
         break;
       case "miner":
         roleMiner.run(creep);
-        break;
-      case "picker":
-        rolePicker.run(creep);
         break;
       default:
         break;
