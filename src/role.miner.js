@@ -4,6 +4,7 @@ const {
   getContainers,
   structureHasFreeCapacity,
   getSpawns,
+  getExtensions,
 } = require("./util.structureFinder");
 
 const findTarget = (creep) => {
@@ -14,7 +15,15 @@ const findTarget = (creep) => {
     if (containersNotFull.length > 0) {
       return creep.pos.findClosestByRange(containersNotFull);
     }
-    var spawnsNotFull = _.filter(getSpawns(creep.room), (s) =>
+
+    let extensionsNotFull = _.filter(getExtensions(creep.room), (s) =>
+      structureHasFreeCapacity(s)
+    );
+    if (extensionsNotFull.length > 0) {
+      return creep.pos.findClosestByRange(extensionsNotFull);
+    }
+
+    let spawnsNotFull = _.filter(getSpawns(creep.room), (s) =>
       structureHasFreeCapacity(s)
     );
     if (spawnsNotFull.length > 0) {
