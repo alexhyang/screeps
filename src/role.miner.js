@@ -8,16 +8,14 @@ const {
 
 const findTarget = (creep) => {
   if (creep) {
-    let containersNotFull = _.filter(
-      getContainers(creep.room),
-      structureHasFreeCapacity
+    let containersNotFull = _.filter(getContainers(creep.room), (s) =>
+      structureHasFreeCapacity(s)
     );
     if (containersNotFull.length > 0) {
       return creep.pos.findClosestByRange(containersNotFull);
     }
-    var spawnsNotFull = _.filter(
-      getSpawns(creep.room),
-      structureHasFreeCapacity
+    var spawnsNotFull = _.filter(getSpawns(creep.room), (s) =>
+      structureHasFreeCapacity(s)
     );
     if (spawnsNotFull.length > 0) {
       return creep.pos.findClosestByRange(spawnsNotFull);

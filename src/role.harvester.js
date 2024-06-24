@@ -10,25 +10,22 @@ const {
 
 const findTarget = (creep) => {
   if (creep) {
-    var extensionsNotFull = _.filter(
-      getExtensions(creep.room),
-      structureHasFreeCapacity
+    var extensionsNotFull = _.filter(getExtensions(creep.room), (s) =>
+      structureHasFreeCapacity(s)
     );
     if (extensionsNotFull.length > 0) {
       return creep.pos.findClosestByRange(extensionsNotFull);
     }
 
-    var spawnsNotFull = _.filter(
-      getSpawns(creep.room),
-      structureHasFreeCapacity
+    var spawnsNotFull = _.filter(getSpawns(creep.room), (s) =>
+      structureHasFreeCapacity(s)
     );
     if (spawnsNotFull.length > 0) {
       return creep.pos.findClosestByRange(spawnsNotFull);
     }
 
-    var towersNotFull = _.filter(
-      getTowers(creep.room),
-      structureHasFreeCapacity
+    var towersNotFull = _.filter(getTowers(creep.room), (s) =>
+      structureHasFreeCapacity(s)
     );
     if (towersNotFull.length > 0) {
       return towersNotFull;
