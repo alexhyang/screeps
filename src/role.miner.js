@@ -26,12 +26,10 @@ const findTarget = (creep) => {
 var roleMiner = {
   /** @param {Creep} creep **/
   run: function (creep) {
+    const { MINER_SOURCE_ORIGINS, MINER_SOURCE_INDEX } =
+      roomConfig[creep.room.name];
     if (creep.store.getFreeCapacity() > 0) {
-      obtainResource(
-        creep,
-        ["source"],
-        roomConfig[creep.room.name].MINER_SOURCE_INDEX
-      );
+      obtainResource(creep, MINER_SOURCE_ORIGINS, MINER_SOURCE_INDEX);
     } else {
       let target = findTarget(creep);
       transferTo(creep, target);

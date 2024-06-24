@@ -122,6 +122,7 @@ let roomConfig = {
     MINER_CURRENT_MODEL: MODELS.WORKER_3, //W5A
     MINER_TEAM_SIZE: 0,
     MINER_SOURCE_INDEX: 0,
+    MINER_SOURCE_ORIGINS: ["source"],
 
     // ======== BUILDERS ========
     BUILDER_CURRENT_MODEL: MODELS.WORKER_4B, //W5B
@@ -133,7 +134,14 @@ let roomConfig = {
     UPGRADER_CURRENT_MODEL: MODELS.CARRIER_3B, //W5B
     UPGRADER_TEAM_SIZE: 3,
     UPGRADER_SOURCE_INDEX: 0,
-    UPGRADER_ENERGY_SOURCE: "source",
+    UPGRADER_SOURCE_ORIGINS: [
+      "droppedResources",
+      "tombstone",
+      "ruin",
+      "container",
+      "spawn",
+      "source",
+    ],
 
     // ======== REPAIRERS ========
     REPAIRER_SPAWN_DELAY: 1000,
