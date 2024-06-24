@@ -39,7 +39,7 @@ const getModelCost = (creepModel) => {
  * @param {object.<string, object.<string, number>>} creepModel
  * @returns {string[]} an array of body parts
  */
-const getBodyParts = (creepModel) => {
+const buildBodyParts = (creepModel) => {
   let parts = [];
   for (var part in creepModel.body) {
     let numOfParts = creepModel.body[part];
@@ -50,5 +50,5 @@ const getBodyParts = (creepModel) => {
 
 module.exports = {
   getModelCost,
-  getBodyParts,
+  buildBodyParts,
 };
