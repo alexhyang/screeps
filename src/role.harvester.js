@@ -44,14 +44,7 @@ var roleHarvester = {
     if (creep.store.getFreeCapacity() > creep.store.getCapacity() * 0.7) {
       obtainResource(
         creep,
-        [
-          "droppedResources",
-          "tombstone",
-          "ruin",
-          "container",
-          "storage",
-          "source",
-        ],
+        roomConfig.DEFAULT_HARVESTER_SOURCE_ORIGINS,
         roomConfig[creep.room.name].HARVESTER_SOURCE_INDEX
       );
     } else {

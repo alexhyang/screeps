@@ -22,17 +22,8 @@ const repairConstruction = (creep) => {
 const obtainEnergy = (creep) => {
   obtainResource(
     creep,
-    [
-      "droppedResources",
-      "tombstone",
-      "ruin",
-      "container",
-      "storage",
-      "container",
-      "spawn",
-      "source",
-    ],
-    roomConfig[creep.room.name].REPAIRER_SOURCE_INDEX
+    roomConfig.DEFAULT_REPAIRER_SOURCE_ORIGINS,
+    roomConfig[creep.room.name].HARVESTER_SOURCE_INDEX
   );
 };
 

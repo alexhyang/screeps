@@ -32,16 +32,8 @@ const buildConstructionSite = (creep) => {
 const obtainEnergy = (creep) => {
   obtainResource(
     creep,
-    [
-      "droppedResources",
-      "tombstone",
-      "ruin",
-      "storage",
-      "container",
-      "spawn",
-      "source",
-    ],
-    roomConfig[creep.room.name].BUILDER_SOURCE_INDEX
+    roomConfig.DEFAULT_BUILDER_SOURCE_ORIGINS,
+    roomConfig[creep.room.name].HARVESTER_SOURCE_INDEX
   );
 };
 

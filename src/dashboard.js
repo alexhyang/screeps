@@ -1,7 +1,35 @@
 const MODELS = require("./squad.creepModels");
 
 let roomConfig = {
-  CREEP_LIFE: 1500,
+  DEFAULT_ROOM: "W35N43",
+  DEFAULT_HARVESTER_SOURCE_ORIGINS: [
+    "droppedResources",
+    "tombstone",
+    "ruin",
+    "container",
+    "storage",
+    "source",
+  ],
+  DEFAULT_REPAIRER_SOURCE_ORIGINS: [
+    "droppedResources",
+    "tombstone",
+    "ruin",
+    "container",
+    "storage",
+    "container",
+    "spawn",
+    "source",
+  ],
+  DEFAULT_BUILDER_SOURCE_ORIGINS: [
+    "droppedResources",
+    "tombstone",
+    "ruin",
+    "storage",
+    "container",
+    "spawn",
+    "source",
+  ],
+
   W35N43: {
     // ======== Room status ========
     ROOM_NUMBER: "W35N43",
@@ -11,9 +39,9 @@ let roomConfig = {
     CONTAINER_WITHDRAW_THRESHOLD: 0,
 
     // ======== SPAWN ========
-    DEBUG_SPAWN: true,
+    DEBUG_SPAWN: false,
     SPAWN_NAME: "Spawn2",
-    SPAWNING_DIRECTIONS: [BOTTOM_LEFT, BOTTOM],
+    SPAWNING_DIRECTIONS: [TOP],
     NEW_BUILDER_READY_TIME: 10,
     NEW_MINER_READY_TIME: 25,
     NEW_UPGRADER_READY_TIME: 57,
@@ -34,9 +62,10 @@ let roomConfig = {
     HARVESTER_SOURCE_INDEX: 0,
 
     // ======== MINERS ========
-    MINER_CURRENT_MODEL: MODELS.WORKER_3, //W5A
-    MINER_TEAM_SIZE: 1,
+    MINER_CURRENT_MODEL: MODELS.WORKER_1B, //W5A
+    MINER_TEAM_SIZE: 2,
     MINER_SOURCE_INDEX: 1,
+    MINER_SOURCE_ORIGINS: ["source"],
 
     // ======== BUILDERS ========
     BUILDER_CURRENT_MODEL: MODELS.WORKER_4B, //W5B
@@ -45,10 +74,10 @@ let roomConfig = {
     BUILD_PRIORITY: "none",
 
     // ======== UPGRADERS ========
-    UPGRADER_CURRENT_MODEL: MODELS.CARRIER_3B, //W5B
+    UPGRADER_CURRENT_MODEL: MODELS.WORKER_1A, //W5B
     UPGRADER_TEAM_SIZE: 3,
     UPGRADER_SOURCE_INDEX: 0,
-    UPGRADER_ENERGY_SOURCE: "source",
+    UPGRADER_SOURCE_ORIGINS: ["source"],
 
     // ======== REPAIRERS ========
     REPAIRER_SPAWN_DELAY: 1000,
@@ -56,10 +85,6 @@ let roomConfig = {
     REPAIRER_TEAM_SIZE: 2,
     REPAIRER_SOURCE_INDEX: 0,
     REPAIR_PRIORITY: "infrastructure",
-    REPAIR_REGION_X_LOWER: 0,
-    REPAIR_REGION_X_UPPER: 27,
-    REPAIR_REGION_Y_LOWER: 9,
-    REPAIR_REGION_Y_UPPER: 29,
     REPAIR_HITS_THRESHOLD_RATIO: 1 / 4,
   },
 
@@ -68,11 +93,11 @@ let roomConfig = {
     ROOM_NUMBER: "W36N43",
 
     // ======== RESOURCES ========
-    SPAWN_WITHDRAW_THRESHOLD: energyCapacityAvailable * 0,
+    SPAWN_WITHDRAW_THRESHOLD: 0,
     CONTAINER_WITHDRAW_THRESHOLD: 0,
 
     // ======== SPAWN ========
-    DEBUG_SPAWN: true,
+    DEBUG_SPAWN: false,
     SPAWN_NAME: "Spawn1",
     SPAWNING_DIRECTIONS: [BOTTOM_LEFT, BOTTOM],
     NEW_BUILDER_READY_TIME: 10,
@@ -90,17 +115,17 @@ let roomConfig = {
     // ======== HARVESTERS ========
     // 2 energy pts per WORK part per tick
     HARVESTER_CURRENT_MODEL: MODELS.WORKER_1B, //C3
-    HARVESTER_TEAM_SIZE: 1,
+    HARVESTER_TEAM_SIZE: 3,
     HARVESTER_SOURCE_INDEX: 0,
 
     // ======== MINERS ========
     MINER_CURRENT_MODEL: MODELS.WORKER_3, //W5A
-    MINER_TEAM_SIZE: 1,
-    MINER_SOURCE_INDEX: 1,
+    MINER_TEAM_SIZE: 0,
+    MINER_SOURCE_INDEX: 0,
 
     // ======== BUILDERS ========
     BUILDER_CURRENT_MODEL: MODELS.WORKER_4B, //W5B
-    BUILDER_TEAM_SIZE: 3,
+    BUILDER_TEAM_SIZE: 2,
     BUILDER_SOURCE_INDEX: 0,
     BUILD_PRIORITY: "none",
 
@@ -116,10 +141,6 @@ let roomConfig = {
     REPAIRER_TEAM_SIZE: 2,
     REPAIRER_SOURCE_INDEX: 0,
     REPAIR_PRIORITY: "infrastructure",
-    REPAIR_REGION_X_LOWER: 0,
-    REPAIR_REGION_X_UPPER: 27,
-    REPAIR_REGION_Y_LOWER: 9,
-    REPAIR_REGION_Y_UPPER: 29,
     REPAIR_HITS_THRESHOLD_RATIO: 1 / 4,
   },
 };
