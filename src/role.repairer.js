@@ -46,14 +46,8 @@ const findTargets = (creep) => {
 };
 
 const getPrioritizedStructure = (creep, structure) => {
-  const {
-    REPAIR_PRIORITY,
-    REPAIR_HITS_THRESHOLD_RATIO,
-    REPAIR_REGION_X_LOWER,
-    REPAIR_REGION_X_UPPER,
-    REPAIR_REGION_Y_LOWER,
-    REPAIR_REGION_Y_UPPER,
-  } = roomConfig[creep.room.name];
+  const { REPAIR_PRIORITY, REPAIR_HITS_THRESHOLD_RATIO } =
+    roomConfig[creep.room.name];
   let type = structure.structureType;
   let needsRepair =
     structure.hits < structure.hitsMax * REPAIR_HITS_THRESHOLD_RATIO;
@@ -70,13 +64,7 @@ const getPrioritizedStructure = (creep, structure) => {
         type !== STRUCTURE_WALL && type !== STRUCTURE_RAMPART && notMaxHits
       );
     default:
-      return (
-        (needsRepair || notMaxHits) &&
-        structure.pos.x >= REPAIR_REGION_X_LOWER &&
-        structure.pos.x <= REPAIR_REGION_X_UPPER &&
-        structure.pos.y >= REPAIR_REGION_Y_LOWER &&
-        structure.pos.y <= REPAIR_REGION_Y_UPPER
-      );
+      return needsRepair || notMaxHits;
   }
 };
 
