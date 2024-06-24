@@ -27,6 +27,19 @@ function structureHasFreeCapacity(structure, resourceType = RESOURCE_ENERGY) {
 }
 
 /**
+ * Find if a given structure has of specified resource type
+ * @param {Structure} structure
+ * @param {string} resourceType RESOURCE_ENERGY by default
+ * @returns {boolean} true if structure has resource, false otherwise
+ */
+function structureHasResource(structure, resourceType = RESOURCE_ENERGY) {
+  if (structure) {
+    return structure.store.getUsedCapacity(resourceType) > 0;
+  }
+  return false;
+}
+
+/**
  * Find the spawn with given spawn name
  * @param {string} spawnName "Spawn1" by default
  * @returns {StructureSpawn} the spawn with the given name,
@@ -129,9 +142,26 @@ const getHealthyDefenses = (minHealthyHits, room = defaultRoom) => {
   return healthyDefenses;
 };
 
+/**
+ * Find all decayed structures for repair
+ * @param {Room} room
+ * @param {string} structureType
+ * @returns {Structure[]} an array of decayed structures,
+ *    or undefined if not found
+ */
+const getDecayedStructures = (room, structureType) => {
+  let targets = room.find(FIND_STRUCTURES, {
+    filter: (structure) =>
+      structure.structureType == structureType &&
+      structure.hits < structure.hitsMax,
+  });
+  return targets;
+};
+
 module.exports = {
   getStructures,
   structureHasFreeCapacity,
+  structureHasResource,
   getSpawnByName,
   getSpawns,
   getExtensions,
@@ -141,4 +171,5 @@ module.exports = {
   getTowers,
   getUnhealthyDefenses,
   getHealthyDefenses,
+  getDecayedStructures,
 };
