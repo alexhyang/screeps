@@ -1,3 +1,4 @@
+const roomConfig = require("./dashboard");
 const {
   roleHarvester,
   roleUpgrader,
@@ -47,6 +48,37 @@ const getTeam = (creepRole, roomName) => {
 };
 
 /**
+ * Get the max size of team in a rom
+ * @param {string} creepRole
+ * @param {string} roomName
+ * @returns {number} the max size of the team with the given role in the
+ *    specified room, or -1 if no config constant can be found
+ */
+const getTeamMaxSize = (creepRole, roomName) => {
+  const {
+    HARVESTER_TEAM_SIZE,
+    BUILDER_TEAM_SIZE,
+    UPGRADER_TEAM_SIZE,
+    REPAIRER_TEAM_SIZE,
+    MINER_TEAM_SIZE,
+  } = roomConfig[roomName];
+  switch (creepRole) {
+    case "harvester":
+      return HARVESTER_TEAM_SIZE;
+    case "builder":
+      return BUILDER_TEAM_SIZE;
+    case "upgrader":
+      return UPGRADER_TEAM_SIZE;
+    case "repairer":
+      return REPAIRER_TEAM_SIZE;
+    case "miner":
+      return MINER_TEAM_SIZE;
+    default:
+      return -1;
+  }
+};
+
+/**
  * Get creep by name
  * @param {string} creepName name of the creep to find
  * @returns creep with the given name, undefined if not found
@@ -79,6 +111,7 @@ const changeCreepRole = (creep, newRole) => {
 module.exports = {
   assignJobs,
   getTeam,
+  getTeamMaxSize,
   getCreep,
   changeCreepRoleByName,
   changeCreepRole,

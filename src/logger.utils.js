@@ -1,12 +1,25 @@
 /**
- * @param {string} str
- * @returns {string} capitalized string of the given string
+ * Capitalize a string
+ * @param {string} str string
+ * @returns {string} capitalized string
  */
 const capitalize = (str) => {
   if (str.length == 0) return str;
   return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 };
+
 /**
+ * Pad given string to a given length
+ * @param {string} str string to be padded
+ * @param {number} maxLength max length after padding
+ * @returns Padded string with the given max length
+ */
+const padStr = (str, maxLength, padding = " ") => {
+  return str + padding.repeat(maxLength - str.length);
+};
+
+/**
+ * Convert a number to thousands (i.e. 1200 -> 1.2)
  * @param {number} num
  * @param {number} numOfDecimalPlaces
  * @returns {number} the given number in thousands
@@ -14,7 +27,9 @@ const capitalize = (str) => {
 const convertNumToThousands = (num, numOfDecimalPlaces) => {
   return roundTo(num / 1000, numOfDecimalPlaces);
 };
+
 /**
+ * Convert a number to millions (i.e. 1,200,000 -> 1.2)
  * @param {number} num
  * @param {number} numOfDecimalPlaces
  * @returns {number} the given number in millions
@@ -22,6 +37,7 @@ const convertNumToThousands = (num, numOfDecimalPlaces) => {
 const convertNumToMillions = (num, numOfDecimalPlaces) => {
   return roundTo(num / 1000000, numOfDecimalPlaces);
 };
+
 /**
  * @param {number} num
  * @param {number} numOfDecimalPlaces
@@ -50,8 +66,7 @@ const parseNumber = (number) => {
 
 module.exports = {
   capitalize,
-  convertNumToThousands,
-  convertNumToMillions,
+  padStr,
   roundTo,
   parseNumber,
 };

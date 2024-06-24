@@ -2,41 +2,51 @@ const roomConfig = require("./dashboard");
 const { getContainers } = require("./util.structureFinder");
 
 /**
- * @param {number} roomName
- * @returns the available energy of room with the given name
+ * Get the energy available in a room
+ * @param {Room} room
+ * @returns {number} the available energy in the given room
  */
-const getEnergyAvailable = (creep) => {
-  return creep.room.energyAvailable;
+const getEnergyAvailable = (room) => {
+  return room.energyAvailable;
 };
 
 /**
- * @param {number} roomName
+ * Get the energy capacity available in a room
+ * @param {Room} room
  * @returns the available energy capacity of room with the given name
  */
-const getEnergyCapacityAvailable = (creep) => {
-  return creep.room.energyCapacityAvailable;
+const getEnergyCapacityAvailable = (room) => {
+  return room.energyCapacityAvailable;
 };
 
 /**
- * @returns {boolean} true if it is okay to withdraw from spawn(s)
+ * Determine if it's ok to withdraw energy from spawn
+ * @param {Creep} creep
+ * @returns {boolean} true if it is okay to withdraw from spawn(s),
+ *    false otherwise
  **/
 const withdrawFromSpawnOk = (creep) => {
-  let energyAvailable = getEnergyAvailable(creep);
-  return (
-    energyAvailable >= roomConfig[creep.room.name].SPAWN_WITHDRAW_THRESHOLD
-  );
+  let { SPAWN_WITHDRAW_THRESHOLD } = roomConfig[creep.room.name];
+  let energyAvailable = getEnergyAvailable(creep.room);
+  return energyAvailable >= SPAWN_WITHDRAW_THRESHOLD;
 };
 
 /**
+ * Determine if it's ok to withdraw energy from containers
+ * @param {Creep} creep
  * @returns {boolean} true if it is okay to withdraw from container(s)
  **/
 const withdrawFromContainerOk = (creep) => {
-  let container = getContainers(creep)[0];
-  if (container) {
-    return (
-      container.store.getUsedCapacity(RESOURCE_ENERGY) >=
+  let { CONTAINER_WITHDRAW_THRESHOLD } = roomConfig[creep.room.name];
+  let containers = getContainers(creep.room);
+
+  for (let i in containers) {
+    if (
+      containers[i].store.getUsedCapacity(RESOURCE_ENERGY) >=
       CONTAINER_WITHDRAW_THRESHOLD
-    );
+    ) {
+      return true;
+    }
   }
   return false;
 };

@@ -9,6 +9,28 @@ const WITHDRAW_STROKE = "#ffaa00";
 const TRANSFER_STOKE = "#ffffff";
 
 /**
+ * Get the meta data of a creep
+ * @param {Creep} creep
+ * @returns {string} the meta data of the given creep
+ */
+const getCreepMeta = (creep) => {
+  let lifeLeft = creep.ticksToLive;
+  let fatigue = creep.fatigue;
+  let carry = creep.store[RESOURCE_ENERGY];
+  let carryMax = creep.store.getCapacity(RESOURCE_ENERGY);
+  return `(${lifeLeft}, ${carry}/${carryMax}, ${fatigue})`;
+};
+
+/**
+ * Get body parts of a creep
+ * @param {Creep} creep
+ * @returns {string} body parts the given creep
+ */
+const getCreepBodyParts = (creep) => {
+  return creep.body.map((part) => part.type).join(",");
+};
+
+/**
  * Calculate the speed of the given creep
  * @param {Creep} creep
  * @returns speed of the creep in ticks per square
@@ -317,6 +339,8 @@ const moveToPosition = (creep, x, y, roomName = "") => {
 };
 
 module.exports = {
+  getCreepMeta,
+  getCreepBodyParts,
   obtainResource,
   transferTo,
   repairTarget,
