@@ -77,7 +77,8 @@ function recruitUpgraders(roomName) {
 /** Recruit repairers */
 function recruitRepairers(roomName) {
   const { currentModel, teamSize, spawnDelay } = roomConfig[roomName].repairer;
-  if (getTeam("repairer").length < teamSize && Game.time % spawnDelay == 0) {
+  // if (getTeam("repairer", roomName).length < teamSize && Game.time % spawnDelay == 0) {
+  if (getTeam("repairer", roomName).length < teamSize && Game.time % 1 == 0) {
     recruitCreep(currentModel, "repairer", roomName);
   }
 }
@@ -97,11 +98,11 @@ var squadRecruiter = {
 
   run: (roomName) => {
     const { SPAWN_NAME, SPAWNING_DIRECTIONS } = roomConfig[roomName];
-    recruitHarvesters(roomName);
     recruitMiners(roomName);
     recruitUpgraders(roomName);
-    recruitRepairers(roomName);
     recruitBuilders(roomName);
+    recruitHarvesters(roomName);
+    recruitRepairers(roomName);
     let spawn = getSpawnByName(SPAWN_NAME);
     if (spawn && spawn.spawning) {
       spawn.spawning.setDirections(SPAWNING_DIRECTIONS);
