@@ -10,7 +10,10 @@ const {
 
 const HARVEST_STROKE = "#ffaa00";
 const WITHDRAW_STROKE = "#ffaa00";
+const PICKUP_STROKE = "#ffffff";
 const TRANSFER_STOKE = "#ffffff";
+const REPAIR_STROKE = "#ffffff";
+const BUILD_STROKE = "#ffffff";
 
 /**
  * Get the meta data of a creep
@@ -102,9 +105,7 @@ const findClosestDyingWithResource = (
 const pickup = (creep, target) => {
   if (target) {
     if (creep.pickup(target) == ERR_NOT_IN_RANGE) {
-      creep.moveTo(target, {
-        visualizePathStyle: { stroke: "#ffffff" },
-      });
+      creep.moveTo(target, { visualizePathStyle: { stroke: PICKUP_STROKE } });
     }
     return true;
   } else {
@@ -152,9 +153,7 @@ const harvestFrom = (creep, target) => {
 const transferTo = (creep, target, resourceType = RESOURCE_ENERGY) => {
   if (target) {
     if (creep.transfer(target, resourceType) == ERR_NOT_IN_RANGE) {
-      creep.moveTo(target, {
-        visualizePathStyle: { stroke: TRANSFER_STOKE },
-      });
+      creep.moveTo(target, { visualizePathStyle: { stroke: TRANSFER_STOKE } });
     }
   }
 };
@@ -325,6 +324,31 @@ const obtainResource = (creep, resourceOrigins, sourceId = 0) => {
 };
 
 /**
+ * Build the given construction site
+ * @param {Creep} creep
+ * @param {ConstructionSite} target
+ */
+const buildTarget = (creep, target) => {
+  if (target.length !== null) {
+    if (creep.build(target) == ERR_NOT_IN_RANGE) {
+      creep.moveTo(target, { visualizePathStyle: { stroke: BUILD_STROKE } });
+    }
+  }
+};
+
+/**
+ * Build the given construction site by its id
+ * @param {Creep} creep
+ * @param {string} targetId
+ */
+const buildTargetById = (creep, targetId) => {
+  let target = Game.getObjectById(targetId);
+  if (target !== null) {
+    buildTarget(creep, target);
+  }
+};
+
+/**
  * Repair the given target
  * @param {Creep} creep
  * @param {Structure} target
@@ -332,9 +356,7 @@ const obtainResource = (creep, resourceOrigins, sourceId = 0) => {
 const repairTarget = (creep, target) => {
   if (target.length > 0) {
     if (creep.repair(target) == ERR_NOT_IN_RANGE) {
-      creep.moveTo(target, {
-        visualizePathStyle: { stroke: "#ffffff" },
-      });
+      creep.moveTo(target, { visualizePathStyle: { stroke: REPAIR_STROKE } });
     }
   }
 };
@@ -374,6 +396,8 @@ module.exports = {
   getCreepBodyParts,
   obtainResource,
   transferTo,
+  buildTarget,
+  buildTargetById,
   repairTarget,
   claimController,
   moveToPosition,

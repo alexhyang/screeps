@@ -1,5 +1,5 @@
 const roomConfig = require("./dashboard");
-const { obtainResource } = require("./role.creepManager");
+const { obtainResource, buildTarget } = require("./role.creepManager");
 
 /** @param {Creep} creep **/
 const updateBuildingStatus = (creep) => {
@@ -15,39 +15,25 @@ const updateBuildingStatus = (creep) => {
 };
 
 const buildConstructionSite = (creep) => {
-  let filter = (s) => true;
-  let buildingPriority = roomConfig[creep.room.name].builder.buildingPriority;
-  if (buildingPriority !== "none") {
-    filter = (s) => s.structureType === buildingPriority;
-  }
+  let { buildingPriority } = roomConfig[creep.room.name].builder;
+  let filter =
+    buildingPriority == "none"
+      ? (s) => true
+      : (s) => s.structureType === buildingPriority;
+
   let target = creep.pos.findClosestByRange(FIND_CONSTRUCTION_SITES, {
     filter: filter,
   });
+
   if (target) {
-    build(creep, target);
+    buildTarget(creep, target);
   }
 };
 
 /** @param {Creep} creep **/
 const obtainEnergy = (creep) => {
-  obtainResource(
-    creep,
-    roomConfig.defaultBuilderSourceOrigins,
-    roomConfig[creep.room.name].builder.sourceIndex
-  );
-};
-
-const build = (creep, target) => {
-  if (creep.build(target) == ERR_NOT_IN_RANGE) {
-    creep.moveTo(target, { visualizePathStyle: { stroke: "#ffffff" } });
-  }
-};
-
-const buildById = (creep, targetId) => {
-  var target = Game.getObjectById(targetId);
-  if (creep.build(target) == ERR_NOT_IN_RANGE) {
-    creep.moveTo(target, { visualizePathStyle: { stroke: "#ffffff" } });
-  }
+  const { sourceOrigins, sourceIndex } = roomConfig[creep.room.name].builder;
+  obtainResource(creep, sourceOrigins, sourceIndex);
 };
 
 var roleBuilder = {
@@ -60,7 +46,6 @@ var roleBuilder = {
       obtainEnergy(creep);
     }
   },
-  buildById,
 };
 
 module.exports = roleBuilder;
