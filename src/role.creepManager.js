@@ -77,10 +77,16 @@ const findClosestStructureWithFreeCapacity = (creep, structureType) => {
  * @returns {(Tombstone | Ruin | null)} the closest object and resource,
  *    or null if not found
  */
-const findClosestDyingWithResource = (creep, findType, resourceType) => {
-  return creep.pos.findClosestByRange(findType, (s) =>
-    structureHasResource(s, resourceType)
+const findClosestDyingWithResource = (
+  creep,
+  findType,
+  resourceType = RESOURCE_ENERGY
+) => {
+  let dyings = _.filter(
+    creep.room.find(findType),
+    (d) => d.store.getUsedCapacity(resourceType) > 0
   );
+  return creep.pos.findClosestByRange(dyings);
 };
 
 /**
@@ -156,7 +162,7 @@ const transferTo = (creep, target, resourceType = RESOURCE_ENERGY) => {
  */
 const pickupDroppedResources = (creep) => {
   let droppedResource = creep.pos.findClosestByRange(FIND_DROPPED_RESOURCES);
-  if (droppedResource) {
+  if (droppedResource !== null) {
     return pickup(creep, droppedResource);
   }
   return false;
@@ -170,7 +176,7 @@ const pickupDroppedResources = (creep) => {
 const withdrawFromTombstone = (creep) => {
   let closestTombstone = findClosestDyingWithResource(creep, FIND_TOMBSTONES);
   if (
-    closestTombstone &&
+    closestTombstone !== null &&
     creep.pos.getRangeTo(closestTombstone) < closestTombstone.ticksToDecay
   ) {
     return withdrawFrom(creep, closestTombstone);
@@ -184,8 +190,12 @@ const withdrawFromTombstone = (creep) => {
  * @returns {boolean} true if the withdraw is successful, false otherwise
  */
 const withdrawFromRuin = (creep) => {
-  let closestRuin = findClosestDyingWithResource(creep, FIND_RUINS);
-  if (closestRuin) {
+  let closestRuin = findClosestDyingWithResource(
+    creep,
+    FIND_RUINS,
+    RESOURCE_ENERGY
+  );
+  if (closestRuin !== null) {
     return withdrawFrom(creep, closestRuin);
   }
   return false;
