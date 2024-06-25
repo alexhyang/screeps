@@ -11,21 +11,22 @@ const activateTowers = (roomName) => {
       var closestDamagedStructure = tower.pos.findClosestByRange(
         FIND_STRUCTURES,
         {
-          filter: (structure) =>
-            (structure.structureType == STRUCTURE_RAMPART ||
-              structure.structureType == STRUCTURE_WALL) &&
-            structure.hits < minTowerEnergyToRepair,
+          filter: (s) =>
+            (s.structureType == STRUCTURE_RAMPART ||
+              s.structureType == STRUCTURE_WALL) &&
+            s.hits < minDefenseHitsToRepair,
         }
       );
+      console.log(closestDamagedStructure);
       if (
-        closestDamagedStructure &&
-        tower.store.getUsedCapacity(RESOURCE_ENERGY) > minDefenseHitsToRepair
+        closestDamagedStructure !== null &&
+        tower.store.getUsedCapacity(RESOURCE_ENERGY) > minTowerEnergyToRepair
       ) {
         tower.repair(closestDamagedStructure);
       }
 
       var closestHostile = tower.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
-      if (closestHostile && tower.pos.getRangeTo(closestHostile) <= 20) {
+      if (closestHostile && tower.pos.getRangeTo(closestHostile) <= 45) {
         tower.attack(closestHostile);
       }
     }
