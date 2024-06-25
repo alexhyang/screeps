@@ -1,47 +1,20 @@
 const models = require("./squad.creepModels");
-const W35N43_DEBUG_MODE = false;
+const W35N43_DEBUG_MODE = true;
 const W36N43_DEBUG_MODE = false;
+const W35N43_LEFT_SOURCE = 1;
+const W35N43_RIGHT_SOURCE = 0;
 
 let roomConfig = {
-  defaultHarvesterSourceOrigins: [
-    "droppedResources",
-    "tombstone",
-    "ruin",
-    "container",
-    "storage",
-    "source",
-  ],
-  defaultRepairerSourceOrigins: [
-    "droppedResources",
-    "tombstone",
-    "ruin",
-    "storage",
-    "container",
-    "extension",
-    "spawn",
-    "source",
-  ],
-  defaultBuilderSourceOrigins: [
-    "droppedResources",
-    "tombstone",
-    "ruin",
-    "storage",
-    "container",
-    "extension",
-    "spawn",
-    "source",
-  ],
-
   W35N43: {
     // ======== RESOURCES ========
-    SPAWN_WITHDRAW_THRESHOLD: 500,
+    SPAWN_WITHDRAW_THRESHOLD: 400,
     CONTAINER_WITHDRAW_THRESHOLD: 100,
 
     // ======== SPAWN ========
     spawn: {
       spawnNames: ["Spawn2"],
       debugMode: W35N43_DEBUG_MODE,
-      spawningDirections: [TOP],
+      spawningDirections: [BOTTOM],
     },
 
     // ======== TOWERS ========
@@ -51,41 +24,69 @@ let roomConfig = {
     },
 
     // ======== creeps ========
+    // low efficiency miner and transferer
+    harvester: {
+      currentModel: models.CARRIER_1,
+      teamSize: 1,
+      sourceIndex: W35N43_LEFT_SOURCE,
+      sourceOrigins: [
+        "droppedResources",
+        "tombstone",
+        "ruin",
+        "container",
+        "storage",
+        "source",
+      ],
+    },
     miner: {
       creepReadyTime: 10,
       currentModel: models.WORKER_3,
       teamSize: 2,
-      sourceIndex: 1,
+      sourceIndex: W35N43_LEFT_SOURCE,
       sourceOrigins: ["source"],
     },
     upgrader: {
       creepReadyTime: 10,
       currentModel: models.WORKER_3,
-      teamSize: 2,
-      sourceIndex: 0,
+      teamSize: 1,
+      sourceIndex: W35N43_RIGHT_SOURCE,
       sourceOrigins: ["source"],
     },
     // first structures to build:
     //   road, container
     builder: {
       creepReadyTime: 10,
-      currentModel: models.WORKER_2B,
-      teamSize: 0,
-      sourceIndex: 0,
+      currentModel: models.WORKER_4B,
+      teamSize: 1,
+      sourceIndex: W35N43_LEFT_SOURCE,
+      sourceOrigins: [
+        "droppedResources",
+        // "tombstone",
+        // "ruin",
+        // "storage",
+        "container",
+        "extension",
+        // "spawn",
+        "source",
+      ],
       buildingPriority: "none",
-    },
-    // spawn harvester after containers built
-    harvester: {
-      currentModel: models.WORKER_2B,
-      teamSize: 0,
-      sourceIndex: 0,
     },
     // spawn repairer when lots of structures
     repairer: {
-      spawnDelay: 1000,
+      spawnCycle: 1000,
       currentModel: models.WORKER_1B,
-      teamSize: 0,
-      sourceIndex: 0,
+      teamSize: 1,
+      sourceIndex: W35N43_LEFT_SOURCE,
+      sourceOrigins: [
+        "droppedResources",
+        "tombstone",
+        "ruin",
+        "storage",
+        "container",
+        "extension",
+        "spawn",
+        // "source",
+      ],
       repairingPriority: "none",
       repairingHitsRatio: 1 / 4,
     },
@@ -106,13 +107,27 @@ let roomConfig = {
     // ======== TOWERS ========
     tower: {
       minTowerEnergyToRepair: 500,
-      minDefenseHitsToRepair: 5000,
+      minDefenseHitsToRepair: 30000,
     },
 
     // ======== creeps ========
+    // low efficiency miner and transferer
+    harvester: {
+      currentModel: models.CARRIER_1,
+      teamSize: 1,
+      sourceIndex: 0,
+      sourceOrigins: [
+        "droppedResources",
+        "tombstone",
+        "ruin",
+        "container",
+        "storage",
+        "source",
+      ],
+    },
     miner: {
-      creepReadyTime: 10,
-      currentModel: models.WORKER_3,
+      creepReadyTime: 20,
+      currentModel: models.WORKER_5A,
       teamSize: 1,
       sourceIndex: 0,
       sourceOrigins: ["source"],
@@ -120,12 +135,12 @@ let roomConfig = {
     upgrader: {
       creepReadyTime: 10,
       currentModel: models.CARRIER_3B,
-      teamSize: 4,
+      teamSize: 6,
       sourceIndex: 0,
       sourceOrigins: [
-        // "droppedResources",
-        // "tombstone",
-        // "ruin",
+        "droppedResources",
+        "tombstone",
+        "ruin",
         "extension",
         "container",
         "spawn",
@@ -137,23 +152,37 @@ let roomConfig = {
     builder: {
       creepReadyTime: 10,
       currentModel: models.WORKER_4B,
-      teamSize: 1,
+      teamSize: 0,
       sourceIndex: 0,
+      sourceOrigins: [
+        // "droppedResources",
+        "tombstone",
+        "ruin",
+        "storage",
+        "container",
+        "extension",
+        "spawn",
+        "source",
+      ],
       buildingPriority: "none",
-    },
-    // spawn harvester after containers built
-    harvester: {
-      currentModel: models.CARRIER_2,
-      teamSize: 1,
-      sourceIndex: 0,
     },
     // spawn repairer when lots of structures
     repairer: {
-      spawnDelay: 1000,
+      spawnCycle: 2000,
       currentModel: models.WORKER_1B,
       teamSize: 1,
       sourceIndex: 0,
-      repairingPriority: "none",
+      sourceOrigins: [
+        "droppedResources",
+        "tombstone",
+        "ruin",
+        "storage",
+        "container",
+        "extension",
+        "spawn",
+        "source",
+      ],
+      repairingPriority: "infrastructure",
       repairingHitsRatio: 1 / 4,
     },
   },

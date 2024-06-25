@@ -54,13 +54,16 @@ function recruitHarvesters(roomName) {
 
 /** Recruit builders */
 function recruitBuilders(roomName) {
-  const { currentModel, teamSize, creepReadyTime } =
-    roomConfig[roomName].builder;
-  if (
-    Object.keys(Game.constructionSites).length > 0 &&
-    recruitInAdvanceOk(getTeam("builder", roomName), teamSize, creepReadyTime)
-  ) {
-    recruitCreep(currentModel, "builder", roomName);
+  // TODO: fix find construction sites later
+  if (Game.rooms[roomName].find(FIND_CONSTRUCTION_SITES) != null) {
+    const { currentModel, teamSize, creepReadyTime } =
+      roomConfig[roomName].builder;
+    if (
+      Object.keys(Game.constructionSites).length > 0 &&
+      recruitInAdvanceOk(getTeam("builder", roomName), teamSize, creepReadyTime)
+    ) {
+      recruitCreep(currentModel, "builder", roomName);
+    }
   }
 }
 
@@ -77,9 +80,11 @@ function recruitUpgraders(roomName) {
 
 /** Recruit repairers */
 function recruitRepairers(roomName) {
-  const { currentModel, teamSize, spawnDelay } = roomConfig[roomName].repairer;
-  // if (getTeam("repairer", roomName).length < teamSize && Game.time % spawnDelay == 0) {
-  if (getTeam("repairer", roomName).length < teamSize && Game.time % 1 == 0) {
+  const { currentModel, teamSize, spawnCycle } = roomConfig[roomName].repairer;
+  if (
+    getTeam("repairer", roomName).length < teamSize &&
+    Game.time % spawnCycle == 0
+  ) {
     recruitCreep(currentModel, "repairer", roomName);
   }
 }
@@ -99,10 +104,10 @@ var squadRecruiter = {
 
   run: (roomName) => {
     const { SPAWN_NAME, SPAWNING_DIRECTIONS } = roomConfig[roomName];
+    recruitHarvesters(roomName);
     recruitMiners(roomName);
     recruitUpgraders(roomName);
     recruitBuilders(roomName);
-    recruitHarvesters(roomName);
     recruitRepairers(roomName);
     let spawn = getSpawnByName(SPAWN_NAME);
     if (spawn && spawn.spawning) {
