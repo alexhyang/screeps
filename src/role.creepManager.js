@@ -210,6 +210,22 @@ const withdrawFromContainer = (creep) => {
 };
 
 /**
+ * Withdraw from the closest extension
+ * @param {Creep} creep
+ * @returns {boolean} true if the withdraw is successful, false otherwise
+ */
+const withdrawFromExtension = (creep) => {
+  let closestExtension = findClosestStructureWithResource(
+    creep,
+    STRUCTURE_EXTENSION
+  );
+  if (closestExtension) {
+    return withdrawFrom(creep, closestExtension);
+  }
+  return false;
+};
+
+/**
  * @param {Creep} creep
  * @returns {boolean} true if the withdraw is successful, false otherwise
  */
@@ -268,6 +284,8 @@ const findHarvestMethod = (origin) => {
       return withdrawFromContainer;
     case "storage":
       return withdrawFromStorage;
+    case "extension":
+      return withdrawFromExtension;
     case "spawn":
       return withdrawFromSpawn;
     default:
