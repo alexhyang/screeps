@@ -28,7 +28,7 @@ const findTarget = (creep) => {
       structureHasFreeCapacity(s)
     );
     if (towersNotFull.length > 0) {
-      return towersNotFull;
+      return creep.pos.findClosestByRange(towersNotFull);
     }
 
     var storage = getStorage(creep.room);
