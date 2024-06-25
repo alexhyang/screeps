@@ -2,7 +2,7 @@
  * Find all structures of specified type in the room
  * @param {string} structureType
  * @param {Room} room
- * @returns {Structure[]} an array of structures, or undefined if not found
+ * @returns {Structure[]} an array of structures, or empty array if not found
  */
 function getStructures(structureType, room) {
   return room.find(FIND_STRUCTURES, {
@@ -39,7 +39,7 @@ function structureHasResource(structure, resourceType = RESOURCE_ENERGY) {
 /**
  * Find the spawn with given spawn name
  * @param {string} spawnName
- * @returns {StructureSpawn} the spawn with the given name,
+ * @returns {(StructureSpawn|undefined)} the spawn with the given name,
  *    or undefined if not found
  */
 const getSpawnByName = (spawnName) => {
@@ -50,7 +50,7 @@ const getSpawnByName = (spawnName) => {
  * Find all spawns in the given room
  * @param {Room} room
  * @returns {StructureSpawn[]} an array of spawns in the room,
- *    or undefined if not found
+ *    or empty array if not found
  */
 const getSpawns = (room) => {
   return getStructures(STRUCTURE_SPAWN, room);
@@ -59,7 +59,7 @@ const getSpawns = (room) => {
 /**
  * Find the controller in the given room
  * @param {Room} room
- * @returns {StructureController} the controller in the room,
+ * @returns {(StructureController|undefined)} the controller in the room,
  *    or undefined if not found
  */
 const getController = (room) => {
@@ -70,7 +70,7 @@ const getController = (room) => {
  * Find all containers in the given room
  * @param {Room} room
  * @returns {StructureContainer[]} an array of containers in the room,
- *    or undefined if not found
+ *    or empty array if not found
  */
 const getContainers = (room) => {
   return getStructures(STRUCTURE_CONTAINER, room);
@@ -79,7 +79,7 @@ const getContainers = (room) => {
 /**
  * Find the storage in the given room
  * @param {Room} room
- * @returns {StructureStorage} the storage in the room,
+ * @returns {(StructureStorage|undefined)} the storage in the room,
  *    or undefined if not found
  */
 const getStorage = (room) => {
@@ -90,7 +90,7 @@ const getStorage = (room) => {
  * Find all towers in the given room
  * @param {Room} room
  * @returns {StructureTower[]} an array of towers in the room,
- *    or undefined if not found
+ *    or empty array if not found
  */
 const getTowers = (room) => {
   return getStructures(STRUCTURE_TOWER, room);
@@ -99,7 +99,7 @@ const getTowers = (room) => {
 /** Find all extensions in the given room
  * @param {Room} room
  * @returns {StructureTower[]} an array of extensions in the room,
- *    or undefined if not found
+ *    or empty array if not found
  */
 const getExtensions = (room) => {
   return getStructures(STRUCTURE_EXTENSION, room);
@@ -110,7 +110,7 @@ const getExtensions = (room) => {
  * @param {number} minHealthyHits minimum hits of healthy defenses
  * @param {Room} room search in the given room
  * @returns {StructureDefenses[]} an array of unhealthy walls and ramparts,
- *    or undefined if not found
+ *    or empty array if not found
  */
 const getUnhealthyDefenses = (minHealthyHits, room) => {
   let unhealthyDefenses = room.find(FIND_STRUCTURES, {
@@ -127,7 +127,7 @@ const getUnhealthyDefenses = (minHealthyHits, room) => {
  * @param {number} minHealthyHits minimum hits of healthy defenses
  * @param {Room} room search in the given room
  * @returns {StructureDefenses[]} an array of healthy walls and ramparts,
- *    or undefined if not found
+ *    or empty array if not found
  */
 const getHealthyDefenses = (minHealthyHits, room) => {
   let healthyDefenses = room.find(FIND_STRUCTURES, {
@@ -140,11 +140,11 @@ const getHealthyDefenses = (minHealthyHits, room) => {
 };
 
 /**
- * Find all decayed structures for repair
+ * Find all damaged/decayed structures for repair
  * @param {Room} room
  * @param {string} structureType
  * @returns {Structure[]} an array of decayed structures,
- *    or undefined if not found
+ *    or empty array if not found
  */
 const getDamagedStructures = (room, structureType) => {
   let targets = room.find(FIND_STRUCTURES, {
