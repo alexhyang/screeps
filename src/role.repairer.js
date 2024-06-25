@@ -40,19 +40,17 @@ const findTargets = (creep) => {
 };
 
 const getPrioritizedStructure = (creep, structure) => {
-  const { REPAIR_PRIORITY, REPAIR_HITS_THRESHOLD_RATIO } =
-    roomConfig[creep.room.name];
+  const { repairingPriority, repairingHitsRatio } =
+    roomConfig[creep.room.name].repairer;
   let type = structure.structureType;
-  let needsRepair =
-    structure.hits < structure.hitsMax * REPAIR_HITS_THRESHOLD_RATIO;
+  let needsRepair = structure.hits < structure.hitsMax * repairingHitsRatio;
   let notMaxHits = structure.hits < structure.hitsMax;
-  switch (REPAIR_PRIORITY) {
-    case "walls":
-      return type == STRUCTURE_WALL && needsRepair;
-    case "roads":
-      return type == STRUCTURE_ROAD && notMaxHits;
-    case "ramparts":
-      return type == STRUCTURE_RAMPART && needsRepair;
+
+  switch (repairingPriority) {
+    case "defenses":
+      return (
+        (type == STRUCTURE_WALL || type == STRUCTURE_RAMPART) && needsRepair
+      );
     case "infrastructure":
       return (
         type !== STRUCTURE_WALL && type !== STRUCTURE_RAMPART && notMaxHits
