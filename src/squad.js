@@ -55,24 +55,19 @@ const getTeam = (creepRole, roomName) => {
  *    specified room, or -1 if no config constant can be found
  */
 const getTeamMaxSize = (creepRole, roomName) => {
-  const {
-    HARVESTER_TEAM_SIZE,
-    BUILDER_TEAM_SIZE,
-    UPGRADER_TEAM_SIZE,
-    REPAIRER_TEAM_SIZE,
-    MINER_TEAM_SIZE,
-  } = roomConfig[roomName];
+  const { harvester, builder, upgrader, repairer, miner } =
+    roomConfig[roomName];
   switch (creepRole) {
     case "harvester":
-      return HARVESTER_TEAM_SIZE;
+      return harvester.teamSize;
     case "builder":
-      return BUILDER_TEAM_SIZE;
+      return builder.teamSize;
     case "upgrader":
-      return UPGRADER_TEAM_SIZE;
+      return upgrader.teamSize;
     case "repairer":
-      return REPAIRER_TEAM_SIZE;
+      return repairer.teamSize;
     case "miner":
-      return MINER_TEAM_SIZE;
+      return miner.teamSize;
     default:
       return -1;
   }

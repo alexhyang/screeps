@@ -16,7 +16,7 @@ const updateBuildingStatus = (creep) => {
 
 const buildConstructionSite = (creep) => {
   let filter = (s) => true;
-  let buildingPriority = roomConfig[creep.room.name].BUILD_PRIORITY;
+  let buildingPriority = roomConfig[creep.room.name].builder.buildingPriority;
   if (buildingPriority !== "none") {
     filter = (s) => s.structureType === buildingPriority;
   }
@@ -32,8 +32,8 @@ const buildConstructionSite = (creep) => {
 const obtainEnergy = (creep) => {
   obtainResource(
     creep,
-    roomConfig.DEFAULT_BUILDER_SOURCE_ORIGINS,
-    roomConfig[creep.room.name].HARVESTER_SOURCE_INDEX
+    roomConfig.defaultBuilderSourceOrigins,
+    roomConfig[creep.room.name].builder.sourceIndex
   );
 };
 

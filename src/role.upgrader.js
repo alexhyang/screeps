@@ -24,9 +24,8 @@ const upgradeController = (creep) => {
 
 /** @param {Creep} creep **/
 const obtainEnergy = (creep) => {
-  const { UPGRADER_SOURCE_ORIGINS, UPGRADER_SOURCE_INDEX } =
-    roomConfig[creep.room.name];
-  obtainResource(creep, UPGRADER_SOURCE_ORIGINS, UPGRADER_SOURCE_INDEX);
+  const { sourceOrigins, sourceIndex } = roomConfig[creep.room.name].upgrader;
+  obtainResource(creep, sourceOrigins, sourceIndex);
 };
 
 var roleUpgrader = {

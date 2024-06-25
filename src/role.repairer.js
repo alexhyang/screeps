@@ -22,8 +22,8 @@ const repairConstruction = (creep) => {
 const obtainEnergy = (creep) => {
   obtainResource(
     creep,
-    roomConfig.DEFAULT_REPAIRER_SOURCE_ORIGINS,
-    roomConfig[creep.room.name].HARVESTER_SOURCE_INDEX
+    roomConfig.defaultRepairerSourceOrigins,
+    roomConfig[creep.room.name].repairer.sourceIndex
   );
 };
 

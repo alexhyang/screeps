@@ -11,13 +11,13 @@ const { getSpawnByName } = require("./util.structureFinder");
  * @param {string} creepRole the role to assign to the creep
  */
 function recruitCreep(creepModel, creepRole, roomName) {
-  const { SPAWN_NAME, DEBUG_SPAWN } = roomConfig[roomName];
+  const { spawnNames, debugMode } = roomConfig[roomName].spawn;
   var newCreepName = creepModel.name + "-" + (Game.time % 100);
-  if (DEBUG_SPAWN) {
+  if (debugMode) {
     console.log(`TEST: ${roomName} Spawning new ${creepRole}: ` + newCreepName);
   } else {
     console.log(`${roomName} Spawning new ${creepRole}: ` + newCreepName);
-    getSpawnByName(SPAWN_NAME).spawnCreep(
+    getSpawnByName(spawnNames[0]).spawnCreep(
       buildBodyParts(creepModel),
       newCreepName,
       {
@@ -45,70 +45,50 @@ function recruitInAdvanceOk(currentTeam, maxTeamSize, newCreepReadyTime) {
 
 /** Recruit harvesters */
 function recruitHarvesters(roomName) {
-  const { HARVESTER_CURRENT_MODEL, HARVESTER_TEAM_SIZE } = roomConfig[roomName];
-  if (getTeam("harvester", roomName).length < HARVESTER_TEAM_SIZE) {
-    recruitCreep(HARVESTER_CURRENT_MODEL, "harvester", roomName);
+  const { currentModel, teamSize } = roomConfig[roomName].harvester;
+  if (getTeam("harvester", roomName).length < teamSize) {
+    recruitCreep(currentModel, "harvester", roomName);
   }
 }
 
 /** Recruit builders */
 function recruitBuilders(roomName) {
-  const { BUILDER_CURRENT_MODEL, BUILDER_TEAM_SIZE, NEW_BUILDER_READY_TIME } =
-    roomConfig[roomName];
+  const { currentModel, teamSize, creepReadyTime } =
+    roomConfig[roomName].builder;
   if (
     Object.keys(Game.constructionSites).length > 0 &&
-    recruitInAdvanceOk(
-      getTeam("builder", roomName),
-      BUILDER_TEAM_SIZE,
-      NEW_BUILDER_READY_TIME
-    )
+    recruitInAdvanceOk(getTeam("builder", roomName), teamSize, creepReadyTime)
   ) {
-    recruitCreep(BUILDER_CURRENT_MODEL, "builder", roomName);
+    recruitCreep(currentModel, "builder", roomName);
   }
 }
 
 /** Recruit upgraders */
 function recruitUpgraders(roomName) {
-  const {
-    UPGRADER_CURRENT_MODEL,
-    UPGRADER_TEAM_SIZE,
-    NEW_UPGRADER_READY_TIME,
-  } = roomConfig[roomName];
+  const { currentModel, teamSize, creepReadyTime } =
+    roomConfig[roomName].upgrader;
   if (
-    recruitInAdvanceOk(
-      getTeam("upgrader", roomName),
-      UPGRADER_TEAM_SIZE,
-      NEW_UPGRADER_READY_TIME
-    )
+    recruitInAdvanceOk(getTeam("upgrader", roomName), teamSize, creepReadyTime)
   ) {
-    recruitCreep(UPGRADER_CURRENT_MODEL, "upgrader", roomName);
+    recruitCreep(currentModel, "upgrader", roomName);
   }
 }
 
 /** Recruit repairers */
 function recruitRepairers(roomName) {
-  const { REPAIRER_CURRENT_MODEL, REPAIRER_TEAM_SIZE, REPAIRER_RESPAWN_GAP } =
-    roomConfig[roomName];
-  if (
-    getTeam("repairer").length < REPAIRER_TEAM_SIZE &&
-    Game.time % REPAIRER_RESPAWN_GAP == 0
-  ) {
-    recruitCreep(REPAIRER_CURRENT_MODEL, "repairer", roomName);
+  const { currentModel, teamSize, spawnDelay } = roomConfig[roomName].repairer;
+  if (getTeam("repairer").length < teamSize && Game.time % spawnDelay == 0) {
+    recruitCreep(currentModel, "repairer", roomName);
   }
 }
 
 /** Recruit miners */
 function recruitMiners(roomName) {
-  const { MINER_CURRENT_MODEL, MINER_TEAM_SIZE, NEW_MINER_READY_TIME } =
-    roomConfig[roomName];
+  const { currentModel, teamSize, creepReadyTime } = roomConfig[roomName].miner;
   if (
-    recruitInAdvanceOk(
-      getTeam("miner", roomName),
-      MINER_TEAM_SIZE,
-      NEW_MINER_READY_TIME
-    )
+    recruitInAdvanceOk(getTeam("miner", roomName), teamSize, creepReadyTime)
   ) {
-    recruitCreep(MINER_CURRENT_MODEL, "miner", roomName);
+    recruitCreep(currentModel, "miner", roomName);
   }
 }
 

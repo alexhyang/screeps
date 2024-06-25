@@ -44,8 +44,8 @@ var roleHarvester = {
     if (creep.store.getFreeCapacity() > creep.store.getCapacity() * 0.7) {
       obtainResource(
         creep,
-        roomConfig.DEFAULT_HARVESTER_SOURCE_ORIGINS,
-        roomConfig[creep.room.name].HARVESTER_SOURCE_INDEX
+        roomConfig.defaultHarvesterSourceOrigins,
+        roomConfig[creep.room.name].harvester.sourceIndex
       );
     } else {
       let target = findTarget(creep);
