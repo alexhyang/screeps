@@ -43,9 +43,9 @@ const getSpeed = (creep) => {
 /**
  * Find the closest structure of type specified by the find constant
  * @param {Creep} creep
- * @param {number} structureType the STRUCTURE_* constant
- * @returns {Structure} the closest structure with specified type,
- *    or undefined if not found
+ * @param {string} structureType the STRUCTURE_* constant
+ * @returns {(Structure|null)} the closest structure with specified type,
+ *    or null if not found
  */
 const findClosestStructureWithResource = (creep, structureType) => {
   let structures = _.filter(
@@ -58,9 +58,9 @@ const findClosestStructureWithResource = (creep, structureType) => {
 /**
  * Find the closest structure of type specified by the find constant
  * @param {Creep} creep
- * @param {number} structureType the STRUCTURE_* constant
- * @returns {Structure} the closest structure with specified type,
- *    or undefined if not found
+ * @param {string} structureType the STRUCTURE_* constant
+ * @returns {(Structure|null)} the closest structure with specified type,
+ *    or null if not found
  */
 const findClosestStructureWithFreeCapacity = (creep, structureType) => {
   let structures = _.filter(
@@ -76,8 +76,8 @@ const findClosestStructureWithFreeCapacity = (creep, structureType) => {
  * @param {Creep} creep
  * @param {(FIND_TOMBSTONES | FIND_RUINS)} findType
  * @param {string} resourceType
- * @returns {(TOMBSTONE | RUIN)} the closest structure with specified type
- *    and resource, or undefined if not found
+ * @returns {(Tombstone | Ruin | null)} the closest object and resource,
+ *    or null if not found
  */
 const findClosestDyingWithResource = (creep, findType, resourceType) => {
   return creep.pos.findClosestByRange(findType, (s) =>
@@ -107,7 +107,7 @@ const pickup = (creep, target) => {
 /**
  * Withdraw the resource of given type from structure
  * @param {Creep} creep
- * @param {Structure} target target structure to withdraw from
+ * @param {(Structure|Tombstone|Ruin)} target target structure to withdraw from
  * @param {string} resourceType RESOURCE_ENERGY by default
  * @returns {boolean} true if the withdraw is successful, false otherwise
  */
@@ -269,7 +269,8 @@ const harvestFromSource = (creep, sourceId) => {
 
 /**
  * Returns the method to obtain resources
- * @param {string} origin
+ * @param {("droppedResource" | "tombstone" | "ruin" | "container" |
+ *    "storage" | "extension" | "spawn" | "source")} origin
  * @returns {function(Creep): void} function to obtain resources
  */
 const findHarvestMethod = (origin) => {
@@ -297,8 +298,8 @@ const findHarvestMethod = (origin) => {
 /**
  * Obtain resource from the given origins in order
  * @param {Creep} creep
- * @param {("droppedResources" | "tombstone" | "ruin" |
- *    "container" | "storage" | "spawn" | "source")[]} resourceOrigins
+ * @param {("droppedResources" | "tombstone" | "ruin" | "container" |
+ *    "storage" | "extension" |" "spawn" | "source")[]} resourceOrigins
  *    an array of origins of resource
  */
 const obtainResource = (creep, resourceOrigins, sourceId = 0) => {
