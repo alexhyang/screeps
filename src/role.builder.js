@@ -6,6 +6,11 @@ const {
 
 /** @param {Creep} creep **/
 const updateBuildingStatus = (creep) => {
+  if (creep.pos.findClosestByRange(FIND_CONSTRUCTION_SITES) == null) {
+    creep.memory = { role: "repairer" };
+    return;
+  }
+
   if (creep.memory.building && creep.store[RESOURCE_ENERGY] == 0) {
     creep.memory.building = false;
     creep.say("⛏");
