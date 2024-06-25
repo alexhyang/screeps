@@ -1,4 +1,6 @@
 const models = require("./squad.creepModels");
+const W35N43_DEBUG_MODE = false;
+const W36N43_DEBUG_MODE = false;
 
 let roomConfig = {
   defaultHarvesterSourceOrigins: [
@@ -38,7 +40,7 @@ let roomConfig = {
     // ======== SPAWN ========
     spawn: {
       spawnNames: ["Spawn2"],
-      debugMode: false,
+      debugMode: W35N43_DEBUG_MODE,
       spawningDirections: [TOP],
     },
 
@@ -49,36 +51,40 @@ let roomConfig = {
     },
 
     // ======== creeps ========
-    harvester: {
-      currentModel: models.WORKER_2A,
-      teamSize: 1,
-      sourceIndex: 1,
-    },
     miner: {
       creepReadyTime: 10,
-      currentModel: models.WORKER_4A,
-      teamSize: 1,
+      currentModel: models.WORKER_3,
+      teamSize: 2,
       sourceIndex: 1,
       sourceOrigins: ["source"],
-    },
-    builder: {
-      creepReadyTime: 10,
-      currentModel: models.WORKER_2A,
-      teamSize: 1,
-      sourceIndex: 0,
-      buildingPriority: "none",
     },
     upgrader: {
       creepReadyTime: 10,
-      currentModel: models.WORKER_2A,
-      teamSize: 3,
+      currentModel: models.WORKER_3,
+      teamSize: 2,
       sourceIndex: 0,
       sourceOrigins: ["source"],
     },
+    // first structures to build:
+    //   road, container
+    builder: {
+      creepReadyTime: 10,
+      currentModel: models.WORKER_2B,
+      teamSize: 0,
+      sourceIndex: 0,
+      buildingPriority: "none",
+    },
+    // spawn harvester after containers built
+    harvester: {
+      currentModel: models.WORKER_2B,
+      teamSize: 0,
+      sourceIndex: 0,
+    },
+    // spawn repairer when lots of structures
     repairer: {
       spawnDelay: 1000,
       currentModel: models.WORKER_1B,
-      teamSize: 1,
+      teamSize: 0,
       sourceIndex: 0,
       repairingPriority: "none",
       repairingHitsRatio: 1 / 4,
@@ -87,13 +93,13 @@ let roomConfig = {
 
   W36N43: {
     // ======== RESOURCES ========
-    SPAWN_WITHDRAW_THRESHOLD: 300,
+    SPAWN_WITHDRAW_THRESHOLD: 350, // current miner cost - 100
     CONTAINER_WITHDRAW_THRESHOLD: 150,
 
     // ======== SPAWN ========
     spawn: {
       spawnNames: ["Spawn1"],
-      debugMode: false,
+      debugMode: W36N43_DEBUG_MODE,
       spawningDirections: [BOTTOM_LEFT, BOTTOM],
     },
 
@@ -104,24 +110,12 @@ let roomConfig = {
     },
 
     // ======== creeps ========
-    harvester: {
-      currentModel: models.CARRIER_2,
-      teamSize: 1,
-      sourceIndex: 0,
-    },
     miner: {
       creepReadyTime: 10,
       currentModel: models.WORKER_3,
       teamSize: 1,
       sourceIndex: 0,
       sourceOrigins: ["source"],
-    },
-    builder: {
-      creepReadyTime: 10,
-      currentModel: models.WORKER_4B,
-      teamSize: 1,
-      sourceIndex: 0,
-      buildingPriority: "none",
     },
     upgrader: {
       creepReadyTime: 10,
@@ -138,6 +132,22 @@ let roomConfig = {
         "source",
       ],
     },
+    // first structures to build:
+    //   road, container
+    builder: {
+      creepReadyTime: 10,
+      currentModel: models.WORKER_4B,
+      teamSize: 1,
+      sourceIndex: 0,
+      buildingPriority: "none",
+    },
+    // spawn harvester after containers built
+    harvester: {
+      currentModel: models.CARRIER_2,
+      teamSize: 1,
+      sourceIndex: 0,
+    },
+    // spawn repairer when lots of structures
     repairer: {
       spawnDelay: 1000,
       currentModel: models.WORKER_1B,

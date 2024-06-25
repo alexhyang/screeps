@@ -90,7 +90,16 @@ const getCreep = (creepName) => {
 const changeCreepRoleByName = (creepName, newRole) => {
   let creep = getCreep(creepName);
   if (creep) {
-    changeCreepRole(creep, newRole);
+    let changeAllowed = roomConfig[creep.room.name].spawn.debugMode;
+    if (changeAllowed) {
+      changeCreepRole(creep, newRole);
+    } else {
+      console.log(
+        "Change Rejected! Turn on debug mode for room: ",
+        creep.room.name
+      );
+      console.log("\n");
+    }
   }
 };
 
