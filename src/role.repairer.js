@@ -15,16 +15,16 @@ const updateRepairingStatus = (creep) => {
 };
 
 const repairConstruction = (creep) => {
-  let targets = findTargets(creep).sort((a, b) => a.hits - b.hits);
+  let targets = findRepairTargets(creep).sort((a, b) => a.hits - b.hits);
   repairTarget(creep, targets[0]);
 };
 
 const obtainEnergy = (creep) => {
-  let { sourceOrigins, sourceIndex } = roomConfig[creep.room.name].repairer;
+  const { sourceOrigins, sourceIndex } = roomConfig[creep.room.name].repairer;
   obtainResource(creep, sourceOrigins, sourceIndex);
 };
 
-const findTargets = (creep) => {
+const findRepairTargets = (creep) => {
   var decayedContainers = getDamagedStructures(creep.room, STRUCTURE_CONTAINER);
   var decayedLinks = getDamagedStructures(creep.room, STRUCTURE_LINK);
   if (decayedContainers.length > 0) {

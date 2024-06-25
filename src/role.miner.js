@@ -7,7 +7,7 @@ const {
   getExtensions,
 } = require("./util.structureFinder");
 
-const findTarget = (creep) => {
+const findDeliveryTarget = (creep) => {
   if (creep) {
     let containersNotFull = _.filter(getContainers(creep.room), (s) =>
       structureHasFreeCapacity(s)
@@ -39,7 +39,7 @@ var roleMiner = {
     if (creep.store.getFreeCapacity() > 0) {
       obtainResource(creep, sourceOrigins, sourceIndex);
     } else {
-      let target = findTarget(creep);
+      let target = findDeliveryTarget(creep);
       transferTo(creep, target);
     }
   },
