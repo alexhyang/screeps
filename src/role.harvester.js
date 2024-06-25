@@ -1,5 +1,6 @@
 const roomConfig = require("./dashboard");
 const { obtainResource, transferTo } = require("./role.creepManager");
+const { getTeam } = require("./squad");
 const {
   getTowers,
   getStorage,
@@ -8,20 +9,19 @@ const {
   structureHasFreeCapacity,
 } = require("./util.structureFinder");
 
-const findTarget = (creep) => {
+const findDeliveryTarget = (creep, resourceType = RESOURCE_ENERGY) => {
   if (creep) {
-    var extensionsNotFull = _.filter(getExtensions(creep.room), (s) =>
-      structureHasFreeCapacity(s)
-    );
-    if (extensionsNotFull.length > 0) {
-      return creep.pos.findClosestByRange(extensionsNotFull);
-    }
-
-    var spawnsNotFull = _.filter(getSpawns(creep.room), (s) =>
-      structureHasFreeCapacity(s)
-    );
-    if (spawnsNotFull.length > 0) {
-      return creep.pos.findClosestByRange(spawnsNotFull);
+    let spawnExtensionsNotFull = creep.room.find(FIND_STRUCTURES, {
+      filter: (s) => {
+        return (
+          (s.structureType == STRUCTURE_EXTENSION ||
+            s.structureType == STRUCTURE_SPAWN) &&
+          s.store.getFreeCapacity(resourceType) > 0
+        );
+      },
+    });
+    if (spawnExtensionsNotFull.length > 0) {
+      return creep.pos.findClosestByRange(spawnExtensionsNotFull);
     }
 
     var towersNotFull = _.filter(getTowers(creep.room), (s) =>
@@ -38,20 +38,22 @@ const findTarget = (creep) => {
   }
 };
 
-var roleHarvester = {
+const harvesterDeliveryOk = (creep) => {
+  let deliveryThreshold =
+    getTeam("miner", creep.room.name).length > 0 ? 0.7 : 0;
+  return creep.store.getFreeCapacity() > deliveryThreshold;
+};
+
+module.exports = {
   /** @param {Creep} creep **/
   run: function (creep) {
-    if (creep.store.getFreeCapacity() > creep.store.getCapacity() * 0.7) {
-      obtainResource(
-        creep,
-        roomConfig.defaultHarvesterSourceOrigins,
-        roomConfig[creep.room.name].harvester.sourceIndex
-      );
+    if (harvesterDeliveryOk(creep)) {
+      const { sourceOrigins, sourceIndex } =
+        roomConfig[creep.room.name].harvester;
+      obtainResource(creep, sourceOrigins, sourceIndex);
     } else {
-      let target = findTarget(creep);
+      let target = findDeliveryTarget(creep);
       transferTo(creep, target);
     }
   },
 };
-
-module.exports = roleHarvester;
