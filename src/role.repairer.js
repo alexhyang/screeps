@@ -1,6 +1,6 @@
 const roomConfig = require("./dashboard");
 const { obtainResource, repairTarget } = require("./role.creepManager");
-const { getDecayedStructures } = require("./util.structureFinder");
+const { getDamagedStructures } = require("./util.structureFinder");
 
 const updateRepairingStatus = (creep) => {
   if (creep.memory.repairing && creep.store[RESOURCE_ENERGY] == 0) {
@@ -20,20 +20,14 @@ const repairConstruction = (creep) => {
 };
 
 const obtainEnergy = (creep) => {
-  obtainResource(
-    creep,
-    roomConfig.defaultRepairerSourceOrigins,
-    roomConfig[creep.room.name].repairer.sourceIndex
-  );
+  let { sourceOrigins, sourceIndex } = roomConfig[creep.room.name].repairer;
+  obtainResource(creep, sourceOrigins, sourceIndex);
 };
 
 const findTargets = (creep) => {
-  var decayedContainers = getDecayedStructures(creep.room, STRUCTURE_CONTAINER);
-  var decayedLinks = getDecayedStructures(creep.room, STRUCTURE_LINK);
-  var decayedStorage = getDecayedStructures(creep.room, STRUCTURE_STORAGE);
-  if (decayedStorage.length > 0) {
-    return decayedStorage;
-  } else if (decayedContainers.length > 0) {
+  var decayedContainers = getDamagedStructures(creep.room, STRUCTURE_CONTAINER);
+  var decayedLinks = getDamagedStructures(creep.room, STRUCTURE_LINK);
+  if (decayedContainers.length > 0) {
     return decayedContainers;
   } else if (decayedLinks.length > 0) {
     return decayedLinks;
