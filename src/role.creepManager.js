@@ -14,6 +14,7 @@ const PICKUP_STROKE = "#ffffff";
 const TRANSFER_STOKE = "#ffffff";
 const REPAIR_STROKE = "#ffffff";
 const BUILD_STROKE = "#ffffff";
+const UPGRADE_STROKE = "#ffffff";
 
 /**
  * Get the meta data of a creep
@@ -397,6 +398,18 @@ const claimController = (creep) => {
 };
 
 /**
+ * Upgrade controller
+ * @param {Creep} creep
+ */
+const upgradeController = (creep) => {
+  if (creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {
+    creep.moveTo(creep.room.controller, {
+      visualizePathStyle: { stroke: UPGRADE_STROKE },
+    });
+  }
+};
+
+/**
  * Move a creep to a given position
  * @param {Creep} creep
  * @param {number} x x-coordinate of position: 0 <= x < = 49
@@ -419,5 +432,6 @@ module.exports = {
   buildTargetById,
   repairTarget,
   claimController,
+  upgradeController,
   moveToPosition,
 };

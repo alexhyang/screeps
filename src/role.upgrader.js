@@ -1,5 +1,5 @@
 const roomConfig = require("./dashboard");
-const { obtainResource } = require("./role.creepManager");
+const { obtainResource, upgradeController } = require("./role.creepManager");
 
 const updateUpgradingStatus = (creep) => {
   if (creep.memory.upgrading && creep.store[RESOURCE_ENERGY] == 0) {
@@ -10,15 +10,6 @@ const updateUpgradingStatus = (creep) => {
   if (!creep.memory.upgrading && creep.store.getFreeCapacity() == 0) {
     creep.memory.upgrading = true;
     creep.say("⚡");
-  }
-};
-
-/** @param {Creep} creep **/
-const upgradeController = (creep) => {
-  if (creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {
-    creep.moveTo(creep.room.controller, {
-      visualizePathStyle: { stroke: "#ffffff" },
-    });
   }
 };
 
