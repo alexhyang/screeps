@@ -48,9 +48,8 @@ const getSpeed = (creep) => {
  *    or null if not found
  */
 const findClosestStructureWithResource = (creep, structureType) => {
-  let structures = _.filter(
-    getStructures(structureType, creep.room),
-    structureHasResource
+  let structures = _.filter(getStructures(structureType, creep.room), (s) =>
+    structureHasResource(s)
   );
   return creep.pos.findClosestByRange(structures);
 };
@@ -63,9 +62,8 @@ const findClosestStructureWithResource = (creep, structureType) => {
  *    or null if not found
  */
 const findClosestStructureWithFreeCapacity = (creep, structureType) => {
-  let structures = _.filter(
-    getStructures(structureType, creep.room),
-    structureHasFreeCapacity
+  let structures = _.filter(getStructures(structureType, creep.room), (s) =>
+    structureHasFreeCapacity(s)
   );
   return creep.pos.findClosestByRange(structures);
 };
@@ -231,7 +229,7 @@ const withdrawFromExtension = (creep) => {
  */
 const withdrawFromStorage = (creep) => {
   let storage = getStructures(STRUCTURE_STORAGE, creep.room);
-  if (storage) {
+  if (storage.length > 0) {
     return withdrawFrom(creep, storage);
   }
   return false;
@@ -261,10 +259,10 @@ const harvestFromSource = (creep, sourceId) => {
   if (sourceId) {
     closestSource = sources[sourceId];
   } else {
-    closestSource = creep.findClosestByRange(sources);
+    closestSource = creep.pos.findClosestByRange(sources);
   }
 
-  harvestFrom(crepe, closestSource);
+  harvestFrom(creep, closestSource);
 };
 
 /**
