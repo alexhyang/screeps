@@ -1,4 +1,8 @@
 const {
+  withdrawFromSpawnOk,
+  withdrawFromContainerOk,
+} = require("./util.resourceManager");
+const {
   structureHasResource,
   getStructures,
   structureHasFreeCapacity,
@@ -211,7 +215,7 @@ const withdrawFromContainer = (creep) => {
     creep,
     STRUCTURE_CONTAINER
   );
-  if (closestContainer) {
+  if (closestContainer && withdrawFromContainerOk(creep)) {
     return withdrawFrom(creep, closestContainer);
   }
   return false;
@@ -227,7 +231,7 @@ const withdrawFromExtension = (creep) => {
     creep,
     STRUCTURE_EXTENSION
   );
-  if (closestExtension) {
+  if (closestExtension && withdrawFromSpawnOk(creep)) {
     return withdrawFrom(creep, closestExtension);
   }
   return false;
@@ -252,7 +256,7 @@ const withdrawFromStorage = (creep) => {
  */
 const withdrawFromSpawn = (creep) => {
   let closestSpawn = findClosestStructureWithResource(creep, STRUCTURE_SPAWN);
-  if (closestSpawn) {
+  if (closestSpawn && withdrawFromSpawnOk(creep)) {
     return withdrawFrom(creep, closestSpawn);
   }
   return false;

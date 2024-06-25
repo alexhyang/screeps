@@ -32,8 +32,8 @@ let roomConfig = {
 
   W35N43: {
     // ======== RESOURCES ========
-    SPAWN_WITHDRAW_THRESHOLD: 0,
-    CONTAINER_WITHDRAW_THRESHOLD: 0,
+    SPAWN_WITHDRAW_THRESHOLD: 500,
+    CONTAINER_WITHDRAW_THRESHOLD: 100,
 
     // ======== SPAWN ========
     spawn: {
@@ -87,8 +87,8 @@ let roomConfig = {
 
   W36N43: {
     // ======== RESOURCES ========
-    SPAWN_WITHDRAW_THRESHOLD: 0,
-    CONTAINER_WITHDRAW_THRESHOLD: 0,
+    SPAWN_WITHDRAW_THRESHOLD: 300,
+    CONTAINER_WITHDRAW_THRESHOLD: 150,
 
     // ======== SPAWN ========
     spawn: {
