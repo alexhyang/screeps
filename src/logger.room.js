@@ -39,13 +39,13 @@ const getEnergyMeta = (roomName) => {
 };
 
 const getDefensesMeta = (roomName) => {
-  let { TOWER_REPAIR_MIN_HITS } = roomConfig[roomName];
+  const { minDefenseHitsToRepair } = roomConfig[roomName].tower;
   let numHealthyWallsRamparts = getHealthyDefenses(
-    TOWER_REPAIR_MIN_HITS,
+    minDefenseHitsToRepair,
     Game.rooms[roomName]
   ).length;
   let numUnhealthyWallsRamparts = getUnhealthyDefenses(
-    TOWER_REPAIR_MIN_HITS,
+    minDefenseHitsToRepair,
     Game.rooms[roomName]
   ).length;
   let towerRepairProgress =
@@ -58,7 +58,7 @@ const getDefensesMeta = (roomName) => {
 
   let defenseMeta =
     `Towers (${towerAvailableEnergy}) ` +
-    `WallsRamparts (${parseNumber(TOWER_REPAIR_MIN_HITS)}): ` +
+    `WallsRamparts (${parseNumber(minDefenseHitsToRepair)}): ` +
     towerRepairProgress;
   return defenseMeta;
 };
