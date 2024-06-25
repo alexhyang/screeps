@@ -214,7 +214,7 @@ const withdrawFromContainer = (creep) => {
     creep,
     STRUCTURE_CONTAINER
   );
-  if (closestContainer && withdrawFromContainerOk(creep)) {
+  if (closestContainer !== null && withdrawFromContainerOk(creep)) {
     return withdrawFrom(creep, closestContainer);
   }
   return false;
@@ -230,7 +230,7 @@ const withdrawFromExtension = (creep) => {
     creep,
     STRUCTURE_EXTENSION
   );
-  if (closestExtension && withdrawFromSpawnOk(creep)) {
+  if (closestExtension !== null && withdrawFromSpawnOk(creep)) {
     return withdrawFrom(creep, closestExtension);
   }
   return false;
@@ -255,7 +255,7 @@ const withdrawFromStorage = (creep) => {
  */
 const withdrawFromSpawn = (creep) => {
   let closestSpawn = findClosestStructureWithResource(creep, STRUCTURE_SPAWN);
-  if (closestSpawn && withdrawFromSpawnOk(creep)) {
+  if (closestSpawn !== null && withdrawFromSpawnOk(creep)) {
     return withdrawFrom(creep, closestSpawn);
   }
   return false;
@@ -329,7 +329,7 @@ const obtainResource = (creep, resourceOrigins, sourceId = 0) => {
  * @param {ConstructionSite} target
  */
 const buildTarget = (creep, target) => {
-  if (target.length !== null) {
+  if (target !== null && target !== undefined) {
     if (creep.build(target) == ERR_NOT_IN_RANGE) {
       creep.moveTo(target, { visualizePathStyle: { stroke: BUILD_STROKE } });
     }
@@ -349,12 +349,31 @@ const buildTargetById = (creep, targetId) => {
 };
 
 /**
+ * Build the closest construction site if any
+ * @param {Creep} creep
+ */
+const buildClosestConstructionSite = (creep, buildingPriority = "none") => {
+  let filter =
+    buildingPriority == "none"
+      ? (s) => true
+      : (s) => s.structureType === buildingPriority;
+
+  let target = creep.pos.findClosestByRange(FIND_CONSTRUCTION_SITES, {
+    filter: filter,
+  });
+
+  if (target !== null) {
+    buildTarget(creep, target);
+  }
+};
+
+/**
  * Repair the given target
  * @param {Creep} creep
  * @param {Structure} target
  */
 const repairTarget = (creep, target) => {
-  if (target.length > 0) {
+  if (target !== null) {
     if (creep.repair(target) == ERR_NOT_IN_RANGE) {
       creep.moveTo(target, { visualizePathStyle: { stroke: REPAIR_STROKE } });
     }
@@ -396,7 +415,7 @@ module.exports = {
   getCreepBodyParts,
   obtainResource,
   transferTo,
-  buildTarget,
+  buildClosestConstructionSite,
   buildTargetById,
   repairTarget,
   claimController,
