@@ -270,7 +270,7 @@ const withdrawFromSpawn = (creep) => {
 const harvestFromSource = (creep, sourceId) => {
   let sources = creep.room.find(FIND_SOURCES);
   let closestSource;
-  if (sourceId) {
+  if (sourceId >= 0) {
     closestSource = sources[sourceId];
   } else {
     closestSource = creep.pos.findClosestByRange(sources);
