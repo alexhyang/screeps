@@ -63,7 +63,7 @@ let MODELS = {
   },
   CLAIMER: {
     name: "NH",
-    body: { claim: 1, move: 1 },
+    body: { claim: 1, work: 1, carry: 1, move: 1 },
   },
 };
 
