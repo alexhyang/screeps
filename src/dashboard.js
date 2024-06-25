@@ -41,13 +41,12 @@ let roomConfig = {
       debugMode: false,
       spawningDirections: [TOP],
     },
-    DEBUG_SPAWN: false,
-    SPAWN_NAME: "Spawn2",
-    SPAWNING_DIRECTIONS: [TOP],
 
     // ======== TOWERS ========
-    TOWER_REPAIR_MIN_ENERGY: 500,
-    TOWER_REPAIR_MIN_HITS: 5000,
+    tower: {
+      minTowerEnergyToRepair: 500,
+      minDefenseHitsToRepair: 5000,
+    },
 
     // ======== creeps ========
     harvester: {
@@ -99,8 +98,10 @@ let roomConfig = {
     },
 
     // ======== TOWERS ========
-    TOWER_REPAIR_MIN_ENERGY: 500,
-    TOWER_REPAIR_MIN_HITS: 5000,
+    tower: {
+      minTowerEnergyToRepair: 500,
+      minDefenseHitsToRepair: 5000,
+    },
 
     // ======== creeps ========
     harvester: {
