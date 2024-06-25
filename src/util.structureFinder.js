@@ -146,7 +146,7 @@ const getHealthyDefenses = (minHealthyHits, room) => {
  * @returns {Structure[]} an array of decayed structures,
  *    or undefined if not found
  */
-const getDecayedStructures = (room, structureType) => {
+const getDamagedStructures = (room, structureType) => {
   let targets = room.find(FIND_STRUCTURES, {
     filter: (structure) =>
       structure.structureType == structureType &&
@@ -168,5 +168,5 @@ module.exports = {
   getTowers,
   getUnhealthyDefenses,
   getHealthyDefenses,
-  getDecayedStructures,
+  getDamagedStructures,
 };
