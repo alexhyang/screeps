@@ -49,7 +49,9 @@
 
 ## Scripts
 
-1.  [organizing scripts using modules](https://docs.screeps.com/modules.html)
+1.  module import diagram
+
+    <img alt="module import diagram" src="./assets/screeps-v1.0.1-import-diagram.jpg" width="90%">
 
 ## References
 
