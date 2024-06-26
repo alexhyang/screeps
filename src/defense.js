@@ -1,6 +1,10 @@
 const roomConfig = require("./dashboard");
 const { getTowers, getUnhealthyDefenses } = require("./util.structureFinder");
 
+/**
+ * Let the tower repair unhealthy walls and ramparts if any
+ * @param {StructureTower} tower
+ */
 const repairUnhealthyDefenses = (tower) => {
   const { minTowerEnergyToRepair, minDefenseHitsToRepair } =
     roomConfig[tower.room.name].tower;
@@ -17,6 +21,10 @@ const repairUnhealthyDefenses = (tower) => {
   }
 };
 
+/**
+ * Let the tower attack hostile creeps
+ * @param {StructureTower} tower
+ */
 const attackHostiles = (tower) => {
   var closestHostile = tower.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
   if (closestHostile && tower.pos.getRangeTo(closestHostile) <= 45) {
@@ -24,6 +32,10 @@ const attackHostiles = (tower) => {
   }
 };
 
+/**
+ * Activate towers in the room with given name
+ * @param {string} roomName
+ */
 const activateTowersInRoom = (roomName) => {
   var towers = getTowers(Game.rooms[roomName]);
   for (let i in towers) {
@@ -35,6 +47,9 @@ const activateTowersInRoom = (roomName) => {
   }
 };
 
+/**
+ * Activate all towers
+ */
 const activateTowers = () => {
   for (let roomName in roomConfig) {
     activateTowersInRoom(roomName);

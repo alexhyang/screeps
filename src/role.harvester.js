@@ -9,6 +9,13 @@ const {
   structureHasFreeCapacity,
 } = require("./util.structureFinder");
 
+/**
+ * Find the delivery target for the harvester creep
+ * @param {Creep} creep
+ * @param {string} resourceType
+ * @returns {(Structure | undefined)} target to delivery resource,
+ *    or undefined if not found
+ */
 const findDeliveryTarget = (creep, resourceType = RESOURCE_ENERGY) => {
   if (creep) {
     let spawnExtensionsNotFull = creep.room.find(FIND_STRUCTURES, {
@@ -38,6 +45,12 @@ const findDeliveryTarget = (creep, resourceType = RESOURCE_ENERGY) => {
   }
 };
 
+/**
+ * Determine if the harvester creep should deliver resource right now
+ * @param {Creep} creep
+ * @returns {boolean} true if the creep should deliver resource,
+ *    or false otherwise
+ */
 const harvesterDeliveryOk = (creep) => {
   let deliveryThreshold =
     getTeam("miner", creep.room.name).length > 0 ? 0.7 : 0;

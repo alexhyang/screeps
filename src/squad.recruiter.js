@@ -103,19 +103,22 @@ function recruitMiners(roomName) {
   }
 }
 
-var squadRecruiter = {
-  // repairerSpawnCycle: roomConfig.CREEP_LIFE + roomConfig.REPAIRER_SPAWN_DELAY,
-
-  run: (roomName) => {
-    const { SPAWN_NAME, SPAWNING_DIRECTIONS } = roomConfig[roomName];
+/**
+ * Recruit creeps for a room based on its config parameters
+ * @param {string} roomName
+ */
+function recruitForRoom(roomName) {
     recruitHarvesters(roomName);
     recruitMiners(roomName);
     recruitUpgraders(roomName);
     recruitBuilders(roomName);
     recruitRepairers(roomName);
-    let spawn = getSpawnByName(SPAWN_NAME);
-    if (spawn && spawn.spawning) {
-      spawn.spawning.setDirections(SPAWNING_DIRECTIONS);
+}
+
+var squadRecruiter = {
+  run: () => {
+    for (let roomName in roomConfig) {
+      recruitForRoom(roomName);
     }
   },
   recruitCreep,

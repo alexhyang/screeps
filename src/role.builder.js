@@ -4,7 +4,11 @@ const {
   buildClosestConstructionSite,
 } = require("./role.creepManager");
 
-/** @param {Creep} creep **/
+/**
+ * Update the building status of the builder creep
+ * @param {Creep} creep
+ * @returns {void}
+ */
 const updateBuildingStatus = (creep) => {
   if (creep.pos.findClosestByRange(FIND_CONSTRUCTION_SITES) == null) {
     creep.memory = { role: "repairer" };
@@ -22,7 +26,10 @@ const updateBuildingStatus = (creep) => {
   }
 };
 
-/** @param {Creep} creep **/
+/**
+ * Let the builder creep obtain energy for construction
+ * @param {Creep} creep
+ */
 const obtainEnergy = (creep) => {
   const { sourceOrigins, sourceIndex } = roomConfig[creep.room.name].builder;
   obtainResource(creep, sourceOrigins, sourceIndex);

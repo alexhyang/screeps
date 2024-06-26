@@ -13,7 +13,7 @@ function getStructures(structureType, room) {
 /**
  * Find if a given structure has free capacity of specified resource type
  * @param {Structure} structure
- * @param {string} resourceType RESOURCE_ENERGY by default
+ * @param {string} [resourceType=RESOURCE_ENERGY] RESOURCE_ENERGY by default
  * @returns {boolean} true if structure has free capacity, false otherwise
  */
 function structureHasFreeCapacity(structure, resourceType = RESOURCE_ENERGY) {
@@ -26,7 +26,7 @@ function structureHasFreeCapacity(structure, resourceType = RESOURCE_ENERGY) {
 /**
  * Find if a given structure has of specified resource type
  * @param {Structure} structure
- * @param {string} resourceType RESOURCE_ENERGY by default
+ * @param {string} [resourceType=RESOURCE_ENERGY] RESOURCE_ENERGY by default
  * @returns {boolean} true if structure has resource, false otherwise
  */
 function structureHasResource(structure, resourceType = RESOURCE_ENERGY) {

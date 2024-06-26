@@ -7,6 +7,12 @@ const {
   getExtensions,
 } = require("./util.structureFinder");
 
+/**
+ * Find a target to deliver energy for the miner creep
+ * @param {Creep} creep
+ * @returns {(Structure | undefined)} target to deliver energy,
+ *    or undefined if not find
+ */
 const findDeliveryTarget = (creep) => {
   if (creep) {
     let containersNotFull = _.filter(getContainers(creep.room), (s) =>

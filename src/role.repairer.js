@@ -2,6 +2,10 @@ const roomConfig = require("./dashboard");
 const { obtainResource, repairTarget } = require("./role.creepManager");
 const { getDamagedStructures } = require("./util.structureFinder");
 
+/**
+ * Update the repairing status of the repairer creep
+ * @param {Creep} creep
+ */
 const updateRepairingStatus = (creep) => {
   if (creep.memory.repairing && creep.store[RESOURCE_ENERGY] == 0) {
     creep.memory.repairing = false;
@@ -14,16 +18,30 @@ const updateRepairingStatus = (creep) => {
   }
 };
 
+/**
+ * Let the repairer creep repair a structure
+ * @param {Creep} creep
+ */
 const repairConstruction = (creep) => {
   let targets = findRepairTargets(creep).sort((a, b) => a.hits - b.hits);
   repairTarget(creep, targets[0]);
 };
 
+/**
+ * Let the repairer creep obtain energy for repairing
+ * @param {Creep} creep
+ */
 const obtainEnergy = (creep) => {
   const { sourceOrigins, sourceIndex } = roomConfig[creep.room.name].repairer;
   obtainResource(creep, sourceOrigins, sourceIndex);
 };
 
+/**
+ * Find targets that need to be repaired
+ * @param {Creep} creep
+ * @returns {Structure[]} an array of structures to repair,
+ *    or an empty array if not found
+ */
 const findRepairTargets = (creep) => {
   var decayedContainers = getDamagedStructures(creep.room, STRUCTURE_CONTAINER);
   var decayedLinks = getDamagedStructures(creep.room, STRUCTURE_LINK);
@@ -39,6 +57,13 @@ const findRepairTargets = (creep) => {
   }
 };
 
+/**
+ * Determine if a structure is repairing priority
+ * @param {Creep} creep
+ * @param {Structure} structure
+ * @returns {boolean} true if a structure is repairing priority,
+ *    or false otherwise
+ */
 const getPrioritizedStructure = (creep, structure) => {
   const { repairingPriority, repairingHitsRatio } =
     roomConfig[creep.room.name].repairer;
