@@ -7,7 +7,6 @@ const {
 /**
  * Update the building status of the builder creep
  * @param {Creep} creep
- * @returns {void}
  */
 const updateBuildingStatus = (creep) => {
   if (creep.pos.findClosestByRange(FIND_CONSTRUCTION_SITES) == null) {
