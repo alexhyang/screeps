@@ -7,7 +7,6 @@ const getModelCost = (creepModel) => {
   let cost = 0;
   for (var part in creepModel.body) {
     let numOfParts = creepModel.body[part];
-    console.log(part, numOfParts);
     switch (part) {
       case "work":
         cost += 100 * numOfParts;
