@@ -17,7 +17,11 @@ function recruitCreep(creepModel, creepRole, roomName) {
     console.log(`${roomName} debug mode is on`);
     console.log(`TEST Spawning new ${creepRole}: ${newCreepName}`);
   } else {
-    console.log(`${roomName} Spawning new ${creepRole}: ` + newCreepName);
+    console.log(
+      `${roomName} Spawning new ${creepRole}: ` +
+        newCreepName +
+        ` (${getModelCost(creepModel)})`
+    );
     getSpawnByName(spawnNames[0]).spawnCreep(
       buildBodyParts(creepModel),
       newCreepName,
