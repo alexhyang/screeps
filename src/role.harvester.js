@@ -18,24 +18,29 @@ const {
  */
 const findDeliveryTarget = (creep, resourceType = RESOURCE_ENERGY) => {
   if (creep) {
-    let spawnExtensionsNotFull = creep.room.find(FIND_STRUCTURES, {
-      filter: (s) => {
-        return (
-          (s.structureType == STRUCTURE_EXTENSION ||
-            s.structureType == STRUCTURE_SPAWN) &&
-          s.store.getFreeCapacity(resourceType) > 0
-        );
-      },
-    });
-    if (spawnExtensionsNotFull.length > 0) {
-      return creep.pos.findClosestByRange(spawnExtensionsNotFull);
-    }
+    if (
+      creep.store.getUsedCapacity() ==
+      creep.store.getUsedCapacity(RESOURCE_ENERGY)
+    ) {
+      let spawnExtensionsNotFull = creep.room.find(FIND_STRUCTURES, {
+        filter: (s) => {
+          return (
+            (s.structureType == STRUCTURE_EXTENSION ||
+              s.structureType == STRUCTURE_SPAWN) &&
+            s.store.getFreeCapacity(resourceType) > 0
+          );
+        },
+      });
+      if (spawnExtensionsNotFull.length > 0) {
+        return creep.pos.findClosestByRange(spawnExtensionsNotFull);
+      }
 
-    var towersNotFull = _.filter(getTowers(creep.room), (s) =>
-      structureHasFreeCapacity(s, 200)
-    );
-    if (towersNotFull.length > 0) {
-      return creep.pos.findClosestByRange(towersNotFull);
+      var towersNotFull = _.filter(getTowers(creep.room), (s) =>
+        structureHasFreeCapacity(s, 200)
+      );
+      if (towersNotFull.length > 0) {
+        return creep.pos.findClosestByRange(towersNotFull);
+      }
     }
 
     var storage = getStorage(creep.room);
