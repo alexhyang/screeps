@@ -1,5 +1,5 @@
 const roomConfig = require("./dashboard");
-const { getContainers } = require("./util.structureFinder");
+const { getContainers, getStorage } = require("./util.structureFinder");
 
 /**
  * Get the energy available in a room
@@ -55,9 +55,33 @@ const withdrawFromContainerOk = (creep) => {
   return false;
 };
 
+/**
+ * Determine if it's ok to withdraw energy from storage
+ * @param {Creep} creep
+ * @returns {boolean} true if it is okay to withdraw from storage
+ **/
+const withdrawFromStorageOk = (creep) => {
+  let room = creep.room;
+  const { STORAGE_WITHDRAW_THRESHOLD } = roomConfig[room.name];
+  const { sourceIndex } = roomConfig[room.name].miner;
+  let minerSource = room.find(FIND_SOURCES)[sourceIndex];
+  let storage = getStorage(room);
+
+  if (
+    storage &&
+    (minerSource.energy == 0 ||
+      storage.store.getUsedCapacity(RESOURCE_ENERGY) >=
+        STORAGE_WITHDRAW_THRESHOLD)
+  ) {
+    return true;
+  }
+  return false;
+};
+
 module.exports = {
   getEnergyAvailable,
   getEnergyCapacityAvailable,
   withdrawFromContainerOk,
+  withdrawFromStorageOk,
   withdrawFromSpawnOk,
 };

@@ -1,6 +1,7 @@
 const {
   withdrawFromSpawnOk,
   withdrawFromContainerOk,
+  withdrawFromStorageOk,
 } = require("./util.resourceManager");
 const {
   structureHasResource,
@@ -244,11 +245,7 @@ const withdrawFromExtension = (creep) => {
  */
 const withdrawFromStorage = (creep) => {
   let storage = getStorage(creep.room);
-  if (
-    storage !== undefined &&
-    storage.store.getUsedCapacity(RESOURCE_ENERGY) >
-      roomConfig[creep.room.name].STORAGE_WITHDRAW_THRESHOLD
-  ) {
+  if (storage !== undefined && withdrawFromStorageOk(creep)) {
     return withdrawFrom(creep, storage);
   }
   return false;
