@@ -32,7 +32,7 @@ const findDeliveryTarget = (creep, resourceType = RESOURCE_ENERGY) => {
     }
 
     var towersNotFull = _.filter(getTowers(creep.room), (s) =>
-      structureHasFreeCapacity(s)
+      structureHasFreeCapacity(s, 200)
     );
     if (towersNotFull.length > 0) {
       return creep.pos.findClosestByRange(towersNotFull);
