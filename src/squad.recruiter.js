@@ -1,6 +1,10 @@
 const roomConfig = require("./dashboard");
 const { getTeam } = require("./squad");
-const { buildBodyParts, getModelCost } = require("./squad.creepModelAnalyzer");
+const {
+  buildBodyParts,
+  getModelCost,
+  getCreepSpawningTime,
+} = require("./squad.creepModelAnalyzer");
 const { getSpawnByName } = require("./util.structureFinder");
 
 // TODO: better define creepModel in JSDocs
@@ -57,13 +61,15 @@ function recruitHarvesters(roomName) {
 
 /** Recruit builders */
 function recruitBuilders(roomName) {
-  // TODO: fix find construction sites later
-  if (Game.rooms[roomName].find(FIND_CONSTRUCTION_SITES) != null) {
-    const { currentModel, teamSize, creepReadyTime } =
-      roomConfig[roomName].builder;
+  let constructionsInRoom = Game.rooms[roomName].find(FIND_CONSTRUCTION_SITES);
+  if (constructionsInRoom.length > 0) {
+    const { currentModel, teamSize } = roomConfig[roomName].builder;
     if (
-      Object.keys(Game.constructionSites).length > 0 &&
-      recruitInAdvanceOk(getTeam("builder", roomName), teamSize, creepReadyTime)
+      recruitInAdvanceOk(
+        getTeam("builder", roomName),
+        teamSize,
+        getCreepSpawningTime(currentModel)
+      )
     ) {
       recruitCreep(currentModel, "builder", roomName);
     }
