@@ -12,13 +12,21 @@ function getStructures(structureType, room) {
 
 /**
  * Find if a given structure has free capacity of specified resource type
+ *    greater than the threshold
  * @param {Structure} structure
+ * @param {number} [freeCapacityThreshold=0] 0 by default
  * @param {string} [resourceType=RESOURCE_ENERGY] RESOURCE_ENERGY by default
  * @returns {boolean} true if structure has free capacity, false otherwise
  */
-function structureHasFreeCapacity(structure, resourceType = RESOURCE_ENERGY) {
+function structureHasFreeCapacity(
+  structure,
+  freeCapacityThreshold = 0,
+  resourceType = RESOURCE_ENERGY
+) {
   if (structure) {
-    return structure.store.getFreeCapacity(resourceType) > 0;
+    return (
+      structure.store.getFreeCapacity(resourceType) > freeCapacityThreshold
+    );
   }
   return false;
 }
