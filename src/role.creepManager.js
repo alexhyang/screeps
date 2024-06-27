@@ -6,6 +6,7 @@ const {
   structureHasResource,
   getStructures,
   structureHasFreeCapacity,
+  getStorage,
 } = require("./util.structureFinder");
 
 const HARVEST_STROKE = "#ffaa00";
@@ -242,8 +243,12 @@ const withdrawFromExtension = (creep) => {
  * @returns {boolean} true if the withdraw is successful, false otherwise
  */
 const withdrawFromStorage = (creep) => {
-  let storage = getStructures(STRUCTURE_STORAGE, creep.room);
-  if (storage.length > 0) {
+  let storage = getStorage(creep.room);
+  if (
+    storage !== undefined &&
+    storage.store.getUsedCapacity(RESOURCE_ENERGY) >
+      roomConfig[creep.room.name].STORAGE_WITHDRAW_THRESHOLD
+  ) {
     return withdrawFrom(creep, storage);
   }
   return false;
