@@ -7,6 +7,7 @@ const {
   getController,
   getStorage,
   getTowers,
+  getContainers,
 } = require("./util.structureFinder");
 const {
   getEnergyAvailable,
@@ -40,11 +41,13 @@ const printRoomHeader = (roomName) => {
 const getEnergyMeta = (roomName) => {
   let room = Game.rooms[roomName];
   let storageMeta = getStorageMeta(roomName);
+  let containerMeta = getContainerMeta(roomName);
   let energyAvailable = getEnergyAvailable(room);
   let energyCapacityAvailable = getEnergyCapacityAvailable(room);
   let energyMeta =
-    `Storage (${storageMeta}): ` +
-    `${energyAvailable}/${energyCapacityAvailable}`;
+    `${energyAvailable}/${energyCapacityAvailable}, ` +
+    `Storage (${storageMeta}), ` +
+    `Containers (${containerMeta})`;
   return energyMeta;
 };
 
@@ -105,6 +108,23 @@ const getStorageMeta = (roomName) => {
     let targetUsedCapacity = target.store.getUsedCapacity(RESOURCE_ENERGY);
     let targetMeta = `${parseNumber(targetUsedCapacity)}`;
     return targetMeta;
+  }
+  return "N/A";
+};
+
+/**
+ * Get container meta data of room with the given name
+ * @param {string} roomName
+ */
+const getContainerMeta = (roomName) => {
+  let containers = getContainers(Game.rooms[roomName]);
+  if (containers.length > 0) {
+    let containerMeta = [];
+    for (let i in containers) {
+      let usedCapacity = containers[i].store.getUsedCapacity(RESOURCE_ENERGY);
+      containerMeta.push(parseNumber(usedCapacity));
+    }
+    return containerMeta.join(", ");
   }
   return "N/A";
 };
