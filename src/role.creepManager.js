@@ -412,6 +412,21 @@ const upgradeController = (creep) => {
 };
 
 /**
+ * Sign controller in the room
+ * @param {Creep} creep
+ * @param {string} signMsg
+ */
+const signController = (creep, signMsg) => {
+  if (creep.room.controller) {
+    if (
+      creep.signController(creep.room.controller, signMsg) == ERR_NOT_IN_RANGE
+    ) {
+      creep.moveTo(creep.room.controller);
+    }
+  }
+};
+
+/**
  * Move a creep to a given position
  * @param {Creep} creep
  * @param {number} x x-coordinate of position: 0 <= x < = 49
@@ -435,5 +450,6 @@ module.exports = {
   repairTarget,
   claimController,
   upgradeController,
+  signController,
   moveToPosition,
 };
