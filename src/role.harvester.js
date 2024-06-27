@@ -46,21 +46,26 @@ const findDeliveryTarget = (creep, resourceType = RESOURCE_ENERGY) => {
 };
 
 /**
- * Determine if the harvester creep should deliver resource right now
+ * Determine if the harvester creep should harvest resource right now
  * @param {Creep} creep
- * @returns {boolean} true if the creep should deliver resource,
+ * @returns {boolean} true if the creep should harvest resource,
  *    or false otherwise
  */
-const harvesterDeliveryOk = (creep) => {
-  let deliveryThreshold =
-    getTeam("miner", creep.room.name).length > 0 ? 0.7 : 0;
-  return creep.store.getFreeCapacity() > deliveryThreshold;
+const harvestOk = (creep) => {
+  if (creep) {
+    let creepCapacity = creep.store.getCapacity();
+    let minUsedEnergyToHarvest =
+      getTeam("miner", creep.room.name).length > 0
+        ? 0.3 * creepCapacity
+        : creepCapacity;
+    return creep.store.getUsedCapacity() < minUsedEnergyToHarvest;
+  }
 };
 
 module.exports = {
   /** @param {Creep} creep **/
   run: function (creep) {
-    if (harvesterDeliveryOk(creep)) {
+    if (harvestOk(creep)) {
       const { sourceOrigins, sourceIndex } =
         roomConfig[creep.room.name].harvester;
       obtainResource(creep, sourceOrigins, sourceIndex);
