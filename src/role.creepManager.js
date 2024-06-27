@@ -217,7 +217,7 @@ const withdrawFromContainer = (creep) => {
     creep,
     STRUCTURE_CONTAINER
   );
-  if (closestContainer !== null && withdrawFromContainerOk(creep)) {
+  if (closestContainer !== null && withdrawFromContainerOk(creep.room)) {
     return withdrawFrom(creep, closestContainer);
   }
   return false;
@@ -233,7 +233,7 @@ const withdrawFromExtension = (creep) => {
     creep,
     STRUCTURE_EXTENSION
   );
-  if (closestExtension !== null && withdrawFromSpawnOk(creep)) {
+  if (closestExtension !== null && withdrawFromSpawnOk(creep.room)) {
     return withdrawFrom(creep, closestExtension);
   }
   return false;
@@ -245,7 +245,7 @@ const withdrawFromExtension = (creep) => {
  */
 const withdrawFromStorage = (creep) => {
   let storage = getStorage(creep.room);
-  if (storage !== undefined && withdrawFromStorageOk(creep)) {
+  if (storage !== undefined && withdrawFromStorageOk(creep.room)) {
     return withdrawFrom(creep, storage);
   }
   return false;
@@ -258,7 +258,7 @@ const withdrawFromStorage = (creep) => {
  */
 const withdrawFromSpawn = (creep) => {
   let closestSpawn = findClosestStructureWithResource(creep, STRUCTURE_SPAWN);
-  if (closestSpawn !== null && withdrawFromSpawnOk(creep)) {
+  if (closestSpawn !== null && withdrawFromSpawnOk(creep.room)) {
     return withdrawFrom(creep, closestSpawn);
   }
   return false;
