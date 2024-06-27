@@ -1,6 +1,6 @@
 const roomConfig = require("./dashboard");
 const { getTeam } = require("./squad");
-const { buildBodyParts } = require("./squad.creepModelAnalyzer");
+const { buildBodyParts, getModelCost } = require("./squad.creepModelAnalyzer");
 const { getSpawnByName } = require("./util.structureFinder");
 
 // TODO: better define creepModel in JSDocs
@@ -107,20 +107,26 @@ function recruitMiners(roomName) {
  * @param {string} roomName
  */
 function recruitForRoom(roomName) {
-    recruitHarvesters(roomName);
-    recruitMiners(roomName);
-    recruitUpgraders(roomName);
-    recruitBuilders(roomName);
-    recruitRepairers(roomName);
+  recruitHarvesters(roomName);
+  recruitMiners(roomName);
+  recruitUpgraders(roomName);
+  recruitBuilders(roomName);
+  recruitRepairers(roomName);
 }
 
 var squadRecruiter = {
   run: () => {
     for (let roomName in roomConfig) {
-      if (roomConfig[roomName].spawn.debugMode) {
+      const { debugMode, spawnNames, spawningDirections } =
+        roomConfig[roomName].spawn;
+      if (debugMode) {
         console.log(`Room ${roomName} spawning debug mode is on`);
       }
       recruitForRoom(roomName);
+      let spawn = getSpawnByName(spawnNames[0]);
+      if (spawn && spawn.spawning) {
+        spawn.spawning.setDirections(spawningDirections);
+      }
     }
   },
   recruitCreep,
