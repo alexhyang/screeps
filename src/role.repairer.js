@@ -23,6 +23,7 @@ const updateRepairingStatus = (creep) => {
  * @param {Creep} creep
  */
 const repairConstruction = (creep) => {
+  if (!creep.memory.repairTarget) {
   let targets = findRepairTargets(creep).sort((a, b) => a.hits - b.hits);
   repairTarget(creep, targets[0]);
 };
