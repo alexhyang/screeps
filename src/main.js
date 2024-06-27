@@ -9,8 +9,7 @@ module.exports.loop = function () {
   memoryManager.cleanNonExistingCreeps();
   logger.run();
   defense.activateTowers();
-  squadRecruiter.run("W35N43");
-  squadRecruiter.run("W36N43");
+  squadRecruiter.run();
   squadJobManager.assignJobs();
   testScripts.run();
 };

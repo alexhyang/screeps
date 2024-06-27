@@ -14,7 +14,6 @@ function recruitCreep(creepModel, creepRole, roomName) {
   const { spawnNames, debugMode } = roomConfig[roomName].spawn;
   var newCreepName = creepModel.name + "-" + (Game.time % 100);
   if (debugMode) {
-    console.log(`${roomName} debug mode is on`);
     console.log(`TEST Spawning new ${creepRole}: ${newCreepName}`);
   } else {
     console.log(
@@ -118,6 +117,9 @@ function recruitForRoom(roomName) {
 var squadRecruiter = {
   run: () => {
     for (let roomName in roomConfig) {
+      if (roomConfig[roomName].spawn.debugMode) {
+        console.log(`Room ${roomName} spawning debug mode is on`);
+      }
       recruitForRoom(roomName);
     }
   },
