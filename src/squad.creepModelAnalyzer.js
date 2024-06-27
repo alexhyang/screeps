@@ -34,6 +34,20 @@ const getModelCost = (creepModel) => {
 };
 
 /**
+ * Find total spawning time of a model
+ * @param {object.<string, object.<string,number>>} creepModel
+ * @returns {number} spawning time of a given model
+ */
+const getCreepSpawningTime = (creepModel) => {
+  let timePerPart = 3;
+  let numParts = 0;
+  for (var part in creepModel.body) {
+    numParts += creepModel.body[part];
+  }
+  return timePerPart * numParts;
+};
+
+/**
  * Get the body parts of the given creep model
  * @param {object.<string, object.<string, number>>} creepModel
  * @returns {string[]} an array of body parts
@@ -49,5 +63,6 @@ const buildBodyParts = (creepModel) => {
 
 module.exports = {
   getModelCost,
+  getCreepSpawningTime,
   buildBodyParts,
 };

@@ -78,10 +78,14 @@ function recruitBuilders(roomName) {
 
 /** Recruit upgraders */
 function recruitUpgraders(roomName) {
-  const { currentModel, teamSize, creepReadyTime } =
+  const { currentModel, teamSize, distanceToSource } =
     roomConfig[roomName].upgrader;
   if (
-    recruitInAdvanceOk(getTeam("upgrader", roomName), teamSize, creepReadyTime)
+    recruitInAdvanceOk(
+      getTeam("upgrader", roomName),
+      teamSize,
+      getCreepSpawningTime(currentModel) + distanceToSource
+    )
   ) {
     recruitCreep(currentModel, "upgrader", roomName);
   }
@@ -100,9 +104,14 @@ function recruitRepairers(roomName) {
 
 /** Recruit miners */
 function recruitMiners(roomName) {
-  const { currentModel, teamSize, creepReadyTime } = roomConfig[roomName].miner;
+  const { currentModel, teamSize, distanceToSource } =
+    roomConfig[roomName].miner;
   if (
-    recruitInAdvanceOk(getTeam("miner", roomName), teamSize, creepReadyTime)
+    recruitInAdvanceOk(
+      getTeam("miner", roomName),
+      teamSize,
+      getCreepSpawningTime(currentModel) + distanceToSource
+    )
   ) {
     recruitCreep(currentModel, "miner", roomName);
   }
