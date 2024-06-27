@@ -37,11 +37,15 @@ const withdrawFromSpawnOk = (creep) => {
  * @returns {boolean} true if it is okay to withdraw from container(s)
  **/
 const withdrawFromContainerOk = (creep) => {
-  let { CONTAINER_WITHDRAW_THRESHOLD } = roomConfig[creep.room.name];
-  let containers = getContainers(creep.room);
+  let room = creep.room;
+  const { CONTAINER_WITHDRAW_THRESHOLD } = roomConfig[room.name];
+  const { sourceIndex } = roomConfig[room.name].miner;
+  let minerSource = room.find(FIND_SOURCES)[sourceIndex];
+  let containers = getContainers(room);
 
   for (let i in containers) {
     if (
+      minerSource.energy == 0 ||
       containers[i].store.getUsedCapacity(RESOURCE_ENERGY) >=
       CONTAINER_WITHDRAW_THRESHOLD
     ) {
