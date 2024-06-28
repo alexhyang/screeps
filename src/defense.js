@@ -27,6 +27,12 @@ const repairUnhealthyDefenses = (tower) => {
  */
 const attackHostiles = (tower) => {
   var closestHostile = tower.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
+  if (closestHostile && closestHostile.hits == closestHostile.hitsMax) {
+    if (!Memory.hostiles) {
+      Memory.hostiles = [];
+    }
+    Memory.hostiles.push(`${tower.room.name}: ${Game.time}`);
+  }
   if (closestHostile && tower.pos.getRangeTo(closestHostile) <= 45) {
     tower.attack(closestHostile);
   }

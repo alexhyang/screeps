@@ -10,6 +10,12 @@ var memoryManager = {
       }
     }
   },
+  /**
+   * Delete hostile creep record in memory
+   */
+  clearHostileMemory: () => {
+    delete Memory.hostiles;
+  },
 };
 
 module.exports = memoryManager;
