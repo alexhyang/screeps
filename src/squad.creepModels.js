@@ -40,6 +40,10 @@ let MODELS = {
     name: "W5C",
     body: { work: 5, carry: 3, move: 4 },
   },
+  WORKER_6A: {
+    name: "W6A",
+    body: { work: 6, carry: 3, move: 3 },
+  },
   // ======== CARRIERS ========
   CARRIER_1: {
     name: "C1",
