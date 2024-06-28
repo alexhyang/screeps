@@ -20,7 +20,8 @@ let roomConfig = {
     // ======== TOWERS ========
     tower: {
       minTowerEnergyToRepair: 500,
-      minDefenseHitsToRepair: 5000,
+      minDefenseHitsToRepair: 100000,
+      maxFiringRange: 16,
     },
 
     // ======== creeps ========
@@ -106,8 +107,9 @@ let roomConfig = {
 
     // ======== TOWERS ========
     tower: {
-      minTowerEnergyToRepair: 500,
-      minDefenseHitsToRepair: 30000,
+      minTowerEnergyToRepair: 400,
+      minDefenseHitsToRepair: 20000,
+      maxFiringRange: 46,
     },
 
     // ======== creeps ========

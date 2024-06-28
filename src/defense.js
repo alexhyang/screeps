@@ -26,15 +26,30 @@ const repairUnhealthyDefenses = (tower) => {
  * @param {StructureTower} tower
  */
 const attackHostiles = (tower) => {
+  const { maxFiringRange } = roomConfig[tower.room.name].tower;
   var closestHostile = tower.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
-  if (closestHostile && closestHostile.hits == closestHostile.hitsMax) {
+  addHostileInvasionInfoToMemory(closestHostile);
+
+  if (
+    closestHostile &&
+    tower.pos.getRangeTo(closestHostile) <= maxFiringRange
+  ) {
+    console.log(tower.pos.getRangeTo(closestHostile));
+    console.log(maxFiringRange);
+    tower.attack(closestHostile);
+  }
+};
+
+/**
+ * Add hostile invading record in memory
+ * @param {Creep} hostileCreep
+ */
+const addHostileInvasionInfoToMemory = (hostileCreep) => {
+  if (hostileCreep && hostileCreep.hits == hostileCreep.hitsMax) {
     if (!Memory.hostiles) {
       Memory.hostiles = [];
     }
     Memory.hostiles.push(`${tower.room.name}: ${Game.time}`);
-  }
-  if (closestHostile && tower.pos.getRangeTo(closestHostile) <= 45) {
-    tower.attack(closestHostile);
   }
 };
 
