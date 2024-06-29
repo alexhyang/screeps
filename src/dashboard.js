@@ -81,7 +81,7 @@ let roomConfig = {
       repairingPriority: "infrastructure",
       repairingHitsRatio: 0.8,
     },
-    transferer: {
+    transferrer: {
       currentModel: models.CARRIER_6,
       teamSize: 1,
     },
@@ -174,7 +174,7 @@ let roomConfig = {
       repairingPriority: "infrastructure",
       repairingHitsRatio: 1 / 4,
     },
-    transferer: {
+    transferrer: {
       currentModel: models.CARRIER_6,
       teamSize: 0,
     },
