@@ -175,7 +175,15 @@ const transferTo = (creep, target, resourceType = RESOURCE_ENERGY) => {
  */
 const pickupDroppedResources = (creep) => {
   let droppedResource = creep.pos.findClosestByRange(FIND_DROPPED_RESOURCES);
-  if (droppedResource !== null) {
+  if (
+    droppedResource !== null &&
+    creep.pos.getRangeTo(droppedResource) < droppedResource.amount &&
+    droppedResource.amount >= 10
+  ) {
+    resourceType = droppedResource.resourceType;
+    if (resourceType !== RESOURCE_ENERGY) {
+      creep.memory.resourceType = resourceType;
+    }
     return pickup(creep, droppedResource);
   }
   return false;
