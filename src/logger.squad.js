@@ -56,7 +56,14 @@ const printTeamMembers = (teamMembers) => {
 
 var squadLogger = {
   logSquadInfo: function (roomName) {
-    let roles = ["harvester", "builder", "upgrader", "repairer", "miner"];
+    let roles = [
+      "harvester",
+      "builder",
+      "upgrader",
+      "repairer",
+      "miner",
+      "transferer",
+    ];
     roles.forEach((role) => printTeamStatus(role, roomName));
   },
 };

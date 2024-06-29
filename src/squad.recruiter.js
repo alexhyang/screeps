@@ -123,6 +123,20 @@ function recruitMiners(roomName) {
   }
 }
 
+/** Recruit transferers */
+function recruitTransferers(roomName) {
+  const { currentModel, teamSize } = roomConfig[roomName].transferer;
+  if (
+    recruitInAdvanceOk(
+      getTeam("transferer", "all"),
+      teamSize,
+      getCreepSpawningTime(currentModel)
+    )
+  ) {
+    recruitCreep(currentModel, "transferer", roomName);
+  }
+}
+
 /**
  * Recruit creeps for a room based on its config parameters
  * @param {string} roomName
@@ -133,6 +147,9 @@ function recruitForRoom(roomName) {
   recruitUpgraders(roomName);
   recruitBuilders(roomName);
   recruitRepairers(roomName);
+  if (roomName == "W35N43") {
+    recruitTransferers(roomName);
+  }
 }
 
 var squadRecruiter = {
