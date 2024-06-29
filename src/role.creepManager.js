@@ -11,13 +11,13 @@ const {
   getContainers,
 } = require("./util.structureFinder");
 
-const HARVEST_STROKE = "#ffaa00";
-const WITHDRAW_STROKE = "#ffaa00";
-const PICKUP_STROKE = "#ffffff";
-const TRANSFER_STOKE = "#ffffff";
-const REPAIR_STROKE = "#ffffff";
-const BUILD_STROKE = "#ffffff";
-const UPGRADE_STROKE = "#ffffff";
+const HARVEST_STROKE = "#9e743e"; // brown
+const WITHDRAW_STROKE = "#f7052d"; // red
+const PICKUP_STROKE = "#f200ff"; // pink
+const TRANSFER_STOKE = "#16ff05"; // green
+const REPAIR_STROKE = "#fffb05"; // yellow
+const BUILD_STROKE = "#fffb05"; // yellow
+const UPGRADE_STROKE = "#1205ff"; // blue
 
 /**
  * Get the meta data of a creep
