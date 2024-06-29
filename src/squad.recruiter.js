@@ -58,9 +58,9 @@ function recruitHarvesters(roomName) {
   const { currentModel, teamSize } = roomConfig[roomName].harvester;
   if (getTeam("harvester", roomName).length < teamSize) {
     if (getEnergyAvailable(Game.rooms[roomName]) >= 450) {
-      recruitCreep(MODELS.CARRIER_3, "harvester", roomName);
-    } else {
       recruitCreep(currentModel, "harvester", roomName);
+    } else {
+      recruitCreep(MODELS.CARRIER_2A, "harvester", roomName);
     }
   }
 }
