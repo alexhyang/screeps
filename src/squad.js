@@ -6,10 +6,14 @@ const roomConfig = require("./dashboard");
  * @returns {Object<string, Creep>} a hash containing creeps given their role
  **/
 const getTeam = (creepRole, roomName) => {
-  return _.filter(
-    Game.creeps,
-    (creep) => creep.memory.role == creepRole && creep.room.name == roomName
-  );
+  if (roomName == "all") {
+    return _.filter(Game.creeps, (creep) => creep.memory.role == creepRole);
+  } else {
+    return _.filter(
+      Game.creeps,
+      (creep) => creep.memory.role == creepRole && creep.room.name == roomName
+    );
+  }
 };
 
 /**
