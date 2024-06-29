@@ -5,6 +5,8 @@ const {
   getModelCost,
   getCreepSpawningTime,
 } = require("./squad.creepModelAnalyzer");
+const MODELS = require("./squad.creepModels");
+const { getEnergyAvailable } = require("./util.resourceManager");
 const { getSpawnByName } = require("./util.structureFinder");
 
 // TODO: better define creepModel in JSDocs
@@ -55,7 +57,11 @@ function recruitInAdvanceOk(currentTeam, maxTeamSize, newCreepReadyTime) {
 function recruitHarvesters(roomName) {
   const { currentModel, teamSize } = roomConfig[roomName].harvester;
   if (getTeam("harvester", roomName).length < teamSize) {
-    recruitCreep(currentModel, "harvester", roomName);
+    if (getEnergyAvailable(Game.rooms[roomName]) >= 450) {
+      recruitCreep(MODELS.CARRIER_3, "harvester", roomName);
+    } else {
+      recruitCreep(currentModel, "harvester", roomName);
+    }
   }
 }
 
