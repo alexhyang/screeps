@@ -142,13 +142,23 @@ function recruitTransferrers(roomName) {
  * @param {string} roomName
  */
 function recruitForRoom(roomName) {
-  recruitHarvesters(roomName);
-  recruitMiners(roomName);
-  recruitUpgraders(roomName);
-  recruitBuilders(roomName);
-  recruitRepairers(roomName);
-  if (roomName == "W35N43") {
-    recruitTransferers(roomName);
+  const { harvester, miner, upgrader, repairer, builder, transferer } =
+    roomConfig[roomName];
+  if (getTeam("harvester", roomName).length < harvester.teamSize) {
+    recruitHarvesters(roomName);
+  } else if (getTeam("miner", roomName).length < miner.teamSize) {
+    recruitMiners(roomName);
+  } else if (getTeam("upgrader", roomName).length < upgrader.teamSize) {
+    recruitUpgraders(roomName);
+  } else if (getTeam("repairer", roomName).length < repairer.teamSize) {
+    recruitRepairers(roomName);
+  } else if (
+    roomName == "W35N43" &&
+    getTeam("transferer", "all").length < transferer.teamSize
+  ) {
+    recruitTransferrers(roomName);
+  } else if (getTeam("builder", roomName).length < builder.teamSize) {
+    recruitBuilders(roomName);
   }
 }
 
