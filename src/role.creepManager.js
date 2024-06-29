@@ -159,6 +159,12 @@ const transferTo = (creep, target, resourceType = RESOURCE_ENERGY) => {
     if (creep.transfer(target, resourceType) == ERR_NOT_IN_RANGE) {
       creep.moveTo(target, { visualizePathStyle: { stroke: TRANSFER_STOKE } });
     }
+    if (
+      creep.memory.resourceType &&
+      creep.store.getUsedCapacity(resourceType) == 0
+    ) {
+      creep.memory.resourceType = "";
+    }
   }
 };
 
