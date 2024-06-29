@@ -24,7 +24,7 @@ const updateRepairingStatus = (creep) => {
  */
 const repairConstruction = (creep) => {
   if (!creep.memory.repairTarget) {
-  let targets = findRepairTargets(creep).sort((a, b) => a.hits - b.hits);
+    let targets = findRepairTargets(creep).sort((a, b) => a.hits - b.hits);
     if (targets.length > 0) {
       creep.memory.repairTarget = targets[0].id;
     }
