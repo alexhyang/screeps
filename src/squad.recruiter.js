@@ -123,8 +123,8 @@ function recruitMiners(roomName) {
   }
 }
 
-/** Recruit transferers */
-function recruitTransferers(roomName) {
+/** Recruit transferrers */
+function recruitTransferrers(roomName) {
   const { currentModel, teamSize } = roomConfig[roomName].transferer;
   if (
     recruitInAdvanceOk(
