@@ -8,6 +8,7 @@ const {
   getStructures,
   structureHasFreeCapacity,
   getStorage,
+  getContainers,
 } = require("./util.structureFinder");
 
 const HARVEST_STROKE = "#ffaa00";
@@ -213,12 +214,22 @@ const withdrawFromRuin = (creep) => {
  * @returns {boolean} true if the withdraw is successful, false otherwise
  */
 const withdrawFromContainer = (creep) => {
-  let closestContainer = findClosestStructureWithResource(
-    creep,
-    STRUCTURE_CONTAINER
+  // let closestContainer = findClosestStructureWithResource(
+  //   creep,
+  //   STRUCTURE_CONTAINER
+  // );
+  // if (closestContainer !== null && withdrawFromContainerOk(creep.room)) {
+  //   return withdrawFrom(creep, closestContainer);
+  // }
+  let targets = getContainers(creep.room).sort(
+    (a, b) =>
+      -(
+        b.store.getFreeCapacity(RESOURCE_ENERGY) -
+        a.store.getFreeCapacity(RESOURCE_ENERGY)
+      )
   );
-  if (closestContainer !== null && withdrawFromContainerOk(creep.room)) {
-    return withdrawFrom(creep, closestContainer);
+  if (targets.length > 0 && withdrawFromContainerOk(creep.room)) {
+    return withdrawFrom(creep, targets[0]);
   }
   return false;
 };
