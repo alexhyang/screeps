@@ -20,7 +20,7 @@ const printTeamStatus = (creepRole, roomName) => {
  * @param {string} roomName
  */
 const printTeamStatusTitle = (creepRole, teamSize, roomName) => {
-  let paddedTeamName = padStr(creepRole + "s", 11);
+  let paddedTeamName = padStr(creepRole + "s", 12);
   let teamMaxSize = getTeamMaxSize(creepRole, roomName);
   let msg =
     capitalize(paddedTeamName) +
@@ -62,7 +62,7 @@ var squadLogger = {
       "upgrader",
       "repairer",
       "miner",
-      "transferer",
+      "transferrer",
     ];
     roles.forEach((role) => printTeamStatus(role, roomName));
   },
