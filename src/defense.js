@@ -25,32 +25,68 @@ const repairUnhealthyDefenses = (tower) => {
  * Let the tower attack hostile creeps
  * @param {StructureTower} tower
  */
-const attackHostiles = (tower) => {
-  const { maxFiringRange } = roomConfig[tower.room.name].tower;
-  var closestHostile = tower.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
-  addHostileInvasionInfoToMemory(closestHostile);
+const attackHostiles = (tower, hostileCreep) => {
+  if (hostileCreep) {
+    addHostileInvasionInfoToMemory(tower, hostileCreep);
 
-  if (
-    closestHostile &&
-    tower.pos.getRangeTo(closestHostile) <= maxFiringRange
-  ) {
-    console.log(tower.pos.getRangeTo(closestHostile));
-    console.log(maxFiringRange);
-    tower.attack(closestHostile);
+    const { maxFiringRange } = roomConfig[tower.room.name].tower;
+    let hostileRange = tower.pos.getRangeTo(hostileCreep);
+    if (hostileCreep && hostileRange <= maxFiringRange) {
+      // console.log(tower.pos.getRangeTo(hostileCreep));
+      // console.log(maxFiringRange);
+      tower.attack(hostileCreep);
+    }
   }
 };
 
 /**
- * Add hostile invading record in memory
+ * Add hostile invading record (room name, invasion time) to memory
+ * @param {StructureTower} tower
  * @param {Creep} hostileCreep
  */
-const addHostileInvasionInfoToMemory = (hostileCreep) => {
+const addHostileInvasionInfoToMemory = (tower, hostileCreep) => {
   if (hostileCreep && hostileCreep.hits == hostileCreep.hitsMax) {
     if (!Memory.hostiles) {
       Memory.hostiles = [];
     }
-    Memory.hostiles.push(`${tower.room.name}: ${Game.time}`);
+    if (isHostileCreepInRecord(hostileCreep)) {
+      return;
+    } else {
+      Memory.hostiles.push(
+        createHostileInvasionRecord(tower.room.name, hostileCreep)
+      );
+    }
   }
+};
+
+/**
+ * Find if the hostile creep has been recorded
+ * @param {Creep} hostileCreep
+ * @returns {boolean} true if the hostile creep has been recorded in memory,
+ *    false otherwise
+ */
+const isHostileCreepInRecord = (hostileCreep) => {
+  for (let i in Memory.hostiles) {
+    if (hostileCreep.name == Memory.hostiles[i].name) {
+      return true;
+    }
+  }
+  return false;
+};
+
+/**
+ * Create an invasion record of a hostile creep
+ * @param {string} roomName
+ * @param {Creep} hostileCreep
+ * @returns {object.<string, string>} an invasion record object containing
+ *    room name, creep name, and invasion time
+ */
+const createHostileInvasionRecord = (roomName, hostileCreep) => {
+  return {
+    roomName: roomName,
+    name: hostileCreep.name,
+    time: Game.time,
+  };
 };
 
 /**
@@ -62,8 +98,12 @@ const activateTowersInRoom = (roomName) => {
   for (let i in towers) {
     let tower = towers[i];
     if (tower) {
-      repairUnhealthyDefenses(tower);
-      attackHostiles(tower);
+      let closestHostile = tower.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
+      if (closestHostile) {
+        attackHostiles(tower, closestHostile);
+      } else {
+        repairUnhealthyDefenses(tower);
+      }
     }
   }
 };
