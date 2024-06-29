@@ -29,7 +29,7 @@ const assignJobs = () => {
       case "miner":
         roleMiner.run(creep);
         break;
-      case "transferer":
+      case "transferrer":
         roleTransferrer.run(creep);
         break;
       default:

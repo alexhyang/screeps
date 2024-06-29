@@ -133,7 +133,7 @@ function recruitTransferrers(roomName) {
       getCreepSpawningTime(currentModel)
     )
   ) {
-    recruitCreep(currentModel, "transferer", roomName);
+    recruitCreep(currentModel, "transferrer", roomName);
   }
 }
 
