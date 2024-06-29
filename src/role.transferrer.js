@@ -21,7 +21,7 @@ const obtainFromOriginRoom = (creep, originRoomName) => {
  */
 const avoidDangerZone = (creep) => {
   if (creep.room.name == "W36N43" && creep.pos.y <= 3) {
-    creep.moveTo(DOWN);
+    creep.moveTo(BOTTOM);
   }
 };
 
