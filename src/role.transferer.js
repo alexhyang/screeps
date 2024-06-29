@@ -18,7 +18,13 @@ module.exports = {
       obtainFromOriginRoom(creep, originRoomName);
     } else {
       console.log(creep.name, "transferring...");
-      transferTo(creep, getContainers(Game.rooms[dstRoomName])[0]);
+      let container = getContainers(Game.rooms[dstRoomName])[0];
+      let storage = getStorage(Game.rooms[dstRoomName]);
+      if (container.store.getFreeCapacity(RESOURCE_ENERGY) >= 400) {
+        transferTo(creep, container);
+      } else {
+        transferTo(creep, storage);
+      }
     }
   },
 };
