@@ -4,8 +4,6 @@ const { getTeam } = require("./squad");
 const {
   getTowers,
   getStorage,
-  getExtensions,
-  getSpawns,
   structureHasFreeCapacity,
 } = require("./util.structureFinder");
 
