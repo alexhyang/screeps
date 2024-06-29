@@ -128,7 +128,7 @@ function recruitTransferrers(roomName) {
   const { currentModel, teamSize } = roomConfig[roomName].transferer;
   if (
     recruitInAdvanceOk(
-      getTeam("transferer", "all"),
+      getTeam("transferrer", "all"),
       teamSize,
       getCreepSpawningTime(currentModel)
     )
