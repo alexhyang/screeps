@@ -25,7 +25,17 @@ const updateRepairingStatus = (creep) => {
 const repairConstruction = (creep) => {
   if (!creep.memory.repairTarget) {
   let targets = findRepairTargets(creep).sort((a, b) => a.hits - b.hits);
-  repairTarget(creep, targets[0]);
+    if (targets.length > 0) {
+      creep.memory.repairTarget = targets[0].id;
+    }
+  } else {
+    let target = Game.getObjectById(creep.memory.repairTarget);
+    if (target && target.hits < target.hitsMax) {
+      repairTarget(creep, target);
+    } else {
+      creep.memory.repairTarget = "";
+    }
+  }
 };
 
 /**
