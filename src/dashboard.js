@@ -91,7 +91,7 @@ let roomConfig = {
   W36N43: {
     // ======== RESOURCES ========
     SPAWN_WITHDRAW_THRESHOLD: 1500, // current miner cost - 100
-    CONTAINER_WITHDRAW_THRESHOLD: 200,
+    CONTAINER_WITHDRAW_THRESHOLD: 2000,
     STORAGE_WITHDRAW_THRESHOLD: 500,
 
     spawn: {
@@ -127,13 +127,14 @@ let roomConfig = {
     },
     upgrader: {
       distanceToSource: 150,
-      currentModel: models.CARRIER_3B,
-      teamSize: 4,
+      currentModel: models.WORKER_5B,
+      teamSize: 3,
       sourceIndex: 0,
       sourceOrigins: [
         "droppedResources",
         "tombstone",
         "ruin",
+        "link",
         "storage",
         "container",
         // "extension",

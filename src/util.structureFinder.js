@@ -113,6 +113,15 @@ const getExtensions = (room) => {
   return getStructures(STRUCTURE_EXTENSION, room);
 };
 
+/** Find all links in the given room
+ * @param {Room} room
+ * @returns {StructureTower[]} an array of extensions in the room,
+ *    or empty array if not found
+ */
+const getLinks = (room) => {
+  return getStructures(STRUCTURE_LINK, room);
+};
+
 /**
  * Find all unhealthy walls and ramparts
  * @param {number} minHealthyHits minimum hits of healthy defenses
@@ -174,6 +183,7 @@ module.exports = {
   getStorage,
   getContainers,
   getTowers,
+  getLinks,
   getUnhealthyDefenses,
   getHealthyDefenses,
   getDamagedStructures,

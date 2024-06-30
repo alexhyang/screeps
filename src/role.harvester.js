@@ -20,6 +20,17 @@ const findDeliveryTarget = (creep, resourceType = RESOURCE_ENERGY) => {
       creep.store.getUsedCapacity() ==
       creep.store.getUsedCapacity(RESOURCE_ENERGY)
     ) {
+      let linkFrom = creep.pos.findInRange(FIND_MY_STRUCTURES, 15, {
+        filter: { structureType: STRUCTURE_LINK },
+      })[0];
+      if (
+        linkFrom &&
+        linkFrom.store.getUsedCapacity(RESOURCE_ENERGY) <
+          linkFrom.store.getCapacity(RESOURCE_ENERGY)
+      ) {
+        return linkFrom;
+      }
+
       let spawnExtensionsNotFull = creep.room.find(FIND_STRUCTURES, {
         filter: (s) => {
           return (

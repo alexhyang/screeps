@@ -290,6 +290,19 @@ const withdrawFromSpawn = (creep) => {
 };
 
 /**
+ * Withdraw from the closest link
+ * @param {Creep} creep
+ * @returns {boolean} true if the withdraw is successful, false otherwise
+ */
+const withdrawFromLink = (creep) => {
+  let closestLink = findClosestStructureWithResource(creep, STRUCTURE_LINK);
+  if (closestLink !== null) {
+    return withdrawFrom(creep, closestLink);
+  }
+  return false;
+};
+
+/**
  * Harvest from the closest source
  * @param {Creep} creep
  * @param {number} sourceId
@@ -308,7 +321,7 @@ const harvestFromSource = (creep, sourceId) => {
 
 /**
  * Returns the method to obtain resources
- * @param {("droppedResource" | "tombstone" | "ruin" | "container" |
+ * @param {("droppedResource" | "tombstone" | "ruin" | "container" | "link" |
  *    "storage" | "extension" | "spawn" | "source")} origin
  * @returns {function(Creep): void} function to obtain resources
  */
@@ -320,6 +333,8 @@ const findHarvestMethod = (origin) => {
       return withdrawFromTombstone;
     case "ruin":
       return withdrawFromRuin;
+    case "link":
+      return withdrawFromLink;
     case "container":
       return withdrawFromContainer;
     case "storage":
