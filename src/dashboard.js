@@ -34,14 +34,14 @@ let roomConfig = {
       ],
     },
     miner: {
-      distanceToSource: 12,
+      distanceToSource: 5, // distance to source = 5
       currentModel: models.WORKER_6A, // 6A is the most efficient miner model
       teamSize: 1,
       sourceIndex: W35N43_LEFT_SOURCE,
       sourceOrigins: ["source"],
     },
     upgrader: {
-      distanceToSource: 5, // distance between spawn and source
+      distanceToSource: 5, // distance to source = 5
       currentModel: models.WORKER_5A,
       teamSize: 3,
       sourceIndex: W35N43_RIGHT_SOURCE,
@@ -126,7 +126,7 @@ let roomConfig = {
       sourceOrigins: ["source"],
     },
     upgrader: {
-      distanceToSource: 150,
+      distanceToSource: 50,
       currentModel: models.WORKER_5B,
       teamSize: 3,
       sourceIndex: 0,
