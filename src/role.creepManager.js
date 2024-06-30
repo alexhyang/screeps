@@ -152,18 +152,27 @@ const harvestFrom = (creep, target) => {
  * Transfer resource to target structure
  * @param {Creep} creep
  * @param {Structure} target target structure
- * @param {string} resourceType RESOURCE_ENERGY by default
  */
-const transferTo = (creep, target, resourceType = RESOURCE_ENERGY) => {
+const transferTo = (creep, target) => {
   if (target) {
-    if (creep.transfer(target, resourceType) == ERR_NOT_IN_RANGE) {
-      creep.moveTo(target, { visualizePathStyle: { stroke: TRANSFER_STOKE } });
-    }
-    if (
-      creep.memory.resourceType &&
-      creep.store.getUsedCapacity(resourceType) == 0
-    ) {
-      creep.memory.resourceType = "";
+    if (creep.memory.resourceTypes && creep.memory.resourceTypes.length > 0) {
+      let resourceType = creep.memory.resourceTypes[0];
+      if (target) {
+        if (creep.transfer(target, resourceType) == ERR_NOT_IN_RANGE) {
+          creep.moveTo(target, {
+            visualizePathStyle: { stroke: TRANSFER_STOKE },
+          });
+        }
+        if (creep.store.getUsedCapacity(resourceType) == 0) {
+          creep.memory.resourceTypes.shift();
+        }
+      }
+    } else {
+      if (creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+        creep.moveTo(target, {
+          visualizePathStyle: { stroke: TRANSFER_STOKE },
+        });
+      }
     }
   }
 };
@@ -182,7 +191,10 @@ const pickupDroppedResources = (creep) => {
   ) {
     resourceType = droppedResource.resourceType;
     if (resourceType !== RESOURCE_ENERGY) {
-      creep.memory.resourceType = resourceType;
+      if (!creep.memory.resourceTypes) {
+        creep.memory.resourceTypes = [];
+      }
+      creep.memory.resourceTypes.push(resourceType);
     }
     return pickup(creep, droppedResource);
   }
@@ -200,7 +212,15 @@ const withdrawFromTombstone = (creep) => {
     closestTombstone !== null &&
     creep.pos.getRangeTo(closestTombstone) < 20
   ) {
-    return withdrawFrom(creep, closestTombstone);
+    if (!closestTombstone.creep.my) {
+      creep.memory.resourceTypes = ["GO", "ZH", "KO", "UH", "LO"];
+      for (let i in resourceTypes) {
+        let resourceType = creep.memory.resourceTypes[i];
+        return withdrawFrom(creep, closestTombstone, resourceType);
+      }
+    } else {
+      return withdrawFrom(creep, closestTombstone);
+    }
   }
   return false;
 };

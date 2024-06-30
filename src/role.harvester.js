@@ -97,11 +97,7 @@ module.exports = {
       obtainResource(creep, sourceOrigins, sourceIndex);
     } else {
       let target = findDeliveryTarget(creep);
-      if (creep.memory.resourceType) {
-        transferTo(creep, target, creep.memory.resourceType);
-      } else {
-        transferTo(creep, target);
-      }
+      transferTo(creep, target);
     }
   },
 };
