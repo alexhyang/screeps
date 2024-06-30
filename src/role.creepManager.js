@@ -177,8 +177,8 @@ const pickupDroppedResources = (creep) => {
   let droppedResource = creep.pos.findClosestByRange(FIND_DROPPED_RESOURCES);
   if (
     droppedResource !== null &&
-    creep.pos.getRangeTo(droppedResource) < droppedResource.amount &&
-    droppedResource.amount >= 10
+    creep.pos.getRangeTo(droppedResource) < 25 &&
+    droppedResource.amount >= 15
   ) {
     resourceType = droppedResource.resourceType;
     if (resourceType !== RESOURCE_ENERGY) {
@@ -198,7 +198,7 @@ const withdrawFromTombstone = (creep) => {
   let closestTombstone = findClosestDyingWithResource(creep, FIND_TOMBSTONES);
   if (
     closestTombstone !== null &&
-    creep.pos.getRangeTo(closestTombstone) < closestTombstone.ticksToDecay
+    creep.pos.getRangeTo(closestTombstone) < 20
   ) {
     return withdrawFrom(creep, closestTombstone);
   }
