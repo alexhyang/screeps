@@ -65,8 +65,13 @@ function recruitInAdvanceOk(currentTeam, maxTeamSize, newCreepReadyTime) {
 function recruitHarvesters(roomName) {
   const { currentModel, teamSize } = roomConfig[roomName].harvester;
   if (getTeam("harvester", roomName).length < teamSize) {
-    if (getEnergyAvailable(Game.rooms[roomName]) >= 450) {
+    let energyAvailable = getEnergyAvailable(Game.rooms[roomName]);
+    if (energyAvailable >= getModelCost(currentModel)) {
       return recruitCreep(currentModel, "harvester", roomName);
+    } else if (energyAvailable >= getModelCost(MODELS.CARRIER_6)) {
+      return recruitCreep(MODELS.CARRIER_6, "harvester", roomName);
+    } else if (energyAvailable >= getModelCost(MODELS.CARRIER_3)) {
+      return recruitCreep(MODELS.CARRIER_3, "harvester", roomName);
     } else {
       return recruitCreep(MODELS.CARRIER_1, "harvester", roomName);
     }
