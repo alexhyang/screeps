@@ -34,11 +34,14 @@ module.exports = {
       avoidDangerZone(creep);
     } else {
       console.log(creep.name, "transferring...");
-      let container = getContainers(Game.rooms[dstRoomName])[0];
+      let freeContainers = _.filter(
+        getContainers(Game.rooms[dstRoomName]),
+        (c) => c.store.getFreeCapacity(RESOURCE_ENERGY) >= 400
+      );
       let storage = getStorage(Game.rooms[dstRoomName]);
       avoidDangerZone(creep);
-      if (container.store.getFreeCapacity(RESOURCE_ENERGY) >= 400) {
-        transferTo(creep, container);
+      if (freeContainers.length > 0) {
+        transferTo(creep, freeContainers[0]);
       } else {
         transferTo(creep, storage);
       }
