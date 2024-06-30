@@ -60,7 +60,7 @@ function recruitHarvesters(roomName) {
     if (getEnergyAvailable(Game.rooms[roomName]) >= 450) {
       recruitCreep(currentModel, "harvester", roomName);
     } else {
-      recruitCreep(MODELS.CARRIER_2A, "harvester", roomName);
+      recruitCreep(MODELS.CARRIER_1, "harvester", roomName);
     }
   }
 }
@@ -154,7 +154,7 @@ function recruitForRoom(roomName) {
     recruitRepairers(roomName);
   } else if (
     roomName == "W35N43" &&
-    getTeam("transferer", "all").length < transferrer.teamSize
+    getTeam("transferrer", "all").length < transferrer.teamSize
   ) {
     recruitTransferrers(roomName);
   } else if (getTeam("builder", roomName).length < builder.teamSize) {
