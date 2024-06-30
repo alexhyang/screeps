@@ -49,7 +49,8 @@ const printTeamMembers = (teamMembers) => {
     let paddedCreepName = padStr(teamMember.name, 12);
     let paddedCreepMeta = padStr(creepMeta, 21);
     let pos = teamMember.pos;
-    let printMsg = `  ${paddedCreepName}${paddedCreepMeta} ${bodyParts} ${pos}`;
+    let posStr = `[${pos.roomName} (${pos.x}, ${pos.y})]`;
+    let printMsg = `  ${paddedCreepName}${paddedCreepMeta} ${bodyParts} ${posStr}`;
     console.log(printMsg);
   }
 };
