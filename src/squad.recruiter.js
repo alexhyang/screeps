@@ -207,6 +207,7 @@ var squadRecruiter = {
       let spawn = getSpawnByName(spawnNames[0]);
       if (spawn && spawn.spawning) {
         spawn.spawning.setDirections(spawningDirections);
+        console.log(spawn.name, "remaining:", spawn.spawning.remainingTime);
       }
     }
   },
