@@ -8,54 +8,76 @@ const {
 } = require("./util.structureFinder");
 
 /**
+ * Determine if a creep only carries energy
+ * @param {Creep} creep
+ * @returns {boolean} true if creep only carries energy, or false otherwise
+ */
+const isCreepOnlyCarryingEnergy = (creep) => {
+  return (
+    creep.store.getUsedCapacity() ==
+    creep.store.getUsedCapacity(RESOURCE_ENERGY)
+  );
+};
+
+/**
+ * Find links in range of the creep
+ * @param {Creep} creep
+ * @param {number} range
+ * @returns {StructureLink[]} an array of structure links in range, or empty
+ *    array if not found
+ */
+const getLinksInRange = (creep, range) => {
+  return creep.pos.findInRange(FIND_MY_STRUCTURES, range, {
+    filter: { structureType: STRUCTURE_LINK },
+  });
+};
+
+/**
+ * Find spawns and extensions in room that are not full
+ * @param {Room} room
+ * @returns {Structure[]} an array of spawns and extensions that are not full,
+ *    or empty array if not found
+ */
+const getSpawnsExtensionsNotFull = (room, resourceType = RESOURCE_ENERGY) => {
+  return room.find(FIND_STRUCTURES, {
+    filter: (s) => {
+      return (
+        (s.structureType == STRUCTURE_EXTENSION ||
+          s.structureType == STRUCTURE_SPAWN) &&
+        s.store.getFreeCapacity(resourceType) > 0
+      );
+    },
+  });
+};
+
+/**
  * Find the delivery target for the harvester creep
  * @param {Creep} creep
- * @param {string} resourceType
  * @returns {(Structure | undefined)} target to delivery resource,
  *    or undefined if not found
  */
-const findDeliveryTarget = (creep, resourceType = RESOURCE_ENERGY) => {
+const findDeliveryTarget = (creep) => {
   if (creep) {
-    let deliveryTarget = creep.memory.deliveryTarget;
-    if (
-      creep.memory.deliveryTarget &&
-      Game.getObjectById(deliveryTarget).store.getFreeCapacity == 0
-    ) {
-      return Game.getObjectById(deliveryTarget);
+    let deliveryTarget = Game.getObjectById(creep.memory.deliveryTarget);
+    if (deliveryTarget && deliveryTarget.store.getFreeCapacity() > 0) {
+      return deliveryTarget;
     } else {
       delete creep.memory.deliveryTarget;
-      if (
-        creep.store.getUsedCapacity() ==
-        creep.store.getUsedCapacity(RESOURCE_ENERGY)
-      ) {
-        let linkFrom = creep.pos.findInRange(FIND_MY_STRUCTURES, 15, {
-          filter: { structureType: STRUCTURE_LINK },
-        })[0];
-        if (
-          linkFrom &&
-          linkFrom.store.getUsedCapacity(RESOURCE_ENERGY) <
-            linkFrom.store.getCapacity(RESOURCE_ENERGY)
-        ) {
+      if (isCreepOnlyCarryingEnergy(creep)) {
+        let linkFrom = getLinksInRange(creep, 15)[0];
+        if (linkFrom && linkFrom.store.getFreeCapacity(RESOURCE_ENERGY) > 0) {
           creep.memory.deliveryTarget = linkFrom.id;
           return linkFrom;
         }
 
-        let spawnExtensionsNotFull = creep.room.find(FIND_STRUCTURES, {
-          filter: (s) => {
-            return (
-              (s.structureType == STRUCTURE_EXTENSION ||
-                s.structureType == STRUCTURE_SPAWN) &&
-              s.store.getFreeCapacity(resourceType) > 0
-            );
-          },
-        });
+        let spawnExtensionsNotFull = getSpawnsExtensionsNotFull(creep.room);
         if (spawnExtensionsNotFull.length > 0) {
           let target = creep.pos.findClosestByRange(spawnExtensionsNotFull);
           creep.memory.deliveryTarget = target.id;
           return target;
         }
 
-        var towersNotFull = _.filter(getTowers(creep.room), (s) =>
+        let towersNotFull = _.filter(getTowers(creep.room), (s) =>
           structureHasFreeCapacity(s, 300)
         );
         if (towersNotFull.length > 0) {
@@ -63,7 +85,7 @@ const findDeliveryTarget = (creep, resourceType = RESOURCE_ENERGY) => {
         }
       }
 
-      var storage = getStorage(creep.room);
+      let storage = getStorage(creep.room);
       if (storage) {
         return storage;
       }
