@@ -149,7 +149,21 @@ const harvestFrom = (creep, target) => {
 };
 
 /**
- * Transfer resource to target structure
+ * Transfer specified resource to given target
+ * @param {Creep} creep
+ * @param {Structure} target
+ * @param {string} [resourceType=RESOURCE_ENERGY] RESOURCE_ENERGY by default
+ */
+const transferTo = (creep, target, resourceType = RESOURCE_ENERGY) => {
+  if (creep.transfer(target, resourceType) == ERR_NOT_IN_RANGE) {
+    creep.moveTo(target, {
+      visualizePathStyle: { stroke: TRANSFER_STOKE },
+    });
+  }
+};
+
+/**
+ * Transfer carried resource to target structure
  * @param {Creep} creep
  * @param {Structure} target target structure
  */
@@ -166,18 +180,10 @@ const transferResource = (creep, target) => {
       }
       let resourceType = resourceTypes[0];
       if (resourceType) {
-        if (creep.transfer(target, resourceType) == ERR_NOT_IN_RANGE) {
-          creep.moveTo(target, {
-            visualizePathStyle: { stroke: TRANSFER_STOKE },
-          });
-        }
+        transferTo(creep, target, resourceType);
       }
     } else {
-      if (creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-        creep.moveTo(target, {
-          visualizePathStyle: { stroke: TRANSFER_STOKE },
-        });
-      }
+      transferTo(creep, target);
     }
   }
 };
