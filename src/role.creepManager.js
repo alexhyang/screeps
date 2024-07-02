@@ -153,7 +153,7 @@ const harvestFrom = (creep, target) => {
  * @param {Creep} creep
  * @param {Structure} target target structure
  */
-const transferTo = (creep, target) => {
+const transferResource = (creep, target) => {
   if (target) {
     if (creep.memory.resourceTypes && creep.memory.resourceTypes.length > 0) {
       let resourceType = creep.memory.resourceTypes[0];
@@ -504,7 +504,7 @@ module.exports = {
   getCreepMeta,
   getCreepBodyParts,
   obtainResource,
-  transferTo,
+  transferResource,
   buildClosestConstructionSite,
   buildTargetById,
   repairTarget,

@@ -1,4 +1,4 @@
-const { obtainResource, transferTo } = require("./role.creepManager");
+const { obtainResource, transferResource } = require("./role.creepManager");
 const { getStorage, getContainers } = require("./util.structureFinder");
 
 /**
@@ -41,9 +41,9 @@ module.exports = {
       let storage = getStorage(Game.rooms[dstRoomName]);
       avoidDangerZone(creep);
       if (freeContainers.length > 0) {
-        transferTo(creep, freeContainers[0]);
+        transferResource(creep, freeContainers[0]);
       } else {
-        transferTo(creep, storage);
+        transferResource(creep, storage);
       }
     }
   },

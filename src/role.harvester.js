@@ -1,5 +1,5 @@
 const roomConfig = require("./dashboard");
-const { obtainResource, transferTo } = require("./role.creepManager");
+const { obtainResource, transferResource } = require("./role.creepManager");
 const { getTeam } = require("./squad");
 const {
   getTowers,
@@ -119,7 +119,7 @@ module.exports = {
       obtainResource(creep, sourceOrigins, sourceIndex);
     } else {
       let target = findDeliveryTarget(creep);
-      transferTo(creep, target);
+      transferResource(creep, target);
     }
   },
 };
