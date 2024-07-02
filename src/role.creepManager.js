@@ -155,16 +155,21 @@ const harvestFrom = (creep, target) => {
  */
 const transferResource = (creep, target) => {
   if (target) {
-    if (creep.memory.resourceTypes && creep.memory.resourceTypes.length > 0) {
-      let resourceType = creep.memory.resourceTypes[0];
-      if (target) {
+    let resourceTypes = creep.memory.resourceTypes;
+    if (resourceTypes && resourceTypes.length > 0) {
+      for (let i in resourceTypes) {
+        if (creep.store.getUsedCapacity(resourceTypes[i]) == 0) {
+          creep.memory.resourceTypes.shift();
+        } else {
+          break;
+        }
+      }
+      let resourceType = resourceTypes[0];
+      if (resourceType) {
         if (creep.transfer(target, resourceType) == ERR_NOT_IN_RANGE) {
           creep.moveTo(target, {
             visualizePathStyle: { stroke: TRANSFER_STOKE },
           });
-        }
-        if (creep.store.getUsedCapacity(resourceType) == 0) {
-          creep.memory.resourceTypes.shift();
         }
       }
     } else {
@@ -213,10 +218,16 @@ const withdrawFromTombstone = (creep) => {
     creep.pos.getRangeTo(closestTombstone) < 20
   ) {
     if (!closestTombstone.creep.my) {
-      creep.memory.resourceTypes = ["GO", "ZH", "KO", "UH", "LO"];
-      for (let i in resourceTypes) {
-        let resourceType = creep.memory.resourceTypes[i];
-        return withdrawFrom(creep, closestTombstone, resourceType);
+      if (!creep.memory.resourceTypes) {
+        creep.memory.resourceTypes = [];
+      }
+      let hostileResources = ["GO", "ZH", "KO", "UH", "LO", "energy"];
+      for (let i in hostileResources) {
+        let resourceType = hostileResources[i];
+        if (closestTombstone.store.getUsedCapacity(resourceType) > 0) {
+          creep.memory.resourceTypes.push(resourceType);
+          return withdrawFrom(creep, closestTombstone, resourceType);
+        }
       }
     } else {
       return withdrawFrom(creep, closestTombstone);
