@@ -223,7 +223,7 @@ const withdrawFromTombstone = (creep) => {
     closestTombstone !== null &&
     creep.pos.getRangeTo(closestTombstone) < 20
   ) {
-    if (!closestTombstone.creep.my) {
+    if (!closestTombstone.creep.my && creep.memory.role == "harvester") {
       if (!creep.memory.resourceTypes) {
         creep.memory.resourceTypes = [];
       }
