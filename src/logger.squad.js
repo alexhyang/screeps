@@ -1,5 +1,5 @@
 const { capitalize, padStr } = require("./utils");
-const { getCreepBodyParts, getCreepMeta } = require("./role.creepManager");
+const { getCreepBodyParts, getCreepMeta } = require("./Creep");
 const { getTeam, getTeamMaxSize } = require("./squad");
 
 /**

@@ -1,5 +1,5 @@
 const roomConfig = require("./dashboard");
-const { obtainResource, transferResource } = require("./role.creepManager");
+const { obtainResource, transferResource } = require("./Creep");
 const {
   getContainers,
   structureHasFreeCapacity,

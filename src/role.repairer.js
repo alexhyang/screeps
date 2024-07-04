@@ -1,5 +1,5 @@
 const roomConfig = require("./dashboard");
-const { obtainResource, repairTarget } = require("./role.creepManager");
+const { obtainResource, repairTarget } = require("./Creep");
 const { getDamagedStructures } = require("./util.structureFinder");
 
 /**

@@ -1,8 +1,5 @@
 const roomConfig = require("./dashboard");
-const {
-  obtainResource,
-  buildClosestConstructionSite,
-} = require("./role.creepManager");
+const { obtainResource, buildClosestConstructionSite } = require("./Creep");
 
 /**
  * Update the building status of the builder creep

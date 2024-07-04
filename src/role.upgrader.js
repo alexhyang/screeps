@@ -1,5 +1,5 @@
 const roomConfig = require("./dashboard");
-const { obtainResource, upgradeController } = require("./role.creepManager");
+const { obtainResource, upgradeController } = require("./Creep");
 
 /**
  * Update upgrading status of a creep

@@ -1,4 +1,4 @@
-const { obtainResource, transferResource } = require("./role.creepManager");
+const { obtainResource, transferResource } = require("./Creep");
 const { getStorage, getContainers } = require("./util.structureFinder");
 
 /**
