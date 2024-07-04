@@ -1,4 +1,4 @@
-const { capitalize, padStr } = require("./logger.utils");
+const { capitalize, padStr } = require("./utils");
 const { getCreepBodyParts, getCreepMeta } = require("./role.creepManager");
 const { getTeam, getTeamMaxSize } = require("./squad");
 
