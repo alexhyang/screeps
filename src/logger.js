@@ -129,11 +129,23 @@ const getContainerMeta = (roomName) => {
   return "N/A";
 };
 
+/**
+ * Print invasion records
+ */
+function printInvasionRecords() {
+  if (Memory.hostiles) {
+    for (let i in Memory.hostiles) {
+      console.log(Memory.hostiles[i].roomName, Memory.hostiles[i].time);
+    }
+  }
+}
+
 module.exports = {
   run: function () {
     for (let roomName in roomConfig) {
       printRoomHeader(roomName);
       squadLogger.logSquadInfo(roomName);
+      printInvasionRecords();
       console.log("\n");
     }
   },
