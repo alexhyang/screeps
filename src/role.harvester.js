@@ -82,7 +82,7 @@ const findDeliveryTarget = (creep) => {
         }
 
         let towersNotFull = _.filter(getTowers(creep.room), (s) =>
-          structureHasFreeCapacity(s, 300)
+          structureHasFreeCapacity(s, creep.store.getCapacity())
         );
         if (towersNotFull.length > 0) {
           return creep.pos.findClosestByRange(towersNotFull);
