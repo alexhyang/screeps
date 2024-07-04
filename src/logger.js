@@ -142,11 +142,11 @@ function printInvasionRecords() {
 
 module.exports = {
   run: function () {
+    console.log();
     for (let roomName in roomConfig) {
       printRoomHeader(roomName);
       squadLogger.logSquadInfo(roomName);
-      printInvasionRecords();
-      console.log("\n");
     }
+    printInvasionRecords();
   },
 };

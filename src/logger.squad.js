@@ -66,6 +66,7 @@ var squadLogger = {
       "transferrer",
     ];
     roles.forEach((role) => printTeamStatus(role, roomName));
+    console.log();
   },
 };
 
