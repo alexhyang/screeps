@@ -65,7 +65,11 @@ const findDeliveryTarget = (creep) => {
       delete creep.memory.deliveryTarget;
       if (isCreepOnlyCarryingEnergy(creep)) {
         let linkFrom = getLinksInRange(creep, 15)[0];
-        if (linkFrom && linkFrom.store.getFreeCapacity(RESOURCE_ENERGY) > 0) {
+        if (
+          linkFrom &&
+          linkFrom.store.getFreeCapacity(RESOURCE_ENERGY) >=
+            creep.store.getCapacity()
+        ) {
           creep.memory.deliveryTarget = linkFrom.id;
           return linkFrom;
         }
