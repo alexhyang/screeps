@@ -9,17 +9,17 @@ const { getTeam, getTeamMaxSize } = require("./squad");
  */
 const printTeamStatus = (creepRole, roomName) => {
   let teamMembers = getTeam(creepRole, roomName);
-  printTeamStatusTitle(creepRole, teamMembers.length, roomName);
+  printTeamSummary(creepRole, teamMembers.length, roomName);
   printTeamMembers(teamMembers);
 };
 
 /**
- * Print team status title
+ * Print team summary
  * @param {string} creepRole
  * @param {number} teamSize
  * @param {string} roomName
  */
-const printTeamStatusTitle = (creepRole, teamSize, roomName) => {
+const printTeamSummary = (creepRole, teamSize, roomName) => {
   let paddedTeamName = padStr(creepRole + "s", 12);
   let teamMaxSize = getTeamMaxSize(creepRole, roomName);
   let msg =
@@ -56,7 +56,7 @@ const printTeamMembers = (teamMembers) => {
 };
 
 var squadLogger = {
-  logSquadInfo: function (roomName) {
+  printSquadInRoom: function (roomName) {
     let roles = [
       "harvester",
       "builder",

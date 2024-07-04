@@ -1,5 +1,5 @@
 const roomConfig = require("./dashboard");
-const { logSquadInRoom } = require("./logger.squad");
+const { printSquadInRoom } = require("./logger.squad");
 const { getEnergyMeta, getDefenseMeta, getControllerMeta } = require("./Room");
 
 /**
@@ -38,7 +38,7 @@ module.exports = {
     console.log();
     for (let roomName in roomConfig) {
       printRoomSummary(roomName);
-      logSquadInRoom(roomName);
+      printSquadInRoom(roomName);
     }
     printInvasionRecords();
   },
