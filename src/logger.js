@@ -26,10 +26,30 @@ const printRoomSummary = (roomName) => {
  * Print invasion records
  */
 function printInvasionRecords() {
+  let LEFT_ROOM = "W36N43";
+  let RIGHT_ROOM = "W35N43";
+  let rightRoom = [];
+  let leftRoom = [];
   if (Memory.hostiles) {
     for (let i in Memory.hostiles) {
-      console.log(Memory.hostiles[i].roomName, Memory.hostiles[i].time);
+      let { roomName, time } = Memory.hostiles[i];
+      switch (roomName) {
+        case LEFT_ROOM:
+          leftRoom.push(time);
+          break;
+        case RIGHT_ROOM:
+          rightRoom.push(time);
+          break;
+        default:
+          break;
+      }
     }
+  }
+  if (leftRoom.length > 0) {
+    console.log(LEFT_ROOM, leftRoom.join(" "));
+  }
+  if (rightRoom.length > 0) {
+    console.log(RIGHT_ROOM, rightRoom.join(" "));
   }
 }
 
