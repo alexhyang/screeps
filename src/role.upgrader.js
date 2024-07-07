@@ -1,5 +1,9 @@
 const roomConfig = require("./dashboard");
-const { obtainResource, upgradeController } = require("./Creep");
+const {
+  obtainResource,
+  upgradeController,
+  stayInSameRoom,
+} = require("./Creep");
 
 /**
  * Update upgrading status of a creep
@@ -29,6 +33,7 @@ const obtainEnergy = (creep) => {
 var roleUpgrader = {
   /** @param {Creep} creep **/
   run: function (creep) {
+    stayInSameRoom(creep);
     updateUpgradingStatus(creep);
     if (creep.memory.upgrading) {
       upgradeController(creep);

@@ -1,5 +1,9 @@
 const roomConfig = require("./dashboard");
-const { obtainResource, buildClosestConstructionSite } = require("./Creep");
+const {
+  obtainResource,
+  buildClosestConstructionSite,
+  stayInSameRoom,
+} = require("./Creep");
 
 /**
  * Update the building status of the builder creep
@@ -34,6 +38,7 @@ const obtainEnergy = (creep) => {
 var roleBuilder = {
   /** @param {Creep} creep **/
   run: function (creep) {
+    stayInSameRoom(creep);
     updateBuildingStatus(creep);
     if (creep.memory.building) {
       buildClosestConstructionSite(

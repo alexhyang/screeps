@@ -517,6 +517,21 @@ const moveToPosition = (creep, x, y, roomName = "") => {
   }
 };
 
+const stayInSameRoom = (creep) => {
+  if (creep.pos.x <= 1) {
+    creep.moveTo(RIGHT);
+  }
+  if (creep.pos.x >= 48) {
+    creep.moveTo(LEFT);
+  }
+  if (creep.pos.y <= 1) {
+    creep.moveTo(BOTTOM);
+  }
+  if (creep.pos.y >= 48) {
+    creep.moveTo(TOP);
+  }
+};
+
 module.exports = {
   getCreepMeta,
   getCreepBodyParts,
@@ -529,4 +544,5 @@ module.exports = {
   upgradeController,
   signController,
   moveToPosition,
+  stayInSameRoom,
 };
