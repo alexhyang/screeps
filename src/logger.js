@@ -56,7 +56,7 @@ function printInvasionRecords() {
 module.exports = {
   run: function () {
     console.log();
-    for (let roomName in roomConfig) {
+    for (let roomName in Game.rooms) {
       printRoomSummary(roomName);
       printSquadInRoom(roomName);
     }

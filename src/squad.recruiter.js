@@ -197,7 +197,7 @@ function recruitForRoom(roomName) {
 
 var squadRecruiter = {
   run: () => {
-    for (let roomName in roomConfig) {
+    for (let roomName in Game.rooms) {
       const { debugMode, spawnNames, spawningDirections } =
         roomConfig[roomName].spawn;
       if (debugMode) {
