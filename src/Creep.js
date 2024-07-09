@@ -390,7 +390,7 @@ const findHarvestMethod = (origin) => {
  * Obtain resource from the given origins in order
  * @param {Creep} creep
  * @param {("droppedResources" | "tombstone" | "ruin" | "container" |
- *    "storage" | "extension" |" "spawn" | "source")[]} resourceOrigins
+ *    "storage" | "extension" | "spawn" | "source")[]} resourceOrigins
  *    an array of origins of resource
  */
 const obtainResource = (creep, resourceOrigins, sourceId = 0) => {
