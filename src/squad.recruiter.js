@@ -64,7 +64,13 @@ function recruitInAdvanceOk(currentTeam, maxTeamSize, newCreepReadyTime) {
  */
 function recruitHarvesters(roomName) {
   const { currentModel, teamSize } = roomConfig[roomName].harvester;
-  if (getTeam("harvester", roomName).length < teamSize) {
+  if (
+    recruitInAdvanceOk(
+      getTeam("harvester", roomName),
+      teamSize,
+      getCreepSpawningTime(currentModel)
+    )
+  ) {
     let energyAvailable = getEnergyAvailable(Game.rooms[roomName]);
     if (energyAvailable >= getModelCost(currentModel)) {
       return recruitCreep(currentModel, "harvester", roomName);
