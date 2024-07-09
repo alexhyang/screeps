@@ -3,6 +3,10 @@ const { getStorage, getExtractor } = require("./util.structureFinder");
 
 const harvestMineral = (creep) => {
   let mineral = creep.room.find(FIND_MINERALS)[0];
+  if (mineral.mineralAmount == 0) {
+    creep.memory = { role: "repairer" };
+    return;
+  }
   if (!creep.memory.resourceTypes && mineral) {
     creep.memory.resourceTypes = [];
     creep.memory.resourceTypes.push(mineral.mineralType);
@@ -10,6 +14,8 @@ const harvestMineral = (creep) => {
   let extractor = getExtractor(creep.room);
   if (extractor) {
     harvestFrom(creep, mineral);
+  } else {
+    creep.memory = { role: "repairer" };
   }
 };
 
