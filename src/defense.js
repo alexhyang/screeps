@@ -97,13 +97,12 @@ const activateTowersInRoom = (roomName) => {
   var towers = getTowers(Game.rooms[roomName]);
   let { repairTowerIndex } = roomConfig[roomName].tower;
   for (let i in towers) {
-    let repairOk = i == repairTowerIndex ? true : false;
     let tower = towers[i];
     if (tower) {
       let closestHostile = tower.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
       if (closestHostile) {
         attackHostiles(tower, closestHostile);
-      } else if (repairOk) {
+      } else {
         repairUnhealthyDefenses(tower);
       }
     }

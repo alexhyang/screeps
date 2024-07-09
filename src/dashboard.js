@@ -18,7 +18,6 @@ let roomConfig = {
       minTowerEnergyToRepair: 500,
       minDefenseHitsToRepair: 500000,
       maxFiringRange: 16,
-      repairTowerIndex: 0,
     },
     harvester: {
       currentModel: models.CARRIER_3,
@@ -108,7 +107,6 @@ let roomConfig = {
       minTowerEnergyToRepair: 500,
       minDefenseHitsToRepair: 100000,
       maxFiringRange: 37,
-      repairTowerIndex: 1,
     },
     harvester: {
       currentModel: models.CARRIER_6,
@@ -208,7 +206,6 @@ let roomConfig = {
       minTowerEnergyToRepair: 500,
       minDefenseHitsToRepair: 100000,
       maxFiringRange: 37,
-      repairTowerIndex: 1,
     },
     harvester: {
       currentModel: models.CARRIER_6,
