@@ -23,19 +23,22 @@ function recruitCreep(creepModel, creepRole, roomName) {
   if (debugMode) {
     console.log(`TEST Spawning new ${creepRole}: ${newCreepName}`);
   } else {
-    console.log(
-      `${roomName} Spawning new ${creepRole}: ` +
-        newCreepName +
-        ` (${getModelCost(creepModel)})`
-    );
-    let result = getSpawnByName(spawnNames[0]).spawnCreep(
-      buildBodyParts(creepModel),
-      newCreepName,
-      {
-        memory: { role: creepRole },
-      }
-    );
-    return result == 0;
+    let spawn = getSpawnByName(spawnNames[0]);
+    if (spawn) {
+      console.log(
+        `${roomName} Spawning new ${creepRole}: ` +
+          newCreepName +
+          ` (${getModelCost(creepModel)})`
+      );
+      let result = getSpawnByName(spawnNames[0]).spawnCreep(
+        buildBodyParts(creepModel),
+        newCreepName,
+        {
+          memory: { role: creepRole },
+        }
+      );
+      return result == 0;
+    }
   }
   return false;
 }
