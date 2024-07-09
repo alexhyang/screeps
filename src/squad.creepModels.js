@@ -49,8 +49,12 @@ let MODELS = {
     name: "C1",
     body: { work: 1, carry: 1, move: 2 },
   },
-  CARRIER_2: {
-    name: "C2",
+  CARRIER_2A: {
+    name: "C2A",
+    body: { work: 1, carry: 2, move: 2 },
+  },
+  CARRIER_2B: {
+    name: "C2B",
     body: { work: 1, carry: 2, move: 3 },
   },
   CARRIER_3: {

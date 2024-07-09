@@ -1,8 +1,11 @@
 const models = require("./squad.creepModels");
 const W35N43_DEBUG_MODE = false;
 const W36N43_DEBUG_MODE = false;
+const W34N43_DEBUG_MODE = false;
 const W35N43_LEFT_SOURCE = 1;
 const W35N43_RIGHT_SOURCE = 0;
+const W34N43_BOTTOM_SOURCE = 1;
+const W34N43_RIGHT_SOURCE = 0;
 
 let roomConfig = {
   W35N43: {
@@ -194,23 +197,23 @@ let roomConfig = {
   W34N43: {
     // ======== RESOURCES ========
     SPAWN_WITHDRAW_THRESHOLD: 1500, // current miner cost - 100
-    CONTAINER_WITHDRAW_THRESHOLD: 1200,
+    CONTAINER_WITHDRAW_THRESHOLD: 200,
     STORAGE_WITHDRAW_THRESHOLD: 500,
 
     spawn: {
-      spawnNames: ["Spawn1"],
-      debugMode: W36N43_DEBUG_MODE,
-      spawningDirections: [BOTTOM_LEFT, BOTTOM],
+      spawnNames: ["Spawn3"],
+      debugMode: W34N43_DEBUG_MODE,
+      spawningDirections: [BOTTOM],
     },
     tower: {
       minTowerEnergyToRepair: 500,
-      minDefenseHitsToRepair: 100000,
+      minDefenseHitsToRepair: 10000,
       maxFiringRange: 37,
     },
     harvester: {
-      currentModel: models.CARRIER_6,
+      currentModel: models.CARRIER_2A,
       teamSize: 1,
-      sourceIndex: 0,
+      sourceIndex: W34N43_BOTTOM_SOURCE,
       sourceOrigins: [
         "droppedResources",
         "tombstone",
@@ -222,23 +225,28 @@ let roomConfig = {
     },
     miner: {
       distanceToSource: 4, // distance = 4, adjustment = 50
-      currentModel: models.WORKER_6A, // 6A is the most efficient miner model
-      teamSize: 1,
-      sourceIndex: 0,
+      currentModel: models.WORKER_2A, // 6A is the most efficient miner model
+      teamSize: 3,
+      sourceIndex: W34N43_BOTTOM_SOURCE,
       sourceOrigins: ["source"],
+    },
+    extractor: {
+      distanceToSource: 20,
+      currentModel: models.WORKER_5B,
+      teamSize: 0,
     },
     upgrader: {
       distanceToSource: 50,
-      currentModel: models.WORKER_5B,
-      teamSize: 2,
-      sourceIndex: 0,
+      currentModel: models.WORKER_2B,
+      teamSize: 4,
+      sourceIndex: W34N43_RIGHT_SOURCE,
       sourceOrigins: [
         "droppedResources",
         "tombstone",
         "ruin",
         "link",
         "storage",
-        "container",
+        // "container",
         // "extension",
         // "spawn",
         "source",
@@ -247,25 +255,25 @@ let roomConfig = {
     builder: {
       currentModel: models.WORKER_2B, // 5C
       teamSize: 1,
-      sourceIndex: 0,
+      sourceIndex: W34N43_RIGHT_SOURCE,
       // comment out first three origins for heavy builder
       sourceOrigins: [
         "droppedResources",
-        // "tombstone",
+        "tombstone",
         // "ruin",
         "storage",
         // "extension",
-        // "container",
+        "container",
         // "spawn",
         "source",
       ],
       buildingPriority: "none",
     },
     repairer: {
-      spawnCycle: 1, // set to 1 for spawn with no delay
-      currentModel: models.CARRIER_3B,
+      spawnCycle: 3000, // set to 1 for spawn with no delay
+      currentModel: models.WORKER_1B,
       teamSize: 1,
-      sourceIndex: 0,
+      sourceIndex: W34N43_RIGHT_SOURCE,
       sourceOrigins: [
         "droppedResources",
         "tombstone",
