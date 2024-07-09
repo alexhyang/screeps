@@ -34,6 +34,13 @@ const printTeamSummary = (creepRole, teamSize, roomName) => {
   ) {
     msg += " (no construction sites)";
   }
+  if (creepRole == "extractor") {
+    let room = Game.rooms[roomName];
+    let mineral = room.find(FIND_MINERALS)[0];
+    if (mineral.mineralAmount == 0) {
+      msg += ` (mineral regenerating in ${mineral.ticksToRegeneration}...)`;
+    }
+  }
   console.log(msg);
 };
 
@@ -63,6 +70,7 @@ var squadLogger = {
       "upgrader",
       "repairer",
       "miner",
+      "extractor",
       "transferrer",
     ];
     roles.forEach((role) => printTeamStatus(role, roomName));
