@@ -34,11 +34,16 @@ let roomConfig = {
       ],
     },
     miner: {
-      distanceToSource: 5, // distance to source = 5
+      distanceToSource: 10, // distance to source = 5
       currentModel: models.WORKER_6A, // 6A is the most efficient miner model
       teamSize: 1,
       sourceIndex: W35N43_LEFT_SOURCE,
       sourceOrigins: ["source"],
+    },
+    extractor: {
+      distanceToSource: 20,
+      currentModel: models.WORKER_5B,
+      teamSize: 1,
     },
     upgrader: {
       distanceToSource: 5, // distance to source = 5
@@ -91,7 +96,7 @@ let roomConfig = {
   W36N43: {
     // ======== RESOURCES ========
     SPAWN_WITHDRAW_THRESHOLD: 1500, // current miner cost - 100
-    CONTAINER_WITHDRAW_THRESHOLD: 2000,
+    CONTAINER_WITHDRAW_THRESHOLD: 1200,
     STORAGE_WITHDRAW_THRESHOLD: 500,
 
     spawn: {
@@ -101,12 +106,12 @@ let roomConfig = {
     },
     tower: {
       minTowerEnergyToRepair: 500,
-      minDefenseHitsToRepair: 40000,
+      minDefenseHitsToRepair: 100000,
       maxFiringRange: 37,
       repairTowerIndex: 1,
     },
     harvester: {
-      currentModel: models.CARRIER_3,
+      currentModel: models.CARRIER_6,
       teamSize: 1,
       sourceIndex: 0,
       sourceOrigins: [
@@ -125,10 +130,15 @@ let roomConfig = {
       sourceIndex: 0,
       sourceOrigins: ["source"],
     },
+    extractor: {
+      distanceToSource: 20,
+      currentModel: models.WORKER_5B,
+      teamSize: 1,
+    },
     upgrader: {
       distanceToSource: 50,
       currentModel: models.WORKER_5B,
-      teamSize: 3,
+      teamSize: 2,
       sourceIndex: 0,
       sourceOrigins: [
         "droppedResources",
@@ -160,8 +170,103 @@ let roomConfig = {
       buildingPriority: "none",
     },
     repairer: {
-      spawnCycle: 200, // set to 1 for spawn with no delay
-      currentModel: models.WORKER_2B,
+      spawnCycle: 1, // set to 1 for spawn with no delay
+      currentModel: models.CARRIER_3B,
+      teamSize: 1,
+      sourceIndex: 0,
+      sourceOrigins: [
+        "droppedResources",
+        "tombstone",
+        "ruin",
+        "storage",
+        "container",
+        // "extension",
+        // "spawn",
+        "source",
+      ],
+      repairingPriority: "infrastructure",
+      repairingHitsRatio: 1 / 4,
+    },
+    transferrer: {
+      currentModel: models.CARRIER_6,
+      teamSize: 0,
+    },
+  },
+
+  W34N43: {
+    // ======== RESOURCES ========
+    SPAWN_WITHDRAW_THRESHOLD: 1500, // current miner cost - 100
+    CONTAINER_WITHDRAW_THRESHOLD: 1200,
+    STORAGE_WITHDRAW_THRESHOLD: 500,
+
+    spawn: {
+      spawnNames: ["Spawn1"],
+      debugMode: W36N43_DEBUG_MODE,
+      spawningDirections: [BOTTOM_LEFT, BOTTOM],
+    },
+    tower: {
+      minTowerEnergyToRepair: 500,
+      minDefenseHitsToRepair: 100000,
+      maxFiringRange: 37,
+      repairTowerIndex: 1,
+    },
+    harvester: {
+      currentModel: models.CARRIER_6,
+      teamSize: 1,
+      sourceIndex: 0,
+      sourceOrigins: [
+        "droppedResources",
+        "tombstone",
+        "ruin",
+        "container",
+        "storage",
+        "source",
+      ],
+    },
+    miner: {
+      distanceToSource: 4, // distance = 4, adjustment = 50
+      currentModel: models.WORKER_6A, // 6A is the most efficient miner model
+      teamSize: 1,
+      sourceIndex: 0,
+      sourceOrigins: ["source"],
+    },
+    upgrader: {
+      distanceToSource: 50,
+      currentModel: models.WORKER_5B,
+      teamSize: 2,
+      sourceIndex: 0,
+      sourceOrigins: [
+        "droppedResources",
+        "tombstone",
+        "ruin",
+        "link",
+        "storage",
+        "container",
+        // "extension",
+        // "spawn",
+        "source",
+      ],
+    },
+    builder: {
+      currentModel: models.WORKER_2B, // 5C
+      teamSize: 1,
+      sourceIndex: 0,
+      // comment out first three origins for heavy builder
+      sourceOrigins: [
+        "droppedResources",
+        // "tombstone",
+        // "ruin",
+        "storage",
+        // "extension",
+        // "container",
+        // "spawn",
+        "source",
+      ],
+      buildingPriority: "none",
+    },
+    repairer: {
+      spawnCycle: 1, // set to 1 for spawn with no delay
+      currentModel: models.CARRIER_3B,
       teamSize: 1,
       sourceIndex: 0,
       sourceOrigins: [
