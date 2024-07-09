@@ -5,6 +5,7 @@ const {
   roleRepairer,
   roleMiner,
   roleTransferrer,
+  roleExtractor,
 } = require("./role");
 
 /**
@@ -31,6 +32,9 @@ const assignJobs = () => {
         break;
       case "transferrer":
         roleTransferrer.run(creep);
+        break;
+      case "extractor":
+        roleExtractor.run(creep);
         break;
       default:
         break;

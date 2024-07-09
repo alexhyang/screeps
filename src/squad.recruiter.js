@@ -7,7 +7,7 @@ const {
 } = require("./squad.creepModelAnalyzer");
 const MODELS = require("./squad.creepModels");
 const { getEnergyAvailable } = require("./util.resourceManager");
-const { getSpawnByName } = require("./util.structureFinder");
+const { getSpawnByName, getExtractor } = require("./util.structureFinder");
 
 // TODO: better define creepModel in JSDocs
 /**
@@ -177,6 +177,31 @@ function recruitTransferrers(roomName) {
 }
 
 /**
+ * Recruit extractors
+ * @param {string} roomName
+ * @returns {boolean} true if the recruit is successful, false otherwise
+ */
+function recruitExtractor(roomName) {
+  const { currentModel, teamSize, distanceToSource } =
+    roomConfig[roomName].extractor;
+  let room = Game.rooms[roomName];
+  let mineral = room.find(FIND_MINERALS)[0];
+
+  if (
+    mineral.mineralAmount > 0 &&
+    getExtractor(room) &&
+    recruitInAdvanceOk(
+      getTeam("extractor", roomName),
+      teamSize,
+      getCreepSpawningTime(currentModel) + distanceToSource
+    )
+  ) {
+    return recruitCreep(currentModel, "extractor", roomName);
+  }
+  return false;
+}
+
+/**
  * Recruit creeps for a room based on its config parameters
  * @param {string} roomName
  */
@@ -185,6 +210,9 @@ function recruitForRoom(roomName) {
     return;
   }
   if (recruitUpgraders(roomName)) {
+    return;
+  }
+  if (recruitExtractor(roomName)) {
     return;
   }
   if (recruitRepairers(roomName) || recruitBuilders(roomName)) {

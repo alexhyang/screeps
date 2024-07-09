@@ -122,6 +122,15 @@ const getLinks = (room) => {
   return getStructures(STRUCTURE_LINK, room);
 };
 
+/** Find extractor in the given room
+ * @param {Room} room
+ * @returns {(StructureExtractor|undefined)} the extractor in the room, or
+ *    undefined if not found
+ */
+const getExtractor = (room) => {
+  return getStructures(STRUCTURE_EXTRACTOR, room)[0];
+};
+
 /**
  * Find all unhealthy walls and ramparts
  * @param {number} minHealthyHits minimum hits of healthy defenses
@@ -184,6 +193,7 @@ module.exports = {
   getContainers,
   getTowers,
   getLinks,
+  getExtractor,
   getUnhealthyDefenses,
   getHealthyDefenses,
   getDamagedStructures,
