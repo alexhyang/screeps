@@ -20,7 +20,7 @@ let roomConfig = {
     tower: {
       minTowerEnergyToRepair: 500,
       minDefenseHitsToRepair: 500000,
-      maxFiringRange: 16,
+      maxFiringRange: 26,
     },
     harvester: {
       currentModel: models.CARRIER_3,
