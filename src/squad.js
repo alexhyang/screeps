@@ -3,7 +3,8 @@ const roomConfig = require("./dashboard");
 /**
  * Get all creeps by role
  * @param {string} creepRole
- * @returns {Object<string, Creep>} a hash containing creeps given their role
+ * @returns {Creep[]} an array of creeps of given role, or empty array if not
+ *    found
  **/
 const getTeam = (creepRole, roomName) => {
   if (roomName == "all") {
