@@ -113,7 +113,7 @@ const activateTowersInRoom = (roomName) => {
  * Activate all towers
  */
 const activateTowers = () => {
-  for (let roomName in Game.rooms) {
+  for (let roomName in roomConfig) {
     activateTowersInRoom(roomName);
   }
 };
