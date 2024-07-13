@@ -33,12 +33,36 @@ const getCreepMeta = (creep) => {
 };
 
 /**
+ * Get the summary of body part count
+ * @param {Creep} creep
+ * @returns {object.<string, number>} an object with part as key and count as
+ *    value, return undefined if all parts are lost
+ */
+const getCreepBodyPartCount = (creep) => {
+  let bodyPartCount = {};
+  creep.body.map((body) => {
+    if (!(body.type in bodyPartCount)) {
+      bodyPartCount[body.type] = 0;
+    }
+    if (body.hits > 0) {
+      bodyPartCount[body.type]++;
+    }
+  });
+  return bodyPartCount;
+};
+
+/**
  * Get body parts of a creep
  * @param {Creep} creep
  * @returns {string} body parts the given creep
  */
 const getCreepBodyParts = (creep) => {
-  return creep.body.map((part) => part.type).join(",");
+  let bodyParts = [];
+  let bodyPartCount = getCreepBodyPartCount(creep);
+  for (let partType in bodyPartCount) {
+    bodyParts.push(`${partType}: ${bodyPartCount[partType]}`);
+  }
+  return `(${bodyParts.join(", ")})`;
 };
 
 /**
