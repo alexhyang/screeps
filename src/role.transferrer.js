@@ -1,17 +1,48 @@
 const { obtainResource, transferResource } = require("./Creep");
+const { getTeam } = require("./squad");
 const { getStorage, getContainers } = require("./util.structureFinder");
 
 /**
  * Obtain energy from storage in the specified room
  * @param {Creep} creep
- * @param {string} originRoomName
+ * @param {string} fromRoomName
  */
-const obtainFromOriginRoom = (creep, originRoomName) => {
-  if (creep.room.name == originRoomName) {
-    obtainResource(creep, ["storage"]);
+const obtainFromRoom = (creep, fromRoomName) => {
+  if (creep.memory.fromRoom) {
+    fromRoomName = creep.memory.fromRoom;
+  }
+  if (creep.room.name == fromRoomName) {
+    obtainResource(creep, ["container", "storage"]);
   } else {
-    let storage = getStorage(Game.rooms[originRoomName]);
-    creep.moveTo(storage);
+    let container = getContainers(Game.rooms[fromRoomName])[0];
+    creep.moveTo(container);
+  }
+};
+
+/**
+ * Transfer energy to room
+ * @param {Creep} creep
+ * @param {string} toRoomName
+ */
+const transferToRoom = (creep, toRoomName) => {
+  if (creep.memory.dstRoom) {
+    toRoomName = creep.memory.dstRoom;
+  }
+  let storage = getStorage(Game.rooms[toRoomName]);
+  switch (toRoomName) {
+    case "W36N43":
+      let freeContainers = _.filter(
+        getContainers(Game.rooms[toRoomName]),
+        (c) =>
+          c.store.getFreeCapacity(RESOURCE_ENERGY) >= creep.store.getCapacity()
+      );
+      if (freeContainers.length > 0) {
+        transferResource(creep, freeContainers[0]);
+      } else {
+        transferResource(creep, storage);
+      }
+    default:
+      transferResource(creep, storage);
   }
 };
 
@@ -25,26 +56,36 @@ const avoidDangerZone = (creep) => {
   }
 };
 
+/**
+ * Convert to harvester in specified room when no harvester present
+ * @param {Creep} creep
+ * @returns {boolean} true if conversion is successful, false otherwise
+ */
+const convertToHarvesterWhenNecessary = (creep, roomName) => {
+  if (
+    creep.room.name == roomName &&
+    getTeam("harvester", creep.room.name).length == 0
+  ) {
+    creep.memory = { role: "harvester" };
+    return true;
+  }
+  return false;
+};
+
 module.exports = {
   /** @param {Creep} creep **/
-  run: function (creep, originRoomName = "W35N43", dstRoomName = "W36N43") {
+  run: function (creep, fromRoomName = "W34N43", toRoomName = "W35N43") {
+    avoidDangerZone(creep);
+    if (convertToHarvesterWhenNecessary(creep, "W34N43")) {
+      return;
+    }
+
     if (creep.store.getUsedCapacity(RESOURCE_ENERGY) == 0) {
-      console.log(creep.name, "obtaining...");
-      obtainFromOriginRoom(creep, originRoomName);
-      avoidDangerZone(creep);
+      console.log(creep.name, "obtaining...   ", creep.pos);
+      obtainFromRoom(creep, fromRoomName);
     } else {
-      console.log(creep.name, "transferring...");
-      let freeContainers = _.filter(
-        getContainers(Game.rooms[dstRoomName]),
-        (c) => c.store.getFreeCapacity(RESOURCE_ENERGY) >= 400
-      );
-      let storage = getStorage(Game.rooms[dstRoomName]);
-      avoidDangerZone(creep);
-      if (freeContainers.length > 0) {
-        transferResource(creep, freeContainers[0]);
-      } else {
-        transferResource(creep, storage);
-      }
+      console.log(creep.name, "transferring...", creep.pos);
+      transferToRoom(creep, toRoomName);
     }
   },
 };
