@@ -12,11 +12,30 @@ const obtainFromRoom = (creep, fromRoomName) => {
     fromRoomName = creep.memory.fromRoom;
   }
   if (creep.room.name == fromRoomName) {
-    obtainResource(creep, ["container", "storage"]);
+    switch (fromRoomName) {
+      case "W35N43":
+        obtainResource(creep, ["container", "storage"]);
+      default:
+        obtainResource(creep, ["storage"]);
+    }
   } else {
     let container = getContainers(Game.rooms[fromRoomName])[0];
     creep.moveTo(container);
   }
+};
+
+/**
+ * Find all free containers to transfer energy to
+ * @param {Creep} creep
+ * @param {string} roomName
+ * @returns {StructureContainer[]} an array of containers that has enough free
+ *     capacity for transferrer, or empty array if not found
+ */
+const getFreeContainersToTransfer = (creep, roomName) => {
+  return _.filter(
+    getContainers(Game.rooms[roomName]),
+    (c) => c.store.getFreeCapacity(RESOURCE_ENERGY) >= creep.store.getCapacity()
+  );
 };
 
 /**
@@ -31,11 +50,7 @@ const transferToRoom = (creep, toRoomName) => {
   let storage = getStorage(Game.rooms[toRoomName]);
   switch (toRoomName) {
     case "W36N43":
-      let freeContainers = _.filter(
-        getContainers(Game.rooms[toRoomName]),
-        (c) =>
-          c.store.getFreeCapacity(RESOURCE_ENERGY) >= creep.store.getCapacity()
-      );
+      let freeContainers = getFreeContainersToTransfer(creep, toRoomName);
       if (freeContainers.length > 0) {
         transferResource(creep, freeContainers[0]);
       } else {
