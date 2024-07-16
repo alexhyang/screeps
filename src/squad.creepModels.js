@@ -77,6 +77,14 @@ let MODELS = {
     name: "C6",
     body: { work: 1, carry: 6, move: 4 },
   },
+  CARRIER_8: {
+    name: "C8",
+    body: { work: 1, carry: 8, move: 5 },
+  },
+  CARRIER_10: {
+    name: "C10",
+    body: { work: 1, carry: 10, move: 6 },
+  },
   CLAIMER: {
     name: "NH",
     body: { claim: 1, work: 1, carry: 1, move: 1 },
