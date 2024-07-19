@@ -15,7 +15,7 @@ const repairUnhealthyDefenses = (tower) => {
   var closestDamagedStructure = tower.pos.findClosestByRange(unhealthyDefenses);
   if (
     closestDamagedStructure !== null &&
-    tower.store.getUsedCapacity(RESOURCE_ENERGY) > minTowerEnergyToRepair
+    tower.store.getUsedCapacity(RESOURCE_ENERGY) >= minTowerEnergyToRepair
   ) {
     tower.repair(closestDamagedStructure);
   }
