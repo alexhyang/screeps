@@ -10,7 +10,10 @@ const {
  * @param {Creep} creep
  */
 const updateBuildingStatus = (creep) => {
-  if (creep.pos.findClosestByRange(FIND_CONSTRUCTION_SITES) == null) {
+  if (
+    creep.room.name in roomConfig &&
+    creep.pos.findClosestByRange(FIND_CONSTRUCTION_SITES) == null
+  ) {
     creep.memory = { role: "repairer" };
     return;
   }
