@@ -70,7 +70,7 @@ const getCreep = (creepName) => {
  */
 const changeCreepRoleByName = (creepName, newRole) => {
   let creep = getCreep(creepName);
-  if (creep) {
+  if (creep && creep.name in roomConfig) {
     let changeAllowed = roomConfig[creep.room.name].spawn.debugMode;
     if (changeAllowed) {
       changeCreepRole(creep, newRole);

@@ -1,3 +1,4 @@
+const roomConfig = require("./dashboard");
 const {
   roleHarvester,
   roleUpgrader,
@@ -14,30 +15,32 @@ const {
 const assignJobs = () => {
   for (var name in Game.creeps) {
     var creep = Game.creeps[name];
-    switch (creep.memory.role) {
-      case "harvester":
-        roleHarvester.run(creep);
-        break;
-      case "upgrader":
-        roleUpgrader.run(creep);
-        break;
-      case "builder":
-        roleBuilder.run(creep);
-        break;
-      case "repairer":
-        roleRepairer.run(creep);
-        break;
-      case "miner":
-        roleMiner.run(creep);
-        break;
-      case "transferrer":
-        roleTransferrer.run(creep);
-        break;
-      case "extractor":
-        roleExtractor.run(creep);
-        break;
-      default:
-        break;
+    if (creep.room.name in roomConfig) {
+      switch (creep.memory.role) {
+        case "harvester":
+          roleHarvester.run(creep);
+          break;
+        case "upgrader":
+          roleUpgrader.run(creep);
+          break;
+        case "builder":
+          roleBuilder.run(creep);
+          break;
+        case "repairer":
+          roleRepairer.run(creep);
+          break;
+        case "miner":
+          roleMiner.run(creep);
+          break;
+        case "transferrer":
+          roleTransferrer.run(creep);
+          break;
+        case "extractor":
+          roleExtractor.run(creep);
+          break;
+        default:
+          break;
+      }
     }
   }
 };
