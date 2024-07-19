@@ -5,9 +5,12 @@
  * @returns {Structure[]} an array of structures, or empty array if not found
  */
 function getStructures(structureType, room) {
-  return room.find(FIND_STRUCTURES, {
-    filter: { structureType: structureType },
-  });
+  if (room) {
+    return room.find(FIND_STRUCTURES, {
+      filter: { structureType: structureType },
+    });
+  }
+  return [];
 }
 
 /**
@@ -71,7 +74,9 @@ const getSpawns = (room) => {
  *    or undefined if not found
  */
 const getController = (room) => {
-  return room.controller;
+  if (room) {
+    return room.controller;
+  }
 };
 
 /**
@@ -91,7 +96,9 @@ const getContainers = (room) => {
  *    or undefined if not found
  */
 const getStorage = (room) => {
-  return room.storage;
+  if (room) {
+    return room.storage;
+  }
 };
 
 /**
@@ -139,13 +146,16 @@ const getExtractor = (room) => {
  *    or empty array if not found
  */
 const getUnhealthyDefenses = (minHealthyHits, room) => {
-  let unhealthyDefenses = room.find(FIND_STRUCTURES, {
-    filter: (s) =>
-      (s.structureType == STRUCTURE_WALL ||
-        s.structureType == STRUCTURE_RAMPART) &&
-      s.hits < minHealthyHits,
-  });
-  return unhealthyDefenses;
+  if (room) {
+    let unhealthyDefenses = room.find(FIND_STRUCTURES, {
+      filter: (s) =>
+        (s.structureType == STRUCTURE_WALL ||
+          s.structureType == STRUCTURE_RAMPART) &&
+        s.hits < minHealthyHits,
+    });
+    return unhealthyDefenses;
+  }
+  return [];
 };
 
 /**
@@ -156,13 +166,16 @@ const getUnhealthyDefenses = (minHealthyHits, room) => {
  *    or empty array if not found
  */
 const getHealthyDefenses = (minHealthyHits, room) => {
-  let healthyDefenses = room.find(FIND_STRUCTURES, {
-    filter: (s) =>
-      (s.structureType == STRUCTURE_WALL ||
-        s.structureType == STRUCTURE_RAMPART) &&
-      s.hits >= minHealthyHits,
-  });
-  return healthyDefenses;
+  if (room) {
+    let healthyDefenses = room.find(FIND_STRUCTURES, {
+      filter: (s) =>
+        (s.structureType == STRUCTURE_WALL ||
+          s.structureType == STRUCTURE_RAMPART) &&
+        s.hits >= minHealthyHits,
+    });
+    return healthyDefenses;
+  }
+  return [];
 };
 
 /**
@@ -173,12 +186,15 @@ const getHealthyDefenses = (minHealthyHits, room) => {
  *    or empty array if not found
  */
 const getDamagedStructures = (room, structureType) => {
-  let targets = room.find(FIND_STRUCTURES, {
-    filter: (structure) =>
-      structure.structureType == structureType &&
-      structure.hits < structure.hitsMax,
-  });
-  return targets;
+  if (room) {
+    let targets = room.find(FIND_STRUCTURES, {
+      filter: (structure) =>
+        structure.structureType == structureType &&
+        structure.hits < structure.hitsMax,
+    });
+    return targets;
+  }
+  return [];
 };
 
 module.exports = {

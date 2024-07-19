@@ -7,7 +7,10 @@ const { getContainers, getStorage } = require("./util.structureFinder");
  * @returns {number} the available energy in the given room
  */
 const getEnergyAvailable = (room) => {
-  return room.energyAvailable;
+  if (room) {
+    return room.energyAvailable;
+  }
+  return 0;
 };
 
 /**
@@ -16,7 +19,10 @@ const getEnergyAvailable = (room) => {
  * @returns the available energy capacity of room with the given name
  */
 const getEnergyCapacityAvailable = (room) => {
-  return room.energyCapacityAvailable;
+  if (room) {
+    return room.energyCapacityAvailable;
+  }
+  return 0;
 };
 
 /**

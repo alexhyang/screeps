@@ -76,16 +76,19 @@ const getDefenseMeta = (roomName) => {
 const getControllerMeta = (roomName) => {
   if (roomName in roomConfig) {
     let controller = getController(Game.rooms[roomName]);
-    let current = parseNumber(controller.progress);
-    let total = parseNumber(controller.progressTotal);
-    let percentage = roundTo(
-      Math.round((controller.progress / controller.progressTotal) * 100),
-      1
-    );
-    let controllerMeta =
-      `Controller (${controller.level}): ` +
-      `${percentage}%: ${current}/${total}`;
-    return controllerMeta;
+    if (controller) {
+      let current = parseNumber(controller.progress);
+      let total = parseNumber(controller.progressTotal);
+      let percentage = roundTo(
+        Math.round((controller.progress / controller.progressTotal) * 100),
+        1
+      );
+      let controllerMeta =
+        `Controller (${controller.level}): ` +
+        `${percentage}%: ${current}/${total}`;
+      return controllerMeta;
+    }
+    return "N/A";
   }
 };
 

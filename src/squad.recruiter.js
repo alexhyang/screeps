@@ -94,7 +94,9 @@ function recruitHarvesters(roomName) {
  * @returns {boolean} true if the recruit is successful, false otherwise
  */
 function recruitBuilders(roomName) {
-  let constructionsInRoom = Game.rooms[roomName].find(FIND_CONSTRUCTION_SITES);
+  let room = Game.rooms[roomName];
+  if (room) {
+    let constructionsInRoom = room.find(FIND_CONSTRUCTION_SITES);
   if (constructionsInRoom.length > 0) {
     const { currentModel, teamSize } = roomConfig[roomName].builder;
     if (
@@ -105,6 +107,7 @@ function recruitBuilders(roomName) {
       )
     ) {
       return recruitCreep(currentModel, "builder", roomName);
+      }
     }
   }
   return false;
@@ -194,6 +197,8 @@ function recruitExtractor(roomName) {
   const { currentModel, teamSize, distanceToSource } =
     roomConfig[roomName].extractor;
   let room = Game.rooms[roomName];
+
+  if (room) {
   let mineral = room.find(FIND_MINERALS)[0];
 
   if (
@@ -206,6 +211,7 @@ function recruitExtractor(roomName) {
     )
   ) {
     return recruitCreep(currentModel, "extractor", roomName);
+    }
   }
   return false;
 }
