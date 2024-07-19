@@ -14,12 +14,16 @@ const { getSpawnByName, getExtractor } = require("./util.structureFinder");
  * Recruit a creep to given role with desired model design
  * @param {object.<string, object.<string, number>>} creepModel the creep
  *   model with name and body parts
- * @param {string} creepRole the role to assign to the creep
+ * @param {string} creepRole
+ * @param {string} roomName
+ * @param {string} [creepName]
  * @returns {boolean} true if the recruit is successful, false otherwise
  */
-function recruitCreep(creepModel, creepRole, roomName) {
+function recruitCreep(creepModel, creepRole, roomName, creepName) {
   const { spawnNames, debugMode } = roomConfig[roomName].spawn;
-  var newCreepName = creepModel.name + "-" + (Game.time % 100);
+  let newCreepName = creepName
+    ? creepName
+    : creepModel.name + "-" + (Game.time % 100);
   if (debugMode) {
     console.log(`TEST Spawning new ${creepRole}: ${newCreepName}`);
   } else {
