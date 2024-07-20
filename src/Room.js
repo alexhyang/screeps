@@ -58,6 +58,9 @@ const getDefenseMeta = (roomName) => {
     let towerAvailableEnergy = _.map(getTowers(Game.rooms[roomName]), (t) =>
       t.store.getUsedCapacity(RESOURCE_ENERGY)
     );
+    if (towerAvailableEnergy.length == 0) {
+      towerAvailableEnergy = "N/A";
+    }
 
     let defenseMeta =
       `Towers (${towerAvailableEnergy}) ` +
