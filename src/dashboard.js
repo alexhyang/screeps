@@ -10,7 +10,7 @@ const W34N43_RIGHT_SOURCE = 0;
 let roomConfig = {
   W35N43: {
     SPAWN_WITHDRAW_THRESHOLD: 1500,
-    CONTAINER_WITHDRAW_THRESHOLD: 1000,
+    CONTAINER_WITHDRAW_THRESHOLD: 300,
     STORAGE_WITHDRAW_THRESHOLD: 200,
     spawn: {
       spawnNames: ["Spawn2"],
@@ -19,11 +19,11 @@ let roomConfig = {
     },
     tower: {
       minTowerEnergyToRepair: 500,
-      minDefenseHitsToRepair: 500000,
+      minDefenseHitsToRepair: 1500000,
       maxFiringRange: 26,
     },
     harvester: {
-      currentModel: models.CARRIER_3,
+      currentModel: models.CARRIER_6,
       teamSize: 1,
       sourceIndex: W35N43_RIGHT_SOURCE,
       sourceOrigins: [
@@ -55,7 +55,7 @@ let roomConfig = {
       sourceOrigins: ["source"],
     },
     builder: {
-      currentModel: models.WORKER_2B, // 2B(212), 4B(413), 5C(534)
+      currentModel: models.WORKER_5C,
       teamSize: 1,
       sourceIndex: W35N43_LEFT_SOURCE,
       // comment out first three origins for heavy builder
@@ -90,15 +90,14 @@ let roomConfig = {
       repairingHitsRatio: 0.8,
     },
     transferrer: {
-      currentModel: models.CARRIER_6,
+      currentModel: models.CARRIER_10,
       teamSize: 1,
     },
   },
 
   W36N43: {
-    // ======== RESOURCES ========
-    SPAWN_WITHDRAW_THRESHOLD: 1500, // current miner cost - 100
-    CONTAINER_WITHDRAW_THRESHOLD: 1200,
+    SPAWN_WITHDRAW_THRESHOLD: 1500,
+    CONTAINER_WITHDRAW_THRESHOLD: 1000,
     STORAGE_WITHDRAW_THRESHOLD: 500,
 
     spawn: {
@@ -195,23 +194,22 @@ let roomConfig = {
   },
 
   W34N43: {
-    // ======== RESOURCES ========
-    SPAWN_WITHDRAW_THRESHOLD: 1500, // current miner cost - 100
-    CONTAINER_WITHDRAW_THRESHOLD: 200,
+    SPAWN_WITHDRAW_THRESHOLD: 1500,
+    CONTAINER_WITHDRAW_THRESHOLD: 500,
     STORAGE_WITHDRAW_THRESHOLD: 500,
 
     spawn: {
       spawnNames: ["Spawn3"],
       debugMode: W34N43_DEBUG_MODE,
-      spawningDirections: [BOTTOM],
+      spawningDirections: [RIGHT, BOTTOM],
     },
     tower: {
       minTowerEnergyToRepair: 500,
-      minDefenseHitsToRepair: 10000,
+      minDefenseHitsToRepair: 100000,
       maxFiringRange: 37,
     },
     harvester: {
-      currentModel: models.CARRIER_2A,
+      currentModel: models.CARRIER_10,
       teamSize: 1,
       sourceIndex: W34N43_BOTTOM_SOURCE,
       sourceOrigins: [
@@ -224,9 +222,9 @@ let roomConfig = {
       ],
     },
     miner: {
-      distanceToSource: 4, // distance = 4, adjustment = 50
-      currentModel: models.WORKER_2A, // 6A is the most efficient miner model
-      teamSize: 3,
+      distanceToSource: 14,
+      currentModel: models.WORKER_3, // 6A is the most efficient miner model
+      teamSize: 2,
       sourceIndex: W34N43_BOTTOM_SOURCE,
       sourceOrigins: ["source"],
     },
@@ -236,16 +234,16 @@ let roomConfig = {
       teamSize: 0,
     },
     upgrader: {
-      distanceToSource: 50,
-      currentModel: models.WORKER_2B,
-      teamSize: 4,
+      distanceToSource: 20,
+      currentModel: models.WORKER_5C,
+      teamSize: 5,
       sourceIndex: W34N43_RIGHT_SOURCE,
       sourceOrigins: [
-        "droppedResources",
-        "tombstone",
-        "ruin",
-        "link",
-        "storage",
+        // "droppedResources",
+        // "tombstone",
+        // "ruin",
+        // "link",
+        // "storage",
         // "container",
         // "extension",
         // "spawn",
@@ -253,8 +251,8 @@ let roomConfig = {
       ],
     },
     builder: {
-      currentModel: models.WORKER_2B, // 5C
-      teamSize: 1,
+      currentModel: models.WORKER_5C, // 5C
+      teamSize: 2,
       sourceIndex: W34N43_RIGHT_SOURCE,
       // comment out first three origins for heavy builder
       sourceOrigins: [
@@ -270,8 +268,8 @@ let roomConfig = {
       buildingPriority: "none",
     },
     repairer: {
-      spawnCycle: 3000, // set to 1 for spawn with no delay
-      currentModel: models.WORKER_1B,
+      spawnCycle: 200, // set to 1 for spawn with no delay
+      currentModel: models.CARRIER_3B,
       teamSize: 1,
       sourceIndex: W34N43_RIGHT_SOURCE,
       sourceOrigins: [
