@@ -15,6 +15,7 @@ const roleRepairer = require("./role.repairer");
 const roleBuilder = require("./role.builder");
 const roleTransferrer = require("./role.transferrer");
 const roleExtractor = require("./role.extractor");
+const roleArmy = require("./role.army");
 
 module.exports = {
   roleHarvester,
@@ -24,4 +25,5 @@ module.exports = {
   roleBuilder,
   roleTransferrer,
   roleExtractor,
+  roleArmy,
 };
