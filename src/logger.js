@@ -26,38 +26,18 @@ const printRoomSummary = (roomName) => {
  * Print invasion records
  */
 function printInvasionRecords() {
-  let LEFT_ROOM = "W36N43";
-  let MIDDLE_ROOM = "W35N43";
-  let RIGHT_ROOM = "W34N43";
-  let rightRoom = [];
-  let middleRoom = [];
-  let leftRoom = [];
+  let invasionRecords = {};
   if (Memory.hostiles) {
     for (let i in Memory.hostiles) {
       let { roomName, time } = Memory.hostiles[i];
-      switch (roomName) {
-        case LEFT_ROOM:
-          leftRoom.push(time);
-          break;
-        case MIDDLE_ROOM:
-          middleRoom.push(time);
-          break;
-        case RIGHT_ROOM:
-          rightRoom.push(time);
-          break;
-        default:
-          break;
+      if (!(roomName in invasionRecords)) {
+        invasionRecords[roomName] = [];
       }
+      invasionRecords[roomName].push(time);
     }
-  }
-  if (leftRoom.length > 0) {
-    console.log(LEFT_ROOM, leftRoom.join(" "));
-  }
-  if (middleRoom.length > 0) {
-    console.log(MIDDLE_ROOM, middleRoom.join(" "));
-  }
-  if (rightRoom.length > 0) {
-    console.log(RIGHT_ROOM, rightRoom.join(" "));
+    }
+  for (roomName in invasionRecords) {
+    console.log(roomName, invasionRecords[roomName].join(" "));
   }
 }
 
