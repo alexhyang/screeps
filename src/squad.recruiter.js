@@ -242,7 +242,7 @@ function recruitForRoom(roomName) {
   }
 }
 
-var squadRecruiter = {
+module.exports = {
   run: () => {
     for (let roomName in roomConfig) {
       const { debugMode, spawnNames, spawningDirections } =
@@ -265,5 +265,3 @@ var squadRecruiter = {
   },
   recruitCreep,
 };
-
-module.exports = squadRecruiter;
