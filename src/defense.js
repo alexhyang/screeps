@@ -12,12 +12,15 @@ const repairUnhealthyDefenses = (tower) => {
     minDefenseHitsToRepair,
     tower.room
   );
-  var closestDamagedStructure = tower.pos.findClosestByRange(unhealthyDefenses);
+
+  var lowestHitsDamagedStructure = unhealthyDefenses.sort(
+    (a, b) => a.hits - b.hits
+  )[0];
   if (
-    closestDamagedStructure !== null &&
+    lowestHitsDamagedStructure !== null &&
     tower.store.getUsedCapacity(RESOURCE_ENERGY) >= minTowerEnergyToRepair
   ) {
-    tower.repair(closestDamagedStructure);
+    tower.repair(lowestHitsDamagedStructure);
   }
 };
 
