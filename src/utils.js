@@ -1,4 +1,16 @@
 /**
+ * Examine the given object
+ * @param {Object} object
+ */
+function checkObject(object) {
+  console.log("checking object...");
+  console.log("Object:", object);
+  console.log("Object type:", typeof object);
+  console.log("Object keys:", Object.keys(object));
+  console.log("Object property example:", object[0]);
+}
+
+/**
  * Capitalize a string
  * @param {string} str string
  * @returns {string} capitalized string
@@ -65,6 +77,7 @@ const parseNumber = (number) => {
 };
 
 module.exports = {
+  checkObject,
   capitalize,
   padStr,
   roundTo,
