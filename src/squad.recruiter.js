@@ -24,7 +24,7 @@ function recruitCreep(creepModel, creepRole, roomName, creepName) {
   let newCreepName = creepName
     ? creepName
     : creepModel.name + "-" + (Game.time % 100);
-  if (debugMode) {
+  if (debugMode && Memory.debugCountDown > 0) {
     console.log(`TEST Spawning new ${creepRole}: ${newCreepName}`);
   } else {
     let spawn = getSpawnByName(spawnNames[0]);
