@@ -1,5 +1,6 @@
 const roomConfig = require("./dashboard");
-const { obtainResource, repairTarget, stayInSameRoom } = require("./Creep");
+const { repairTarget } = require("./Creep");
+const { obtainResource } = require("./CreepResource");
 const { getDamagedStructures } = require("./util.structureFinder");
 
 /**
@@ -99,7 +100,6 @@ const getPrioritizedStructure = (creep, structure) => {
 let roleRepairer = {
   /** @param {Creep} creep **/
   run: function (creep) {
-    stayInSameRoom(creep);
     updateRepairingStatus(creep);
     if (creep.memory.repairing) {
       repairConstruction(creep);

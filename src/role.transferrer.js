@@ -1,6 +1,18 @@
-const { obtainResource, transferResource } = require("./Creep");
+const { moveToPosition } = require("./Creep");
+const {
+  obtainResource,
+  transferResource,
+  pickupDroppedResources,
+  withdrawFromFriendlyTombstone,
+  withdrawFromHostileTombstone,
+} = require("./CreepResource");
+const roomConfig = require("./dashboard");
 const { getTeam } = require("./squad");
-const { getStorage, getContainers } = require("./util.structureFinder");
+const {
+  getStorage,
+  getContainers,
+  getController,
+} = require("./util.structureFinder");
 
 /**
  * Obtain energy from storage in the specified room

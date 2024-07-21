@@ -1,5 +1,5 @@
 const roomConfig = require("./dashboard");
-const { obtainResource, transferResource, stayInSameRoom } = require("./Creep");
+const { obtainResource, transferResource } = require("./CreepResource");
 const { getTeam } = require("./squad");
 const {
   getTowers,
@@ -117,7 +117,6 @@ const harvestOk = (creep) => {
 module.exports = {
   /** @param {Creep} creep **/
   run: function (creep) {
-    stayInSameRoom(creep);
     if (harvestOk(creep)) {
       const { sourceOrigins, sourceIndex } =
         roomConfig[creep.room.name].harvester;

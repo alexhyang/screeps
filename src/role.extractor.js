@@ -1,4 +1,4 @@
-const { transferResource, stayInSameRoom, harvestFrom } = require("./Creep");
+const { transferResource, harvestFrom } = require("./CreepResource");
 const { getStorage, getExtractor } = require("./util.structureFinder");
 
 const harvestMineral = (creep) => {
@@ -22,7 +22,6 @@ const harvestMineral = (creep) => {
 var roleExtractor = {
   /** @param {Creep} creep **/
   run: function (creep) {
-    stayInSameRoom(creep);
     if (creep.store.getFreeCapacity() > 0) {
       harvestMineral(creep);
     } else {
