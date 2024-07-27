@@ -4,6 +4,7 @@ const { getTeam } = require("./squad");
 const {
   getTowers,
   getStorage,
+  getLabs,
   structureHasFreeCapacity,
 } = require("./util.structureFinder");
 
@@ -86,6 +87,14 @@ const findDeliveryTarget = (creep) => {
         );
         if (towersNotFull.length > 0) {
           return creep.pos.findClosestByRange(towersNotFull);
+        }
+
+        let labsNotFull = _.filter(getLabs(creep.room), (s) =>
+          structureHasFreeCapacity(s, creep.store.getCapacity(RESOURCE_ENERGY))
+        );
+        if (labsNotFull.length > 0) {
+          console.log(labsNotFull.length)
+          return creep.pos.findClosestByRange(labsNotFull);
         }
       }
 

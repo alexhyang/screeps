@@ -127,6 +127,15 @@ const getLinks = (room) => {
   return getStructures(STRUCTURE_LINK, room);
 };
 
+/** Find all labs in the given room
+ * @param {Room} room
+ * @returns {StructureLab[]} an array of extensions in the room,
+ *    or empty array if not found
+ */
+const getLabs = (room) => {
+  return getStructures(STRUCTURE_LAB, room);
+};
+
 /** Find extractor in the given room
  * @param {Room} room
  * @returns {(StructureExtractor|undefined)} the extractor in the room, or
@@ -134,6 +143,16 @@ const getLinks = (room) => {
  */
 const getExtractor = (room) => {
   return getStructures(STRUCTURE_EXTRACTOR, room)[0];
+};
+
+
+/** Find terminal in the given room
+ * @param {Room} room
+ * @returns {(StructureTerminal|undefined)} the terminal in the room, or
+ *    undefined if not found
+ */
+const getTerminal = (room) => {
+  return getStructures(STRUCTURE_TERMINAL, room)[0];
 };
 
 /**
@@ -207,7 +226,9 @@ module.exports = {
   getContainers,
   getTowers,
   getLinks,
+  getLabs,
   getExtractor,
+  getTerminal,
   getUnhealthyDefenses,
   getHealthyDefenses,
   getDamagedStructures,
