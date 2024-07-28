@@ -4,6 +4,7 @@ const { getTeam } = require("./squad");
 const {
   getTowers,
   getStorage,
+  getTerminal,
   getLabs,
   structureHasFreeCapacity,
 } = require("./util.structureFinder");
@@ -95,6 +96,11 @@ const findDeliveryTarget = (creep) => {
         if (labsNotFull.length > 0) {
           console.log(labsNotFull.length)
           return creep.pos.findClosestByRange(labsNotFull);
+        }
+
+        let terminal = getTerminal(creep.room);
+        if (terminal && terminal.store.getFreeCapacity() > 0) {
+          return terminal;
         }
       }
 
