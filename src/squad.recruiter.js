@@ -27,12 +27,15 @@ const generateCreepName = (creepModel, creepName) => {
  * @param {number} spawningCost
  */
 const printCreepSpawningMsg = (spawn, creepName, creepRole, spawningCost) => {
+  let remainingTime;
+  if (spawn.spawning) {
+    remainingTime = `(${spawn.spawning.remainingTime})`;
+  }
   console.log(
     `${spawn.name} ${spawn.room.name} Spawning new ${creepRole}:`,
     creepName,
     `(${spawningCost})`,
-    "remaining",
-    spawn.spawning.remainingTime
+    remainingTime
   );
 };
 
@@ -71,15 +74,15 @@ function recruitCreep(creepModel, creepRole, roomName, creepName, srcIndex) {
   } else {
     let spawn = getIdleSpawn(spawnNames);
     if (spawn) {
+      let result = spawn.spawnCreep(buildBodyParts(creepModel), creepName, {
+        memory: { role: creepRole, srcIndex: srcIndex },
+      });
       printCreepSpawningMsg(
         spawn,
         creepName,
         creepRole,
         getModelCost(creepModel)
       );
-      let result = spawn.spawnCreep(buildBodyParts(creepModel), creepName, {
-        memory: { role: creepRole, srcIndex: srcIndex },
-      });
       return result == 0;
     }
   }
