@@ -17,7 +17,7 @@ let roomConfig = {
     CONTAINER_WITHDRAW_THRESHOLD: 300,
     STORAGE_WITHDRAW_THRESHOLD: 200,
     spawn: {
-      spawnNames: ["Spawn2"],
+      spawnNames: ["Spawn2", "Spawn5"],
       debugMode: W35N43_DEBUG_MODE,
       spawningDirections: [BOTTOM],
     },

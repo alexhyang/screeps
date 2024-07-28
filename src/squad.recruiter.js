@@ -9,6 +9,44 @@ const MODELS = require("./squad.creepModels");
 const { getEnergyAvailable } = require("./util.resourceManager");
 const { getSpawnByName, getExtractor } = require("./util.structureFinder");
 
+/**
+ * Generate name for new creep
+ * @param {object.<string, object.<string, number>>} creepModel
+ * @param {string} creepName
+ * @returns {string} given creep name, or modelName-timestamp
+ */
+const generateCreepName = (creepModel, creepName) => {
+  return creepName ? creepName : creepModel.name + "-" + (Game.time % 100);
+};
+
+/**
+ * Print information about the creep being spawned
+ * @param {string} roomName
+ * @param {string} creepName
+ * @param {string} creepRole
+ * @param {number} spawningCost
+ */
+const printSpawningMsg = (roomName, creepName, creepRole, spawningCost) => {
+  console.log(
+    `${roomName} Spawning new ${creepRole}: ` + creepName + ` (${spawningCost})`
+  );
+};
+
+/**
+ * Get the first available spawn to creep spawning
+ * @param {string[]} spawnNames a list of spawn names to check
+ * @returns {(StructureSpawn|undefined)} idle spawn, undefined if all spawns
+ *    are busy
+ */
+const getIdleSpawn = (spawnNames) => {
+  for (i in spawnNames) {
+    let spawn = getSpawnByName(spawnNames[i]);
+    if (spawn.spawning == null) {
+      return spawn;
+    }
+  }
+};
+
 // TODO: better define creepModel in JSDocs
 /**
  * Recruit a creep to given role with desired model design
@@ -17,30 +55,27 @@ const { getSpawnByName, getExtractor } = require("./util.structureFinder");
  * @param {string} creepRole
  * @param {string} roomName
  * @param {string} [creepName]
+ * @param {string} [srcIndex]
  * @returns {boolean} true if the recruit is successful, false otherwise
  */
-function recruitCreep(creepModel, creepRole, roomName, creepName) {
+function recruitCreep(creepModel, creepRole, roomName, creepName, srcIndex) {
   const { spawnNames, debugMode } = roomConfig[roomName].spawn;
-  let newCreepName = creepName
-    ? creepName
-    : creepModel.name + "-" + (Game.time % 100);
+  creepName = generateCreepName(creepModel, creepName);
+
   if (debugMode && Memory.debugCountDown > 0) {
-    console.log(`TEST Spawning new ${creepRole}: ${newCreepName}`);
+    console.log(`TEST Spawning new ${creepRole}: ${creepName}`);
   } else {
-    let spawn = getSpawnByName(spawnNames[0]);
+    let spawn = getIdleSpawn(spawnNames);
     if (spawn) {
-      console.log(
-        `${roomName} Spawning new ${creepRole}: ` +
-          newCreepName +
-          ` (${getModelCost(creepModel)})`
+      printSpawningMsg(
+        roomName,
+        creepName,
+        creepRole,
+        getModelCost(creepModel)
       );
-      let result = getSpawnByName(spawnNames[0]).spawnCreep(
-        buildBodyParts(creepModel),
-        newCreepName,
-        {
-          memory: { role: creepRole },
-        }
-      );
+      let result = spawn.spawnCreep(buildBodyParts(creepModel), creepName, {
+        memory: { role: creepRole, srcIndex: srcIndex },
+      });
       return result == 0;
     }
   }
