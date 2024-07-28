@@ -168,7 +168,16 @@ function recruitMiners(roomName) {
       getCreepSpawningTime(currentModel) + distanceToSource
     )
   ) {
+    let energyAvailable = getEnergyAvailable(Game.rooms[roomName]);
+    if (energyAvailable >= getModelCost(currentModel)) {
     return recruitCreep(currentModel, "miner", roomName);
+    } else if (energyAvailable >= getModelCost(MODELS.WORKER_5B)) {
+      return recruitCreep(MODELS.WORKER_5B, "miner", roomName);
+    } else if (energyAvailable >= getModelCost(MODELS.WORKER_3)) {
+      return recruitCreep(MODELS.WORKER_3, "miner", roomName);
+    } else {
+      return recruitCreep(MODELS.WORKER_2B, "miner", roomName);
+    }
   }
   return false;
 }
