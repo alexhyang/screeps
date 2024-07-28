@@ -107,11 +107,17 @@ const withdrawFrom = (creep, target, resourceType = RESOURCE_ENERGY) => {
  * Harvest resource from the given target
  * @param {Creep} creep
  * @param {(Source | Mineral | Deposit)} target target to harvest from
+ * @returns {boolean} true if assignment is successful, false otherwise
  */
 const harvestFrom = (creep, target) => {
+  if (target && target.energy == 0) {
+    return false;
+  }
+
   if (creep.harvest(target) == ERR_NOT_IN_RANGE) {
     creep.moveTo(target, { visualizePathStyle: { stroke: HARVEST_STROKE } });
   }
+  return true;
 };
 
 /**
@@ -360,6 +366,7 @@ const withdrawFromLink = (creep) => {
  * Harvest from the closest source
  * @param {Creep} creep
  * @param {number} sourceId
+ * @returns {boolean} true if the assignment is successful, false otherwise
  */
 const harvestFromSource = (creep, sourceId) => {
   let sources = creep.room.find(FIND_SOURCES);
@@ -370,7 +377,7 @@ const harvestFromSource = (creep, sourceId) => {
     closestSource = creep.pos.findClosestByRange(sources);
   }
 
-  harvestFrom(creep, closestSource);
+  return harvestFrom(creep, closestSource);
 };
 
 /**
