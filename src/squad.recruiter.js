@@ -21,14 +21,18 @@ const generateCreepName = (creepModel, creepName) => {
 
 /**
  * Print information about the creep being spawned
- * @param {string} roomName
+ * @param {StructureSpawn} spawn
  * @param {string} creepName
  * @param {string} creepRole
  * @param {number} spawningCost
  */
-const printSpawningMsg = (roomName, creepName, creepRole, spawningCost) => {
+const printCreepSpawningMsg = (spawn, creepName, creepRole, spawningCost) => {
   console.log(
-    `${roomName} Spawning new ${creepRole}: ` + creepName + ` (${spawningCost})`
+    `${spawn.name} ${spawn.room.name} Spawning new ${creepRole}:`,
+    creepName,
+    `(${spawningCost})`,
+    "remaining",
+    spawn.spawning.remainingTime
   );
 };
 
@@ -67,8 +71,8 @@ function recruitCreep(creepModel, creepRole, roomName, creepName, srcIndex) {
   } else {
     let spawn = getIdleSpawn(spawnNames);
     if (spawn) {
-      printSpawningMsg(
-        roomName,
+      printCreepSpawningMsg(
+        spawn,
         creepName,
         creepRole,
         getModelCost(creepModel)
@@ -136,16 +140,16 @@ function recruitBuilders(roomName) {
   let room = Game.rooms[roomName];
   if (room) {
     let constructionsInRoom = room.find(FIND_CONSTRUCTION_SITES);
-  if (constructionsInRoom.length > 0) {
-    const { currentModel, teamSize } = roomConfig[roomName].builder;
-    if (
-      recruitInAdvanceOk(
-        getTeam("builder", roomName),
-        teamSize,
-        getCreepSpawningTime(currentModel)
-      )
-    ) {
-      return recruitCreep(currentModel, "builder", roomName);
+    if (constructionsInRoom.length > 0) {
+      const { currentModel, teamSize } = roomConfig[roomName].builder;
+      if (
+        recruitInAdvanceOk(
+          getTeam("builder", roomName),
+          teamSize,
+          getCreepSpawningTime(currentModel)
+        )
+      ) {
+        return recruitCreep(currentModel, "builder", roomName);
       }
     }
   }
@@ -205,7 +209,7 @@ function recruitMiners(roomName) {
   ) {
     let energyAvailable = getEnergyAvailable(Game.rooms[roomName]);
     if (energyAvailable >= getModelCost(currentModel)) {
-    return recruitCreep(currentModel, "miner", roomName);
+      return recruitCreep(currentModel, "miner", roomName);
     } else if (energyAvailable >= getModelCost(MODELS.WORKER_5B)) {
       return recruitCreep(MODELS.WORKER_5B, "miner", roomName);
     } else if (energyAvailable >= getModelCost(MODELS.WORKER_3)) {
@@ -247,18 +251,18 @@ function recruitExtractor(roomName) {
   let room = Game.rooms[roomName];
 
   if (room) {
-  let mineral = room.find(FIND_MINERALS)[0];
+    let mineral = room.find(FIND_MINERALS)[0];
 
-  if (
-    mineral.mineralAmount > 0 &&
-    getExtractor(room) &&
-    recruitInAdvanceOk(
-      getTeam("extractor", roomName),
-      teamSize,
-      getCreepSpawningTime(currentModel) + distanceToSource
-    )
-  ) {
-    return recruitCreep(currentModel, "extractor", roomName);
+    if (
+      mineral.mineralAmount > 0 &&
+      getExtractor(room) &&
+      recruitInAdvanceOk(
+        getTeam("extractor", roomName),
+        teamSize,
+        getCreepSpawningTime(currentModel) + distanceToSource
+      )
+    ) {
+      return recruitCreep(currentModel, "extractor", roomName);
     }
   }
   return false;
@@ -298,12 +302,6 @@ module.exports = {
       let spawn = getSpawnByName(spawnNames[0]);
       if (spawn && spawn.spawning) {
         spawn.spawning.setDirections(spawningDirections);
-        console.log(
-          spawn.name,
-          "remaining:",
-          spawn.spawning.remainingTime,
-          `(${spawn.spawning.name})`
-        );
       }
     }
   },
