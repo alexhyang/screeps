@@ -18,10 +18,51 @@ const repairUnhealthyDefenses = (tower) => {
   )[0];
   if (
     lowestHitsDamagedStructure !== null &&
+    lowestHitsDamagedStructure !== undefined &&
     tower.store.getUsedCapacity(RESOURCE_ENERGY) >= minTowerEnergyToRepair
   ) {
     tower.repair(lowestHitsDamagedStructure);
+    return true;
   }
+  return false;
+};
+
+const repairInfrastructure = (tower) => {
+  const { minTowerEnergyToRepair } = roomConfig[tower.room.name].tower;
+  let targetRoads = _.filter(
+    tower.room.find(FIND_STRUCTURES, {
+      filter: (s) => {
+        return (
+          s.structureType == STRUCTURE_ROAD ||
+          s.structureType == STRUCTURE_CONTAINER
+        );
+      },
+    }),
+    (r) => r.hitsMax - r.hits > 2000
+  );
+
+  if (
+    tower.store.getUsedCapacity(RESOURCE_ENERGY) >= minTowerEnergyToRepair &&
+    targetRoads.length > 0
+  ) {
+    console.log("repairing roads");
+    tower.repair(targetRoads[0]);
+  }
+};
+
+/**
+ * Find healer hostile creeps
+ * @param {StructureTower} tower
+ * @returns {Creep[]} an array of hostile creeps with heal body part, empty
+ * array if not found
+ */
+const findHostileHealer = (tower) => {
+  const targets = tower.room.find(FIND_HOSTILE_CREEPS, {
+    filter: function (object) {
+      return object.getActiveBodyparts(HEAL) > 0;
+    },
+  });
+  return targets;
 };
 
 /**
@@ -102,11 +143,16 @@ const activateTowersInRoom = (roomName) => {
   for (let i in towers) {
     let tower = towers[i];
     if (tower) {
-      let closestHostile = tower.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
-      if (closestHostile) {
-        attackHostiles(tower, closestHostile);
+      let hostileHealers = findHostileHealer(tower);
+      if (hostileHealers.length > 0) {
+        attackHostiles(tower, hostileHealers[0]);
       } else {
-        repairUnhealthyDefenses(tower);
+        let closestHostile = tower.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
+        if (closestHostile) {
+          attackHostiles(tower, closestHostile);
+        } else {
+          repairUnhealthyDefenses(tower) || repairInfrastructure(tower);
+        }
       }
     }
   }
