@@ -272,10 +272,31 @@ function recruitExtractor(roomName) {
 }
 
 /**
+ * recruit army when two or more hostile creeps show up
+ * @param {string} roomName
+ * @returns {boolean} true if recruit job assigned successfully,
+ *    false otherwise
+ */
+function recruitArmy(roomName) {
+  let hostileCreeps = Game.rooms[roomName].find(FIND_HOSTILE_CREEPS);
+  if (hostileCreeps.length > 1 && getTeam("army", roomName).length == 0) {
+    recruitCreep(MODELS.DEFENDER2, "army", roomName);
+    return true;
+  }
+  return false;
+}
+
+/**
  * Recruit creeps for a room based on its config parameters
  * @param {string} roomName
  */
 function recruitForRoom(roomName) {
+  // TODO: fix the logic here, when miners are supposed to be recruited
+  //   but there is not enough energy, the first if-condition returns false
+  //   the spawn therefore will try to recruit upgraders instead
+  if (recruitArmy(roomName)) {
+    return;
+  }
   if (recruitHarvesters(roomName) || recruitMiners(roomName)) {
     return;
   }
