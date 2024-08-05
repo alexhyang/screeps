@@ -4,24 +4,25 @@ const { getTowers, getUnhealthyDefenses } = require("./util.structureFinder");
 /**
  * Let the tower repair unhealthy walls and ramparts if any
  * @param {StructureTower} tower
+ * @param {number} minRepairRange
+ * @returns {boolean} true if job assigned successfully, false otherwise
  */
-const repairUnhealthyDefenses = (tower) => {
+const repairUnhealthyDefenses = (tower, minRepairRange = 50) => {
   const { minTowerEnergyToRepair, minDefenseHitsToRepair } =
     roomConfig[tower.room.name].tower;
-  let unhealthyDefenses = getUnhealthyDefenses(
+
+  let defensesToRepair = getUnhealthyDefenses(
     minDefenseHitsToRepair,
     tower.room
-  );
+  )
+    .sort((a, b) => a.hits - b.hits)
+    .filter((s) => tower.pos.inRangeTo(s, minRepairRange));
 
-  var lowestHitsDamagedStructure = unhealthyDefenses.sort(
-    (a, b) => a.hits - b.hits
-  )[0];
   if (
-    lowestHitsDamagedStructure !== null &&
-    lowestHitsDamagedStructure !== undefined &&
+    defensesToRepair.length > 0 &&
     tower.store.getUsedCapacity(RESOURCE_ENERGY) >= minTowerEnergyToRepair
   ) {
-    tower.repair(lowestHitsDamagedStructure);
+    tower.repair(defensesToRepair[0]);
     return true;
   }
   return false;
@@ -78,7 +79,7 @@ const healCreep = (tower) => {
  * Find healer hostile creeps
  * @param {StructureTower} tower
  * @returns {Creep[]} an array of hostile creeps with heal body part, empty
- * array if not found
+ *    array if not found
  */
 const findHostileHealer = (tower) => {
   const targets = tower.room.find(FIND_HOSTILE_CREEPS, {
