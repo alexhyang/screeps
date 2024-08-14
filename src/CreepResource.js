@@ -91,6 +91,9 @@ const pickup = (creep, target) => {
  * @returns {boolean} true if the withdraw is successful, false otherwise
  */
 const withdrawFrom = (creep, target, resourceType = RESOURCE_ENERGY) => {
+  if (target.store.getUsedCapacity(resourceType) == 0) {
+    return false;
+  }
   if (
     target !== null &&
     (creep.withdraw(target, resourceType) !== OK ||
