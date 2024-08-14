@@ -1,6 +1,10 @@
 const roomConfig = require("./dashboard");
 const { printSquadInRoom } = require("./logger.squad");
-const { getEnergyMeta, getDefenseMeta, getControllerMeta } = require("./Room");
+const {
+  getResourceMeta,
+  getDefenseMeta,
+  getControllerMeta,
+} = require("./Room");
 
 /**
  * Print summary of a room with the given name
@@ -13,7 +17,7 @@ const printRoomSummary = (roomName) => {
       " " +
       roomName +
       " // " +
-      getEnergyMeta(roomName) +
+      getResourceMeta(roomName) +
       " | " +
       getDefenseMeta(roomName) +
       " | " +

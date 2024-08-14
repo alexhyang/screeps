@@ -26,7 +26,15 @@ const capitalize = (str) => {
  * @param {number} maxLength max length after padding
  * @returns Padded string with the given max length
  */
-const padStr = (str, maxLength, padding = " ") => {
+const padStr = (str, maxLength, prefixPadding = false, padding = " ") => {
+  let padRepeat = maxLength - str.length;
+  if (padRepeat < 0) {
+    return str;
+  }
+
+  if (prefixPadding) {
+    return padding.repeat(padRepeat) + str;
+  }
   return str + padding.repeat(maxLength - str.length);
 };
 
@@ -72,7 +80,7 @@ const parseNumber = (number) => {
   } else if (number >= 1000) {
     return convertNumToThousands(number, 2) + "K";
   } else {
-    return number;
+    return `${number}`;
   }
 };
 

@@ -6,12 +6,13 @@ const {
   getStorage,
   getTowers,
   getContainers,
+  getTerminal,
 } = require("./util.structureFinder");
 const {
   getEnergyAvailable,
   getEnergyCapacityAvailable,
 } = require("./util.resourceManager");
-const { parseNumber, roundTo } = require("./utils");
+const { parseNumber, roundTo, padStr } = require("./utils");
 
 /**
  * Get energy meta data of room with the given name
@@ -19,18 +20,14 @@ const { parseNumber, roundTo } = require("./utils");
  * @returns {(string|undefined)} meta data of energy in room, or undefined
  *    if room name is not included in room config
  */
-const getEnergyMeta = (roomName) => {
+const getResourceMeta = (roomName) => {
   if (roomName in roomConfig) {
-    let room = Game.rooms[roomName];
-    let storageMeta = getStorageMeta(roomName);
-    let containerMeta = getContainerMeta(roomName);
-    let energyAvailable = getEnergyAvailable(room);
-    let energyCapacityAvailable = getEnergyCapacityAvailable(room);
-    let energyMeta =
-      `${energyAvailable}/${energyCapacityAvailable}, ` +
-      `STG (${storageMeta}), ` +
-      `CTN (${containerMeta})`;
-    return energyMeta;
+    let resourceMeta =
+      `${getEnergyMeta(roomName)}, ` +
+      `STG (${getStorageMeta(roomName)}), ` +
+      `TMN (${getTerminalMeta(roomName)}), ` +
+      `CTN (${getContainerMeta(roomName)})`;
+    return resourceMeta;
   }
 };
 
@@ -63,9 +60,9 @@ const getDefenseMeta = (roomName) => {
     }
 
     let defenseMeta =
-      `TWR (${towerAvailableEnergy}) ` +
-      `WR (${parseNumber(minDefenseHitsToRepair)}): ` +
-      towerRepairProgress;
+      `TWR (${padStr(towerAvailableEnergy.join(","), 17)}) ` +
+      `WR (${padStr(parseNumber(minDefenseHitsToRepair), 4, true)}): ` +
+      padStr(towerRepairProgress, 7);
     return defenseMeta;
   }
 };
@@ -95,6 +92,21 @@ const getControllerMeta = (roomName) => {
 };
 
 /**
+ * Get total energy available to spawns creeps
+ * @param {string} roomName
+ * @returns {string} total energy in spawns and extensions
+ */
+const getEnergyMeta = (roomName) => {
+  if (roomName in roomConfig) {
+    let room = Game.rooms[roomName];
+    let energyAvailable = getEnergyAvailable(room);
+    let energyCapacityAvailable = getEnergyCapacityAvailable(room);
+    let energyMeta = `${energyAvailable}/${energyCapacityAvailable}`;
+    return padStr(energyMeta, 9, true);
+  }
+};
+
+/**
  * Get storage meta data of room with the given name
  * @param {string} roomName
  * @returns {(string|undefined)} meta data of storage in room, or undefined
@@ -105,8 +117,7 @@ const getStorageMeta = (roomName) => {
     let target = getStorage(Game.rooms[roomName]);
     if (target) {
       let targetUsedCapacity = target.store.getUsedCapacity(RESOURCE_ENERGY);
-      let targetMeta = `${parseNumber(targetUsedCapacity)}`;
-      return targetMeta;
+      return padStr(parseNumber(targetUsedCapacity), 7, true);
     }
     return "N/A";
   }
@@ -127,14 +138,29 @@ const getContainerMeta = (roomName) => {
         let usedCapacity = containers[i].store.getUsedCapacity(RESOURCE_ENERGY);
         containerMeta.push(parseNumber(usedCapacity));
       }
-      return containerMeta.join(", ");
+      return padStr(containerMeta.join(", "), 24, true);
     }
     return "N/A";
   }
 };
 
+const getTerminalMeta = (roomName, padding = true) => {
+  let terminal = getTerminal(Game.rooms[roomName]);
+  if (terminal) {
+    let mineralType = Game.rooms[roomName].find(FIND_MINERALS)[0].mineralType;
+    let energyInTerminal = terminal.store.getUsedCapacity(RESOURCE_ENERGY);
+    let mineralInTerminal = terminal.store.getUsedCapacity(mineralType);
+    return (
+      padStr(parseNumber(energyInTerminal), 7, true) +
+      ", " +
+      `${mineralType} ` +
+      padStr(parseNumber(mineralInTerminal), 7, true)
+    );
+  }
+};
+
 module.exports = {
-  getEnergyMeta,
+  getResourceMeta,
   getDefenseMeta,
   getControllerMeta,
   getStorageMeta,
