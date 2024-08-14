@@ -28,8 +28,8 @@ const getEnergyMeta = (roomName) => {
     let energyCapacityAvailable = getEnergyCapacityAvailable(room);
     let energyMeta =
       `${energyAvailable}/${energyCapacityAvailable}, ` +
-      `Storage (${storageMeta}), ` +
-      `Containers (${containerMeta})`;
+      `STG (${storageMeta}), ` +
+      `CTN (${containerMeta})`;
     return energyMeta;
   }
 };
@@ -63,8 +63,8 @@ const getDefenseMeta = (roomName) => {
     }
 
     let defenseMeta =
-      `Towers (${towerAvailableEnergy}) ` +
-      `WallsRamparts (${parseNumber(minDefenseHitsToRepair)}): ` +
+      `TWR (${towerAvailableEnergy}) ` +
+      `WR (${parseNumber(minDefenseHitsToRepair)}): ` +
       towerRepairProgress;
     return defenseMeta;
   }
@@ -87,8 +87,7 @@ const getControllerMeta = (roomName) => {
         1
       );
       let controllerMeta =
-        `Controller (${controller.level}): ` +
-        `${percentage}%: ${current}/${total}`;
+        `CTRL (${controller.level}): ` + `${percentage}%: ${current}/${total}`;
       return controllerMeta;
     }
     return "N/A";
