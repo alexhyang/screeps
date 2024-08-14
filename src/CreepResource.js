@@ -233,7 +233,7 @@ const withdrawFromFriendlyTombstone = (creep, friendlyTombstone) => {
   // console.log(friendlyTombstone.store.getUsedCapacity(roomMineralType) > 0);
   if (friendlyTombstone.store.getUsedCapacity(roomMineralType) > 0) {
     creep.memory.resourceTypes.push(roomMineralType);
-    creep.say(mineralType);
+    creep.say(roomMineralType);
     return withdrawFrom(creep, friendlyTombstone, roomMineralType);
   }
   return withdrawFrom(creep, friendlyTombstone);
