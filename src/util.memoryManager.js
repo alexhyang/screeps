@@ -17,7 +17,15 @@ const clearHostileMemory = () => {
   delete Memory.hostiles;
 };
 
+const cpuBucket = () => {
+  console.log(Game.cpu.bucket);
+  if (Game.cpu.bucket == 10000) {
+    Game.cpu.generatePixel();
+  }
+};
+
 module.exports = {
   cleanNonExistingCreeps,
   clearHostileMemory,
+  cpuBucket,
 };
