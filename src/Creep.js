@@ -60,6 +60,11 @@ const getSpeed = (creep) => {
   return 0;
 };
 
+/**
+ * Dismantle structures with the given id
+ * @param {Creep} creep
+ * @returns {boolean} true if the task assignment is successful, false otherwise
+ */
 const dismantleStructures = (creep, roomObjectId) => {
   let target;
   if (!roomObjectId) {
@@ -231,6 +236,7 @@ module.exports = {
   buildClosestConstructionSite,
   buildTargetById,
   repairTarget,
+  dismantleStructures,
   claimController,
   upgradeController,
   signController,
