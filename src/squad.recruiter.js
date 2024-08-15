@@ -278,12 +278,15 @@ function recruitExtractor(roomName) {
  *    false otherwise
  */
 function recruitArmy(roomName) {
-  let hostileCreeps = Game.rooms[roomName].find(FIND_HOSTILE_CREEPS);
-  if (hostileCreeps.length > 1 && getTeam("army", roomName).length == 0) {
-    recruitCreep(MODELS.DEFENDER2, "army", roomName);
-    return true;
+  let room = Game.rooms[roomName];
+  if (room) {
+    let hostileCreeps = Game.rooms[roomName].find(FIND_HOSTILE_CREEPS);
+    if (hostileCreeps.length > 1 && getTeam("army", roomName).length == 0) {
+      recruitCreep(MODELS.DEFENDER2, "army", roomName);
+      return true;
+    }
+    return false;
   }
-  return false;
 }
 
 /**
@@ -309,9 +312,7 @@ function recruitForRoom(roomName) {
   if (recruitRepairers(roomName) || recruitBuilders(roomName)) {
     return;
   }
-  if (roomName == "W35N43") {
-    recruitTransferrers(roomName);
-  }
+  recruitTransferrers(roomName);
 }
 
 module.exports = {
