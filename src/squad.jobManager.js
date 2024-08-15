@@ -47,9 +47,6 @@ const assignJobs = () => {
       }
     } else {
       switch (creep.memory.role) {
-        case "harvester":
-          roleHarvester.run(creep);
-          break;
         // case "repairer":
         //   roleRepairer.run(creep);
         //   break;
@@ -58,9 +55,6 @@ const assignJobs = () => {
         //   break;
         case "transferrer":
           roleTransferrer.run(creep);
-          break;
-        case "extractor":
-          roleExtractor.run(creep);
           break;
         case "army":
           roleArmy.run(creep);
