@@ -48,6 +48,14 @@ let MODELS = {
     name: "W6B",
     body: { work: 6, carry: 3, move: 5 },
   },
+  WORKER_10A: {
+    name: "W10A",
+    body: { work: 10, carry: 2, move: 6 },
+  },
+  WORKER_10B: {
+    name: "W10B",
+    body: { work: 10, carry: 4, move: 7 },
+  },
   // ======== CARRIERS ========
   CARRIER_1: {
     name: "C1",
@@ -91,15 +99,19 @@ let MODELS = {
   },
   CLAIMER: {
     name: "NH",
-    body: { claim: 1, work: 1, carry: 1, move: 1 },
+    body: { claim: 1, work: 1, carry: 1, move: 3 },
   },
   DEFENDER: {
-    name: "defender",
+    name: "D1",
     body: { ranged_attack: 1, move: 1 },
+  },
+  DEFENDER2: {
+    name: "D2",
+    body: { ranged_attack: 6, move: 8, heal: 2 },
   },
   ARCHER: {
     name: "archer",
-    body: { tough: 10, ranged_attack: 10, heal: 2, move: 20 },
+    body: { tough: 2, ranged_attack: 4, attack: 4, move: 12, heal: 2 },
   },
 };
 
