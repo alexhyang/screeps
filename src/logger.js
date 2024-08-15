@@ -39,7 +39,7 @@ function printInvasionRecords() {
       }
       invasionRecords[roomName].push(time);
     }
-    }
+  }
   for (roomName in invasionRecords) {
     console.log(roomName, invasionRecords[roomName].join(" "));
   }
@@ -50,7 +50,6 @@ module.exports = {
     console.log();
     for (let roomName in roomConfig) {
       printRoomSummary(roomName);
-      printSquadInRoom(roomName);
     }
     printInvasionRecords();
   },
