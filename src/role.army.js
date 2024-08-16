@@ -26,13 +26,15 @@ const deploy = (creep, targetRoomName) => {
 };
 
 var roleArmy = {
-  run: (creep, assignedRoomName = "W38N43") => {
+  run: (creep, assignedRoomName = "W34N43") => {
     if (assignedRoomName in roomConfig) {
       let closestRampart = creep.pos.findClosestByRange(FIND_STRUCTURES, {
         filter: { structureType: STRUCTURE_RAMPART },
       });
-      // creep.moveTo(closestRampart);
-      heal(creep);
+      if (creep.room.find(FIND_HOSTILE_CREEPS).length == 0) {
+        creep.moveTo(19, 6);
+
+      }
     }
     const enemy = creep.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
     if (enemy) {
