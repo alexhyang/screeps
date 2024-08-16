@@ -94,12 +94,14 @@ const findDeliveryTarget = (creep) => {
           structureHasFreeCapacity(s, creep.store.getCapacity(RESOURCE_ENERGY))
         );
         if (labsNotFull.length > 0) {
-          console.log(labsNotFull.length)
           return creep.pos.findClosestByRange(labsNotFull);
         }
 
         let terminal = getTerminal(creep.room);
-        if (terminal && terminal.store.getFreeCapacity() > 0) {
+        if (
+          terminal &&
+          terminal.store.getUsedCapacity(RESOURCE_ENERGY) < 30000
+        ) {
           return terminal;
         }
       }
