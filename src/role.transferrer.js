@@ -27,12 +27,26 @@ const obtainFromRoom = (creep, fromRoomName) => {
     switch (fromRoomName) {
       case "W35N43":
         obtainResource(creep, ["container", "storage"]);
+        break;
+      case "W36N43":
+        obtainResource(creep, ["link"]);
+        break;
+      case "W35N44":
+        obtainResource(creep, ["droppedResources", "tombstone"]);
+        break;
+      case "W38N43":
+        obtainResource(creep, ["container", "storage"]);
+        break;
       default:
         obtainResource(creep, ["storage"]);
     }
   } else {
-    let container = getContainers(Game.rooms[fromRoomName])[0];
-    creep.moveTo(container);
+    let controller = getController(Game.rooms[fromRoomName]);
+    if (controller) {
+      creep.moveTo(controller);
+    } else {
+      console.log("Cannot obtain resource from", fromRoomName);
+    }
   }
 };
 
@@ -68,8 +82,17 @@ const transferToRoom = (creep, toRoomName) => {
       } else {
         transferResource(creep, storage);
       }
+    // case "W37N43":
+    //   let freeContainers2 = getFreeContainersToTransfer(creep, toRoomName);
+    //   if (freeContainers2.length > 0) {
+    //     transferResource(creep, freeContainers2[1]);
+    //   } else {
+    //     transferResource(creep, storage);
+    //   }
     default:
-      transferResource(creep, storage);
+      if (storage) {
+        transferResource(creep, storage);
+      }
   }
 };
 
@@ -101,18 +124,35 @@ const convertToHarvesterWhenNecessary = (creep, roomName) => {
 
 module.exports = {
   /** @param {Creep} creep **/
-  run: function (creep, fromRoomName = "W34N43", toRoomName = "W35N43") {
-    avoidDangerZone(creep);
-    if (convertToHarvesterWhenNecessary(creep, "W34N43")) {
-      return;
-    }
+  run: function (creep, fromRoomName = "W35N43", toRoomName = "W36N43") {
+    if (fromRoomName in roomConfig) {
+      avoidDangerZone(creep);
+      if (convertToHarvesterWhenNecessary(creep, "W36N43")) {
+        return;
+      }
 
-    if (creep.store.getUsedCapacity(RESOURCE_ENERGY) == 0) {
-      console.log(creep.name, "obtaining...   ", creep.pos);
-      obtainFromRoom(creep, fromRoomName);
+      if (creep.store.getUsedCapacity(RESOURCE_ENERGY) == 0) {
+        console.log(
+          creep.name,
+          creep.ticksToLive,
+          "obtaining...   ",
+          creep.pos
+        );
+        obtainFromRoom(creep, fromRoomName);
+      } else {
+        console.log(
+          creep.name,
+          creep.ticksToLive,
+          "transferring...",
+          creep.pos
+        );
+        transferToRoom(creep, toRoomName);
+      }
     } else {
-      console.log(creep.name, "transferring...", creep.pos);
-      transferToRoom(creep, toRoomName);
+      moveToPosition(creep, 25, 25, fromRoomName);
+      pickupDroppedResources(creep) ||
+        withdrawFromHostileTombstone(creep) ||
+        withdrawFromFriendlyTombstone(creep);
     }
   },
 };
