@@ -1,22 +1,51 @@
-const { transferResource, harvestFrom } = require("./CreepResource");
-const { getStorage, getExtractor, getTerminal } = require("./util.structureFinder");
+const {
+  transferResource,
+  harvestFrom,
+  withdrawFrom,
+} = require("./CreepResource");
+const {
+  getStorage,
+  getExtractor,
+  getTerminal,
+} = require("./util.structureFinder");
 
-const harvestMineral = (creep) => {
-  let mineral = creep.room.find(FIND_MINERALS)[0];
-  if (mineral.mineralAmount == 0) {
-    creep.memory = { role: "repairer" };
-    return;
-  }
-  if (!creep.memory.resourceTypes && mineral) {
+const memorizeMineralResourceType = (creep, mineral) => {
+  if (
+    mineral &&
+    (!creep.memory.resourceTypes || creep.memory.resourceTypes.length == 0)
+  ) {
     creep.memory.resourceTypes = [];
     creep.memory.resourceTypes.push(mineral.mineralType);
   }
+};
+
+const harvestMineral = (creep) => {
+  let mineral = creep.room.find(FIND_MINERALS)[0];
   let extractor = getExtractor(creep.room);
-  if (extractor) {
-    harvestFrom(creep, mineral);
-  } else {
-    creep.memory = { role: "repairer" };
+  let resourceType = mineral.mineralType;
+  let storage = getStorage(creep.room);
+
+  memorizeMineralResourceType(creep, mineral);
+
+  if (
+    mineral.mineralAmount == 0 &&
+    storage.store.getUsedCapacity(resourceType) > 0
+  ) {
+    console.log(
+      creep.room.name,
+      "transferring from storage to terminal...",
+      resourceType
+    );
+    withdrawFrom(creep, storage, resourceType);
+    return;
   }
+
+  if (mineral.mineralAmount > 0 && extractor) {
+    harvestFrom(creep, mineral);
+    return;
+  }
+
+  creep.memory = { role: "repairer" };
 };
 
 var roleExtractor = {
