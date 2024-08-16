@@ -1,4 +1,4 @@
-const roomConfig = require("./dashboard");
+const { getRoomConfig, getMyRooms } = require("./configAPI");
 
 /**
  * Get all creeps by role
@@ -33,7 +33,7 @@ const getTeamMaxSize = (creepRole, roomName) => {
     miner,
     transferrer,
     extractor,
-  } = roomConfig[roomName];
+  } = getRoomConfig(roomName);
   switch (creepRole) {
     case "harvester":
       return harvester.teamSize;
@@ -70,8 +70,8 @@ const getCreep = (creepName) => {
  */
 const changeCreepRoleByName = (creepName, newRole) => {
   let creep = getCreep(creepName);
-  if (creep && creep.name in roomConfig) {
-    let changeAllowed = roomConfig[creep.room.name].spawn.debugMode;
+  if (creep && getMyRooms().includes(creep.name)) {
+    let changeAllowed = getRoomConfig(creep.room.name).spawn.debugMode;
     if (changeAllowed) {
       changeCreepRole(creep, newRole);
     } else {

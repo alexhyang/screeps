@@ -1,4 +1,4 @@
-const roomConfig = require("./dashboard");
+const { getMyRooms } = require("./configAPI");
 const { printSquadInRoom } = require("./logger.squad");
 const {
   getResourceMeta,
@@ -48,9 +48,7 @@ function printInvasionRecords() {
 module.exports = {
   run: function () {
     console.log();
-    for (let roomName in roomConfig) {
-      printRoomSummary(roomName);
-    }
+    getMyRooms().forEach(printRoomSummary);
     printInvasionRecords();
   },
 };

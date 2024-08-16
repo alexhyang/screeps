@@ -1,4 +1,4 @@
-const roomConfig = require("./dashboard");
+const { getMyRooms } = require("./configAPI");
 
 const attack = (creep, enemy) => {
   if (enemy) {
@@ -25,15 +25,14 @@ const deploy = (creep, targetRoomName) => {
   creep.moveTo(new RoomPosition(25, 25, targetRoomName));
 };
 
-var roleArmy = {
+module.exports = {
   run: (creep, assignedRoomName = "W34N43") => {
-    if (assignedRoomName in roomConfig) {
+    if (getMyRooms().includes(assignedRoomName)) {
       let closestRampart = creep.pos.findClosestByRange(FIND_STRUCTURES, {
         filter: { structureType: STRUCTURE_RAMPART },
       });
       if (creep.room.find(FIND_HOSTILE_CREEPS).length == 0) {
         creep.moveTo(19, 6);
-
       }
     }
     const enemy = creep.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
@@ -49,5 +48,3 @@ var roleArmy = {
     heal(creep);
   },
 };
-
-module.exports = roleArmy;

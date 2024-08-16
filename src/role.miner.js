@@ -1,4 +1,4 @@
-const roomConfig = require("./dashboard");
+const { getRoomConfig } = require("./configAPI");
 const { obtainResource, transferResource } = require("./CreepResource");
 const {
   getContainers,
@@ -38,10 +38,10 @@ const findDeliveryTarget = (creep) => {
   }
 };
 
-var roleMiner = {
+module.exports = {
   /** @param {Creep} creep **/
   run: function (creep) {
-    const { sourceOrigins, sourceIndex } = roomConfig[creep.room.name].miner;
+    const { sourceOrigins, sourceIndex } = getRoomConfig(creep.room.name).miner;
     if (creep.store.getFreeCapacity() > 0) {
       obtainResource(creep, sourceOrigins, sourceIndex);
     } else {
@@ -50,5 +50,3 @@ var roleMiner = {
     }
   },
 };
-
-module.exports = roleMiner;

@@ -1,4 +1,4 @@
-const roomConfig = require("./dashboard");
+const { getRoomConfig } = require("./configAPI");
 const { repairTarget } = require("./Creep");
 const { obtainResource } = require("./CreepResource");
 const { getDamagedStructures } = require("./util.structureFinder");
@@ -44,7 +44,9 @@ const repairConstruction = (creep) => {
  * @param {Creep} creep
  */
 const obtainEnergy = (creep) => {
-  const { sourceOrigins, sourceIndex } = roomConfig[creep.room.name].repairer;
+  const { sourceOrigins, sourceIndex } = getRoomConfig(
+    creep.room.name
+  ).repairer;
   obtainResource(creep, sourceOrigins, sourceIndex);
 };
 
@@ -77,8 +79,9 @@ const findRepairTargets = (creep) => {
  *    or false otherwise
  */
 const getPrioritizedStructure = (creep, structure) => {
-  const { repairingPriority, repairingHitsRatio } =
-    roomConfig[creep.room.name].repairer;
+  const { repairingPriority, repairingHitsRatio } = getRoomConfig(
+    creep.room.name
+  ).repairer;
   let type = structure.structureType;
   let needsRepair = structure.hits < structure.hitsMax * repairingHitsRatio;
   let notMaxHits = structure.hits < structure.hitsMax;
@@ -97,7 +100,7 @@ const getPrioritizedStructure = (creep, structure) => {
   }
 };
 
-let roleRepairer = {
+module.exports = {
   /** @param {Creep} creep **/
   run: function (creep) {
     updateRepairingStatus(creep);
@@ -108,5 +111,3 @@ let roleRepairer = {
     }
   },
 };
-
-module.exports = roleRepairer;

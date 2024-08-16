@@ -1,4 +1,4 @@
-const roomConfig = require("./dashboard");
+const { getRoomConfig } = require("./configAPI");
 const { obtainResource, transferResource } = require("./CreepResource");
 const { getTeam } = require("./squad");
 const {
@@ -135,8 +135,9 @@ module.exports = {
   /** @param {Creep} creep **/
   run: function (creep) {
     if (harvestOk(creep)) {
-      const { sourceOrigins, sourceIndex } =
-        roomConfig[creep.room.name].harvester;
+      const { sourceOrigins, sourceIndex } = getRoomConfig(
+        creep.room.name
+      ).harvester;
       obtainResource(creep, sourceOrigins, sourceIndex);
     } else {
       let target = findDeliveryTarget(creep);

@@ -1,4 +1,4 @@
-const roomConfig = require("./dashboard");
+const { getMyRooms, getRoomConfig } = require("./configAPI");
 const { getTowers, getUnhealthyDefenses } = require("./util.structureFinder");
 
 /**
@@ -8,8 +8,9 @@ const { getTowers, getUnhealthyDefenses } = require("./util.structureFinder");
  * @returns {boolean} true if job assigned successfully, false otherwise
  */
 const repairUnhealthyDefenses = (tower, minRepairRange = 50) => {
-  const { minTowerEnergyToRepair, minDefenseHitsToRepair } =
-    roomConfig[tower.room.name].tower;
+  const { minTowerEnergyToRepair, minDefenseHitsToRepair } = getRoomConfig(
+    tower.room.name
+  ).tower;
 
   let defensesToRepair = getUnhealthyDefenses(
     minDefenseHitsToRepair,
@@ -34,7 +35,7 @@ const repairUnhealthyDefenses = (tower, minRepairRange = 50) => {
  * @returns {boolean} true if job assigned successfully, false otherwise
  */
 const repairInfrastructure = (tower) => {
-  const { minTowerEnergyToRepair } = roomConfig[tower.room.name].tower;
+  const { minTowerEnergyToRepair } = getRoomConfig(tower.room.name).tower;
   let targetRoadsOrContainers = _.filter(
     tower.room.find(FIND_STRUCTURES, {
       filter: (s) => {
@@ -98,7 +99,7 @@ const attackHostiles = (tower, hostileCreep) => {
   if (hostileCreep) {
     addHostileInvasionInfoToMemory(tower, hostileCreep);
 
-    const { maxFiringRange } = roomConfig[tower.room.name].tower;
+    const { maxFiringRange } = getRoomConfig(tower.room.name).tower;
     let hostileRange = tower.pos.getRangeTo(hostileCreep);
     if (hostileCreep && hostileRange <= maxFiringRange) {
       // console.log(tower.pos.getRangeTo(hostileCreep));
@@ -164,7 +165,7 @@ const createHostileInvasionRecord = (roomName, hostileCreep) => {
  */
 const activateTowersInRoom = (roomName) => {
   var towers = getTowers(Game.rooms[roomName]);
-  let { repairTowerIndex } = roomConfig[roomName].tower;
+  let { repairTowerIndex } = getRoomConfig(roomName).tower;
   for (let i in towers) {
     let tower = towers[i];
     if (tower) {
@@ -189,9 +190,7 @@ const activateTowersInRoom = (roomName) => {
  * Activate all towers
  */
 const activateTowers = () => {
-  for (let roomName in roomConfig) {
-    activateTowersInRoom(roomName);
-  }
+  getMyRooms().forEach(activateTowersInRoom);
 };
 
 module.exports = {

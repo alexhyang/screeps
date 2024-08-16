@@ -1,3 +1,4 @@
+const { getMyRooms } = require("./configAPI");
 const { moveToPosition } = require("./Creep");
 const {
   obtainResource,
@@ -6,7 +7,6 @@ const {
   withdrawFromFriendlyTombstone,
   withdrawFromHostileTombstone,
 } = require("./CreepResource");
-const roomConfig = require("./dashboard");
 const { getTeam } = require("./squad");
 const {
   getStorage,
@@ -125,7 +125,7 @@ const convertToHarvesterWhenNecessary = (creep, roomName) => {
 module.exports = {
   /** @param {Creep} creep **/
   run: function (creep, fromRoomName = "W35N43", toRoomName = "W36N43") {
-    if (fromRoomName in roomConfig) {
+    if (getMyRooms(fromRoomName).includes(fromRoomName)) {
       avoidDangerZone(creep);
       if (convertToHarvesterWhenNecessary(creep, "W36N43")) {
         return;

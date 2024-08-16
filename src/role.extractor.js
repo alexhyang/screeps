@@ -48,7 +48,7 @@ const harvestMineral = (creep) => {
   creep.memory = { role: "repairer" };
 };
 
-var roleExtractor = {
+module.exports = {
   /** @param {Creep} creep **/
   run: function (creep) {
     if (creep.store.getFreeCapacity() > 0) {
@@ -64,5 +64,3 @@ var roleExtractor = {
     }
   },
 };
-
-module.exports = roleExtractor;
