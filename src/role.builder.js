@@ -1,6 +1,6 @@
-const roomConfig = require("./dashboard");
 const { buildClosestConstructionSite } = require("./Creep");
 const { obtainResource } = require("./CreepResource");
+const { getMyRooms, getRoomConfig } = require("./configAPI");
 
 /**
  * Update the building status of the builder creep
@@ -8,7 +8,7 @@ const { obtainResource } = require("./CreepResource");
  */
 const updateBuildingStatus = (creep) => {
   if (
-    creep.room.name in roomConfig &&
+    getMyRooms().includes(creep.room.name) &&
     creep.pos.findClosestByRange(FIND_CONSTRUCTION_SITES) == null
   ) {
     creep.memory = { role: "repairer" };
@@ -31,7 +31,7 @@ const updateBuildingStatus = (creep) => {
  * @param {Creep} creep
  */
 const obtainEnergy = (creep) => {
-  const { sourceOrigins, sourceIndex } = roomConfig[creep.room.name].builder;
+  const { sourceOrigins, sourceIndex } = getRoomConfig(creep.room.name).builder;
   obtainResource(creep, sourceOrigins, sourceIndex);
 };
 
@@ -42,7 +42,7 @@ var roleBuilder = {
     if (creep.memory.building) {
       buildClosestConstructionSite(
         creep,
-        roomConfig[creep.room.name].builder.buildingPriority
+        getRoomConfig(creep.room.name).builder.buildingPriority
       );
     } else {
       obtainEnergy(creep);

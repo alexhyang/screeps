@@ -1,4 +1,4 @@
-const roomConfig = require("./dashboard");
+const { getMyRooms, getRoomConfig } = require("./configAPI");
 const { getTeam } = require("./squad");
 const {
   buildBodyParts,
@@ -66,7 +66,7 @@ const getIdleSpawn = (spawnNames) => {
  * @returns {boolean} true if the recruit is successful, false otherwise
  */
 function recruitCreep(creepModel, creepRole, roomName, creepName, srcIndex) {
-  const { spawnNames, debugMode } = roomConfig[roomName].spawn;
+  const { spawnNames, debugMode } = getRoomConfig(roomName).spawn;
   creepName = generateCreepName(creepModel, creepName);
 
   if (debugMode && Memory.debugCountDown > 0) {
@@ -112,7 +112,7 @@ function recruitInAdvanceOk(currentTeam, maxTeamSize, newCreepReadyTime) {
  * @returns {boolean} true if the recruit is successful, false otherwise
  */
 function recruitHarvesters(roomName) {
-  const { currentModel, teamSize } = roomConfig[roomName].harvester;
+  const { currentModel, teamSize } = getRoomConfig(roomName).harvester;
   if (
     recruitInAdvanceOk(
       getTeam("harvester", roomName),
@@ -144,7 +144,7 @@ function recruitBuilders(roomName) {
   if (room) {
     let constructionsInRoom = room.find(FIND_CONSTRUCTION_SITES);
     if (constructionsInRoom.length > 0) {
-      const { currentModel, teamSize } = roomConfig[roomName].builder;
+      const { currentModel, teamSize } = getRoomConfig(roomName).builder;
       if (
         recruitInAdvanceOk(
           getTeam("builder", roomName),
@@ -166,7 +166,7 @@ function recruitBuilders(roomName) {
  */
 function recruitUpgraders(roomName) {
   const { currentModel, teamSize, distanceToSource } =
-    roomConfig[roomName].upgrader;
+    getRoomConfig(roomName).upgrader;
   if (
     recruitInAdvanceOk(
       getTeam("upgrader", roomName),
@@ -185,7 +185,8 @@ function recruitUpgraders(roomName) {
  * @returns {boolean} true if the recruit is successful, false otherwise
  */
 function recruitRepairers(roomName) {
-  const { currentModel, teamSize, spawnCycle } = roomConfig[roomName].repairer;
+  const { currentModel, teamSize, spawnCycle } =
+    getRoomConfig(roomName).repairer;
   if (
     getTeam("repairer", roomName).length < teamSize &&
     Game.time % spawnCycle == 0
@@ -202,7 +203,7 @@ function recruitRepairers(roomName) {
  */
 function recruitMiners(roomName) {
   const { currentModel, teamSize, distanceToSource } =
-    roomConfig[roomName].miner;
+    getRoomConfig(roomName).miner;
   if (
     recruitInAdvanceOk(
       getTeam("miner", roomName),
@@ -230,7 +231,7 @@ function recruitMiners(roomName) {
  * @returns {boolean} true if the recruit is successful, false otherwise
  */
 function recruitTransferrers(roomName) {
-  const { currentModel, teamSize } = roomConfig[roomName].transferrer;
+  const { currentModel, teamSize } = getRoomConfig(roomName).transferrer;
   if (
     recruitInAdvanceOk(
       getTeam("transferrer", "all"),
@@ -250,7 +251,7 @@ function recruitTransferrers(roomName) {
  */
 function recruitExtractor(roomName) {
   const { currentModel, teamSize, distanceToSource } =
-    roomConfig[roomName].extractor;
+    getRoomConfig(roomName).extractor;
   let room = Game.rooms[roomName];
 
   if (room) {
@@ -317,9 +318,9 @@ function recruitForRoom(roomName) {
 
 module.exports = {
   run: () => {
-    for (let roomName in roomConfig) {
+    getMyRooms().forEach((roomName) => {
       const { debugMode, spawnNames, spawningDirections } =
-        roomConfig[roomName].spawn;
+        getRoomConfig(roomName).spawn;
       if (debugMode) {
         console.log(`Room ${roomName} spawning debug mode is on`);
       }
@@ -328,7 +329,7 @@ module.exports = {
       if (spawn && spawn.spawning) {
         spawn.spawning.setDirections(spawningDirections);
       }
-    }
+    });
   },
   recruitCreep,
 };

@@ -1,4 +1,4 @@
-const roomConfig = require("./dashboard");
+const { getRoomConfig } = require("./configAPI");
 const { upgradeController } = require("./Creep");
 const { obtainResource } = require("./CreepResource");
 
@@ -23,7 +23,9 @@ const updateUpgradingStatus = (creep) => {
  * @param {Creep} creep
  */
 const obtainEnergy = (creep) => {
-  const { sourceOrigins, sourceIndex } = roomConfig[creep.room.name].upgrader;
+  const { sourceOrigins, sourceIndex } = getRoomConfig(
+    creep.room.name
+  ).upgrader;
   obtainResource(creep, sourceOrigins, sourceIndex);
 };
 

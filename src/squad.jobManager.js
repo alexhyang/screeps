@@ -1,4 +1,4 @@
-const roomConfig = require("./dashboard");
+const { getMyRooms } = require("./configAPI");
 const {
   roleHarvester,
   roleUpgrader,
@@ -16,7 +16,7 @@ const {
 const assignJobs = () => {
   for (var name in Game.creeps) {
     var creep = Game.creeps[name];
-    if (creep.room.name in roomConfig) {
+    if (getMyRooms().includes(creep.room.name)) {
       switch (creep.memory.role) {
         case "harvester":
           roleHarvester.run(creep);
