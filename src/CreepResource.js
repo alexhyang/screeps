@@ -10,6 +10,7 @@ const {
   structureHasFreeCapacity,
   getStorage,
   getContainers,
+  getTerminal,
 } = require("./util.structureFinder");
 
 const HARVEST_STROKE = "#9e743e"; // brown
@@ -291,23 +292,23 @@ const withdrawFromRuin = (creep) => {
  * @returns {boolean} true if the withdraw is successful, false otherwise
  */
 const withdrawFromContainer = (creep) => {
-  // let closestContainer = findClosestStructureWithResource(
-  //   creep,
-  //   STRUCTURE_CONTAINER
-  // );
-  // if (closestContainer !== null && withdrawFromContainerOk(creep.room)) {
-  //   return withdrawFrom(creep, closestContainer);
-  // }
-  let targets = getContainers(creep.room).sort(
-    (a, b) =>
-      -(
-        b.store.getFreeCapacity(RESOURCE_ENERGY) -
-        a.store.getFreeCapacity(RESOURCE_ENERGY)
-      )
+  let closestContainer = findClosestStructureWithResource(
+    creep,
+    STRUCTURE_CONTAINER
   );
-  if (targets.length > 0 && withdrawFromContainerOk(creep.room)) {
-    return withdrawFrom(creep, targets[0]);
+  if (closestContainer !== null && withdrawFromContainerOk(creep.room)) {
+    return withdrawFrom(creep, closestContainer);
   }
+  // let targets = getContainers(creep.room).sort(
+  //   (a, b) =>
+  //     -(
+  //       b.store.getFreeCapacity(RESOURCE_ENERGY) -
+  //       a.store.getFreeCapacity(RESOURCE_ENERGY)
+  //     )
+  // );
+  // if (targets.length > 0 && withdrawFromContainerOk(creep.room)) {
+  //   return withdrawFrom(creep, targets[0]);
+  // }
   return false;
 };
 
@@ -335,6 +336,19 @@ const withdrawFromStorage = (creep) => {
   let storage = getStorage(creep.room);
   if (storage !== undefined && withdrawFromStorageOk(creep.room)) {
     return withdrawFrom(creep, storage);
+  }
+  return false;
+};
+
+/**
+ * @param {Creep} creep
+ * @returns {boolean} true if the withdraw is successful, false otherwise
+ */
+const withdrawFromTerminal = (creep) => {
+  let terminal = getTerminal(creep.room);
+
+  if (terminal !== undefined) {
+    return withdrawFrom(creep, terminal);
   }
   return false;
 };
@@ -403,6 +417,8 @@ const findHarvestMethod = (origin) => {
       return withdrawFromContainer;
     case "storage":
       return withdrawFromStorage;
+    case "terminal":
+      return withdrawFromTerminal;
     case "extension":
       return withdrawFromExtension;
     case "spawn":
@@ -434,6 +450,7 @@ const obtainResource = (creep, resourceOrigins, sourceId = 0) => {
 
 module.exports = {
   harvestFrom,
+  withdrawFrom,
   pickupDroppedResources,
   withdrawFromFriendlyTombstone,
   withdrawFromHostileTombstone,
