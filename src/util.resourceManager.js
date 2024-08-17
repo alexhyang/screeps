@@ -1,4 +1,4 @@
-const roomConfig = require("./dashboard");
+const { getRoomConfig } = require("./configAPI");
 const { getContainers, getStorage } = require("./util.structureFinder");
 
 /**
@@ -32,7 +32,7 @@ const getEnergyCapacityAvailable = (room) => {
  *    given room, false otherwise
  **/
 const withdrawFromSpawnOk = (room) => {
-  const { SPAWN_WITHDRAW_THRESHOLD } = roomConfig[room.name];
+  const { SPAWN_WITHDRAW_THRESHOLD } = getRoomConfig(room.name);
   let energyAvailable = getEnergyAvailable(room);
   return energyAvailable >= SPAWN_WITHDRAW_THRESHOLD;
 };
@@ -44,8 +44,8 @@ const withdrawFromSpawnOk = (room) => {
  *    given room, false otherwise
  **/
 const withdrawFromContainerOk = (room) => {
-  const { CONTAINER_WITHDRAW_THRESHOLD } = roomConfig[room.name];
-  const { sourceIndex } = roomConfig[room.name].miner;
+  const { CONTAINER_WITHDRAW_THRESHOLD } = getRoomConfig(room.name);
+  const { sourceIndex } = getRoomConfig(room.name).miner;
   let minerSource = room.find(FIND_SOURCES)[sourceIndex];
   let containers = getContainers(room);
 
@@ -68,8 +68,8 @@ const withdrawFromContainerOk = (room) => {
  *    room, false otherwise
  **/
 const withdrawFromStorageOk = (room) => {
-  const { STORAGE_WITHDRAW_THRESHOLD } = roomConfig[room.name];
-  const { sourceIndex } = roomConfig[room.name].miner;
+  const { STORAGE_WITHDRAW_THRESHOLD } = getRoomConfig(room.name);
+  const { sourceIndex } = getRoomConfig(room.name).miner;
   let minerSource = room.find(FIND_SOURCES)[sourceIndex];
   let storage = getStorage(room);
 

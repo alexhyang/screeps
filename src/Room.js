@@ -1,4 +1,4 @@
-const roomConfig = require("./dashboard");
+const { getMyRooms, getRoomConfig } = require("./configAPI");
 const {
   getHealthyDefenses,
   getUnhealthyDefenses,
@@ -21,7 +21,7 @@ const { parseNumber, roundTo, padStr } = require("./utils");
  *    if room name is not included in room config
  */
 const getResourceMeta = (roomName) => {
-  if (roomName in roomConfig) {
+  if (getMyRooms().includes(roomName)) {
     let resourceMeta =
       `${getEnergyMeta(roomName)}, ` +
       `STG (${getStorageMeta(roomName)}), ` +
@@ -38,8 +38,8 @@ const getResourceMeta = (roomName) => {
  *    if room name is not included in room config
  */
 const getDefenseMeta = (roomName) => {
-  if (roomName in roomConfig) {
-    const { minDefenseHitsToRepair } = roomConfig[roomName].tower;
+  if (getMyRooms().includes(roomName)) {
+    const { minDefenseHitsToRepair } = getRoomConfig(roomName).tower;
     let numHealthyWallsRamparts = getHealthyDefenses(
       minDefenseHitsToRepair,
       Game.rooms[roomName]
@@ -74,7 +74,7 @@ const getDefenseMeta = (roomName) => {
  *    if room name is not included in room config
  */
 const getControllerMeta = (roomName) => {
-  if (roomName in roomConfig) {
+  if (getMyRooms().includes(roomName)) {
     let controller = getController(Game.rooms[roomName]);
     if (controller) {
       let current = parseNumber(controller.progress);
@@ -97,7 +97,7 @@ const getControllerMeta = (roomName) => {
  * @returns {string} total energy in spawns and extensions
  */
 const getEnergyMeta = (roomName) => {
-  if (roomName in roomConfig) {
+  if (getMyRooms().includes(roomName)) {
     let room = Game.rooms[roomName];
     let energyAvailable = getEnergyAvailable(room);
     let energyCapacityAvailable = getEnergyCapacityAvailable(room);
@@ -113,7 +113,7 @@ const getEnergyMeta = (roomName) => {
  *    if room name is not included in room config
  */
 const getStorageMeta = (roomName) => {
-  if (roomName in roomConfig) {
+  if (getMyRooms().includes(roomName)) {
     let target = getStorage(Game.rooms[roomName]);
     if (target) {
       let targetUsedCapacity = target.store.getUsedCapacity(RESOURCE_ENERGY);
@@ -130,7 +130,7 @@ const getStorageMeta = (roomName) => {
  *    if room name is not included in room config
  */
 const getContainerMeta = (roomName) => {
-  if (roomName in roomConfig) {
+  if (getMyRooms().includes(roomName)) {
     let containers = getContainers(Game.rooms[roomName]);
     if (containers.length > 0) {
       let containerMeta = [];
