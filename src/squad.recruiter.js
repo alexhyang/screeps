@@ -7,7 +7,11 @@ const {
 } = require("./squad.creepModelAnalyzer");
 const MODELS = require("./squad.creepModels");
 const { getEnergyAvailable } = require("./util.resourceManager");
-const { getSpawnByName, getExtractor } = require("./util.structureFinder");
+const {
+  getSpawnByName,
+  getExtractor,
+  getController,
+} = require("./util.structureFinder");
 
 /**
  * Generate name for new creep
@@ -54,11 +58,9 @@ const getIdleSpawn = (spawnNames) => {
   }
 };
 
-// TODO: better define creepModel in JSDocs
 /**
  * Recruit a creep to given role with desired model design
- * @param {object.<string, object.<string, number>>} creepModel the creep
- *   model with name and body parts
+ * @param {CreepModel} creepModel the creep model with name and body parts
  * @param {string} creepRole
  * @param {string} roomName
  * @param {string} [creepName]
@@ -107,187 +109,222 @@ function recruitInAdvanceOk(currentTeam, maxTeamSize, newCreepReadyTime) {
 }
 
 /**
- * Recruit harvesters
- * @param {string} roomName
- * @returns {boolean} true if the recruit is successful, false otherwise
+ * Determine if the room should recruit harvesters
+ * @param {Room} room
+ * @param {RoomConfig} roomConfig
+ * @returns {boolean} true if room should recruit harvesters, false otherwise
  */
-function recruitHarvesters(roomName) {
-  const { currentModel, teamSize } = getRoomConfig(roomName).harvester;
-  if (
+function shouldRecruitHarvesters(room, roomConfig) {
+  const { currentModel, teamSize } = roomConfig.harvester;
+  return recruitInAdvanceOk(
+    getTeam("harvester", room.name),
+    teamSize,
+    getCreepSpawningTime(currentModel)
+  );
+}
+
+/**
+ * Recruit harvesters in specified room
+ * @param {Room} room
+ * @param {CreepModel} currentModel
+ */
+function recruitHarvesters(room, currentModel) {
+  let energyAvailable = getEnergyAvailable(room);
+  if (energyAvailable >= getModelCost(currentModel)) {
+    return recruitCreep(currentModel, "harvester", room.name);
+  } else if (energyAvailable >= getModelCost(MODELS.CARRIER_6)) {
+    return recruitCreep(MODELS.CARRIER_6, "harvester", room.name);
+  } else if (energyAvailable >= getModelCost(MODELS.CARRIER_3)) {
+    return recruitCreep(MODELS.CARRIER_3, "harvester", room.name);
+  } else {
+    return recruitCreep(MODELS.CARRIER_1, "harvester", room.name);
+  }
+}
+
+function shouldRecruitBuilders(room, roomConfig) {
+  const { currentModel, teamSize } = roomConfig.builder;
+  let constructionsInRoom = room.find(FIND_CONSTRUCTION_SITES);
+  return (
+    constructionsInRoom.length > 0 &&
     recruitInAdvanceOk(
-      getTeam("harvester", roomName),
+      getTeam("builder", room.name),
       teamSize,
       getCreepSpawningTime(currentModel)
     )
-  ) {
-    let energyAvailable = getEnergyAvailable(Game.rooms[roomName]);
-    if (energyAvailable >= getModelCost(currentModel)) {
-      return recruitCreep(currentModel, "harvester", roomName);
-    } else if (energyAvailable >= getModelCost(MODELS.CARRIER_6)) {
-      return recruitCreep(MODELS.CARRIER_6, "harvester", roomName);
-    } else if (energyAvailable >= getModelCost(MODELS.CARRIER_3)) {
-      return recruitCreep(MODELS.CARRIER_3, "harvester", roomName);
-    } else {
-      return recruitCreep(MODELS.CARRIER_1, "harvester", roomName);
-    }
-  }
-  return false;
+  );
 }
 
 /**
- * Recruit builders
- * @param {string} roomName
+ * Recruit builders in the specified room
+ * @param {Room} room
+ * @param {CreepModel} currentModel
  * @returns {boolean} true if the recruit is successful, false otherwise
  */
-function recruitBuilders(roomName) {
-  let room = Game.rooms[roomName];
-  if (room) {
-    let constructionsInRoom = room.find(FIND_CONSTRUCTION_SITES);
-    if (constructionsInRoom.length > 0) {
-      const { currentModel, teamSize } = getRoomConfig(roomName).builder;
-      if (
-        recruitInAdvanceOk(
-          getTeam("builder", roomName),
-          teamSize,
-          getCreepSpawningTime(currentModel)
-        )
-      ) {
-        return recruitCreep(currentModel, "builder", roomName);
-      }
-    }
-  }
-  return false;
+function recruitBuilders(room, currentModel) {
+  return recruitCreep(currentModel, "builder", room.name);
 }
 
 /**
- * Recruit upgraders
- * @param {string} roomName
- * @returns {boolean} true if the recruit is successful, false otherwise
+ * Determine if the room should recruit upgraders
+ * @param {Room} room
+ * @param {RoomConfig} roomConfig
+ * @returns {boolean} true if room should recruit upgraders, false otherwise
  */
-function recruitUpgraders(roomName) {
-  const { currentModel, teamSize, distanceToSource } =
-    getRoomConfig(roomName).upgrader;
-  if (
+function shouldRecruitUpgraders(room, roomConfig) {
+  const { currentModel, teamSize, distanceToSource } = roomConfig.upgrader;
+  let controller = getController(room);
+  return (
+    controller &&
+    ((controller.level == 8 && controller.ticksToDowngrade < 100000) ||
+      controller.level < 8) &&
     recruitInAdvanceOk(
-      getTeam("upgrader", roomName),
+      getTeam("upgrader", room.name),
       teamSize,
       getCreepSpawningTime(currentModel) + distanceToSource
     )
-  ) {
-    return recruitCreep(currentModel, "upgrader", roomName);
-  }
-  return false;
+  );
 }
 
 /**
- * Recruit repairers
- * @param {string} roomName
+ * Recruit upgraders in the specified room
+ * @param {Room} room
+ * @param {CreepModel} currentModel
  * @returns {boolean} true if the recruit is successful, false otherwise
  */
-function recruitRepairers(roomName) {
-  const { currentModel, teamSize, spawnCycle } =
-    getRoomConfig(roomName).repairer;
-  if (
-    getTeam("repairer", roomName).length < teamSize &&
+function recruitUpgraders(room, currentModel) {
+  return recruitCreep(currentModel, "upgrader", room.name);
+}
+
+/**
+ * Determine if the room should recruit repairers
+ * @param {Room} room
+ * @param {RoomConfig} roomConfig
+ * @returns {boolean} true if room should recruit repairers, false otherwise
+ */
+function shouldRecruitRepairers(room, roomConfig) {
+  const { teamSize, spawnCycle } = roomConfig.repairer;
+  return (
+    getTeam("repairer", room.name).length < teamSize &&
     Game.time % spawnCycle == 0
-  ) {
-    return recruitCreep(currentModel, "repairer", roomName);
-  }
-  return false;
+  );
 }
 
 /**
- * Recruit miners
- * @param {string} roomName
+ * Recruit repairers in the specified room
+ * @param {Room} room
+ * @param {CreepModel} currentModel
  * @returns {boolean} true if the recruit is successful, false otherwise
  */
-function recruitMiners(roomName) {
-  const { currentModel, teamSize, distanceToSource } =
-    getRoomConfig(roomName).miner;
-  if (
+function recruitRepairers(room, currentModel) {
+  return recruitCreep(currentModel, "repairer", room.name);
+}
+
+/**
+ * Determine if the room should recruit miners
+ * @param {Room} room
+ * @param {RoomConfig} roomConfig
+ * @returns {boolean} true if room should recruit miners, false otherwise
+ */
+function shouldRecruitMiners(room, roomConfig) {
+  const { currentModel, teamSize, distanceToSource } = roomConfig.miner;
+  return recruitInAdvanceOk(
+    getTeam("miner", room.name),
+    teamSize,
+    getCreepSpawningTime(currentModel) + distanceToSource
+  );
+}
+
+/**
+ * Recruit miners in the specified room
+ * @param {Room} room
+ * @param {CreepModel} currentModel
+ * @returns {boolean} true if the recruit is successful, false otherwise
+ */
+function recruitMiners(room, currentModel) {
+  let energyAvailable = getEnergyAvailable(room);
+  if (energyAvailable >= getModelCost(currentModel)) {
+    return recruitCreep(currentModel, "miner", room.name);
+  } else if (energyAvailable >= getModelCost(MODELS.WORKER_5B)) {
+    return recruitCreep(MODELS.WORKER_5B, "miner", room.name);
+  } else if (energyAvailable >= getModelCost(MODELS.WORKER_3)) {
+    return recruitCreep(MODELS.WORKER_3, "miner", room.name);
+  } else {
+    return recruitCreep(MODELS.WORKER_2B, "miner", room.name);
+  }
+}
+
+function shouldRecruitTransferrer(room, roomConfig) {
+  const { currentModel, teamSize } = roomConfig.transferrer;
+  return recruitInAdvanceOk(
+    getTeam("transferrer", "all"),
+    teamSize,
+    getCreepSpawningTime(currentModel)
+  );
+}
+
+/**
+ * Recruit transferrers in the specified room
+ * @param {Room} room
+ * @param {CreepModel} currentModel
+ * @returns {boolean} true if the recruit is successful, false otherwise
+ */
+function recruitTransferrers(room, currentModel) {
+  return recruitCreep(currentModel, "transferrer", room.name);
+}
+
+/**
+ * Determine if the room should recruit extractors
+ * @param {Room} room
+ * @param {RoomConfig} roomConfig
+ * @returns {boolean} true if room should recruit extractors, false otherwise
+ */
+function shouldRecruitExtractors(room, roomConfig) {
+  const { currentModel, teamSize, distanceToSource } = roomConfig.extractor;
+  let mineral = room.find(FIND_MINERALS)[0];
+
+  return (
+    mineral.mineralAmount > 0 &&
+    getExtractor(room) &&
     recruitInAdvanceOk(
-      getTeam("miner", roomName),
+      getTeam("extractor", room.name),
       teamSize,
       getCreepSpawningTime(currentModel) + distanceToSource
     )
-  ) {
-    let energyAvailable = getEnergyAvailable(Game.rooms[roomName]);
-    if (energyAvailable >= getModelCost(currentModel)) {
-      return recruitCreep(currentModel, "miner", roomName);
-    } else if (energyAvailable >= getModelCost(MODELS.WORKER_5B)) {
-      return recruitCreep(MODELS.WORKER_5B, "miner", roomName);
-    } else if (energyAvailable >= getModelCost(MODELS.WORKER_3)) {
-      return recruitCreep(MODELS.WORKER_3, "miner", roomName);
-    } else {
-      return recruitCreep(MODELS.WORKER_2B, "miner", roomName);
-    }
-  }
-  return false;
+  );
 }
 
 /**
- * Recruit transferrers
- * @param {string} roomName
+ * Recruit extractors in the specified room
+ * @param {Room} room
+ * @param {CreepModel} currentModel
  * @returns {boolean} true if the recruit is successful, false otherwise
  */
-function recruitTransferrers(roomName) {
-  const { currentModel, teamSize } = getRoomConfig(roomName).transferrer;
-  if (
-    recruitInAdvanceOk(
-      getTeam("transferrer", "all"),
-      teamSize,
-      getCreepSpawningTime(currentModel)
-    )
-  ) {
-    return recruitCreep(currentModel, "transferrer", roomName);
-  }
-  return false;
+function recruitExtractors(room, currentModel) {
+  return recruitCreep(currentModel, "extractor", room.name);
 }
 
 /**
- * Recruit extractors
- * @param {string} roomName
- * @returns {boolean} true if the recruit is successful, false otherwise
+ * Determine if the room should recruit army
+ * @param {Room} room
+ * @param {RoomConfig} roomConfig
+ * @returns {boolean} true if room should recruit army, false otherwise
  */
-function recruitExtractor(roomName) {
-  const { currentModel, teamSize, distanceToSource } =
-    getRoomConfig(roomName).extractor;
-  let room = Game.rooms[roomName];
-
-  if (room) {
-    let mineral = room.find(FIND_MINERALS)[0];
-
-    if (
-      mineral.mineralAmount > 0 &&
-      getExtractor(room) &&
-      recruitInAdvanceOk(
-        getTeam("extractor", roomName),
-        teamSize,
-        getCreepSpawningTime(currentModel) + distanceToSource
-      )
-    ) {
-      return recruitCreep(currentModel, "extractor", roomName);
-    }
-  }
-  return false;
+function shouldRecruitArmy(room, roomConfig) {
+  let hostileCreeps = room.find(FIND_HOSTILE_CREEPS);
+  return hostileCreeps.length > 1 && getTeam("army", room.name).length == 0;
 }
 
 /**
  * recruit army when two or more hostile creeps show up
- * @param {string} roomName
- * @returns {boolean} true if recruit job assigned successfully,
- *    false otherwise
+ * @param {Room} room
+ * @param {CreepModel} currentModel
+ * @returns {boolean} true if the recruit is successful, false otherwise
  */
-function recruitArmy(roomName) {
-  let room = Game.rooms[roomName];
-  if (room) {
-    let hostileCreeps = Game.rooms[roomName].find(FIND_HOSTILE_CREEPS);
-    if (hostileCreeps.length > 1 && getTeam("army", roomName).length == 0) {
-      recruitCreep(MODELS.DEFENDER2, "army", roomName);
-      return true;
-    }
-    return false;
+function recruitArmy(room, currentModel) {
+  if (currentModel == undefined) {
+    currentModel = MODELS.DEFENDER2;
   }
+  return recruitCreep(currentModel, "army", room.name);
 }
 
 /**
@@ -295,25 +332,42 @@ function recruitArmy(roomName) {
  * @param {string} roomName
  */
 function recruitForRoom(roomName) {
-  // TODO: fix the logic here, when miners are supposed to be recruited
-  //   but there is not enough energy, the first if-condition returns false
-  //   the spawn therefore will try to recruit upgraders instead
-  if (recruitArmy(roomName)) {
-    return;
+  let room = Game.rooms[roomName];
+  const roomConfig = getRoomConfig(roomName);
+
+  if (room && roomConfig) {
+    if (shouldRecruitArmy(room)) {
+      return recruitArmy(room, roomConfig);
+    }
+
+    if (shouldRecruitMiners(room, roomConfig)) {
+      return recruitMiners(room, roomConfig.miner.currentModel);
+    }
+
+    if (shouldRecruitUpgraders(room, roomConfig)) {
+      return recruitUpgraders(room, roomConfig.upgrader.currentModel);
+    }
+
+    if (shouldRecruitHarvesters(room, roomConfig)) {
+      return recruitHarvesters(room, roomConfig.harvester.currentModel);
+    }
+
+    if (shouldRecruitRepairers(room, roomConfig)) {
+      return recruitRepairers(room, roomConfig.repairer.currentModel);
+    }
+
+    if (shouldRecruitExtractors(room, roomConfig)) {
+      return recruitExtractors(room, roomConfig.extractor.currentModel);
+    }
+
+    if (shouldRecruitBuilders(room, roomConfig)) {
+      return recruitBuilders(room, roomConfig.builder.currentModel);
+    }
+
+    if (shouldRecruitTransferrer(room, roomConfig)) {
+      return recruitTransferrers(room, roomConfig.transferrer.currentModel);
+    }
   }
-  if (recruitHarvesters(roomName) || recruitMiners(roomName)) {
-    return;
-  }
-  if (recruitUpgraders(roomName)) {
-    return;
-  }
-  if (recruitExtractor(roomName)) {
-    return;
-  }
-  if (recruitRepairers(roomName) || recruitBuilders(roomName)) {
-    return;
-  }
-  recruitTransferrers(roomName);
 }
 
 module.exports = {
