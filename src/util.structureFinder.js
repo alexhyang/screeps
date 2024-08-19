@@ -145,7 +145,6 @@ const getExtractor = (room) => {
   return getStructures(STRUCTURE_EXTRACTOR, room)[0];
 };
 
-
 /** Find terminal in the given room
  * @param {Room} room
  * @returns {(StructureTerminal|undefined)} the terminal in the room, or
@@ -153,6 +152,15 @@ const getExtractor = (room) => {
  */
 const getTerminal = (room) => {
   return getStructures(STRUCTURE_TERMINAL, room)[0];
+};
+
+/** Find nuker in the given room
+ * @param {Room} room
+ * @returns {(StructureNuker|undefined)} the terminal in the room, or
+ *    undefined if not found
+ */
+const getNuker = (room) => {
+  return getStructures(STRUCTURE_NUKER, room)[0];
 };
 
 /**
@@ -229,6 +237,7 @@ module.exports = {
   getLabs,
   getExtractor,
   getTerminal,
+  getNuker,
   getUnhealthyDefenses,
   getHealthyDefenses,
   getDamagedStructures,
