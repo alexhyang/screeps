@@ -163,6 +163,15 @@ const getNuker = (room) => {
   return getStructures(STRUCTURE_NUKER, room)[0];
 };
 
+/** Find factory in the given room
+ * @param {Room} room
+ * @returns {(StructureFactory|undefined)} the terminal in the room, or
+ *    undefined if not found
+ */
+const getFactory = (room) => {
+  return getStructures(STRUCTURE_FACTORY, room)[0];
+};
+
 /**
  * Find all unhealthy walls and ramparts
  * @param {number} minHealthyHits minimum hits of healthy defenses
@@ -238,6 +247,7 @@ module.exports = {
   getExtractor,
   getTerminal,
   getNuker,
+  getFactory,
   getUnhealthyDefenses,
   getHealthyDefenses,
   getDamagedStructures,
