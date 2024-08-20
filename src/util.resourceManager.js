@@ -1,28 +1,103 @@
 const { getRoomConfig } = require("./configAPI");
-const { getContainers, getStorage } = require("./util.structureFinder");
+const { getStorage } = require("./util.structureFinder");
 
 /**
  * Shorthand for roomObj.store.getUsedCapacity()
  * @param {RoomObject} roomObj
- * @param {string} resourceType
- * @returns {number} used capacity of specified resource type
+ * @param {string} resourceType RESOURCE_ENERGY by default
+ * @returns {(number|null)} used capacity of specified resource type,
+ *    null if resource type is invalid
  */
 const getUsedCapacity = (roomObj, resourceType = RESOURCE_ENERGY) => {
   if (roomObj.store) {
-    return roomObj.store.getUsedCapacity(resourceType);
+    return resourceType == "all"
+      ? roomObj.store.getUsedCapacity()
+      : roomObj.store.getUsedCapacity(resourceType);
   }
 };
 
 /**
  * Shorthand for roomObj.store.getFreeCapacity()
  * @param {RoomObject} roomObj
- * @param {string} resourceType
- * @returns {number} free capacity of specified resource type
+ * @param {string} resourceType RESOURCE_ENERGY by default
+ * @returns {(number|null)} free capacity of specified resource type,
+ *    null if resource type is invalid
  */
 const getFreeCapacity = (roomObj, resourceType = RESOURCE_ENERGY) => {
   if (roomObj.store) {
-    return roomObj.store.getFreeCapacity(resourceType);
+    return resourceType == "all"
+      ? roomObj.store.getFreeCapacity()
+      : roomObj.store.getFreeCapacity(resourceType);
   }
+};
+
+/**
+ * Shorthand for roomObj.store.getCapacity()
+ * @param {RoomObject} roomObj
+ * @param {string} resourceType RESOURCE_ENERGY by default
+ * @returns {(number|null)} resource capacity of specified room object,
+ *    null if resource type is invalid
+ */
+const getCapacity = (roomObj, resourceType = RESOURCE_ENERGY) => {
+  if (roomObj.store) {
+    return resourceType == "all"
+      ? roomObj.store.getCapacity()
+      : roomObj.store.getCapacity(resourceType);
+  }
+};
+
+/**
+ * Determine if a store of a room object
+ * @param {RoomObject} roomObj
+ * @param {string} resourceType RESOURCE_ENERGY by default
+ * @returns {boolean} true if store is empty, false otherwise
+ */
+const storeIsEmpty = (roomObj) => {
+  return getUsedCapacity(roomObj, "all") == 0;
+};
+
+/**
+ * Determine if the store of a room object is full
+ * @param {RoomObject} roomObj
+ * @param {string} resourceType RESOURCE_ENERGY by default
+ * @returns {boolean} true if store is full, false otherwise
+ */
+const storeIsFull = (roomObj) => {
+  return getFreeCapacity(roomObj, "all") == 0;
+};
+
+/**
+ * Determine if the store of a room object has specified resource greater than
+ *    or equal to the minimum amount. If the minimum amount is undefined,
+ *    return true if it has the specified resource, false otherwise.
+ * @param {RoomObject} roomObj
+ * @param {number} minAmount minimum used capacity
+ * @param {string} resourceType RESOURCE_ENERGY by default
+ */
+const storeHasResource = (
+  roomObj,
+  minAmount,
+  resourceType = RESOURCE_ENERGY
+) => {
+  let usedCapacity = getUsedCapacity(roomObj, resourceType);
+  return minAmount == undefined || minAmount <= 0
+    ? usedCapacity > 0
+    : usedCapacity >= minAmount;
+};
+
+/**
+ * Determine if the store of a room object has space for the given amount. If
+ *    minimum amount if undefined, return true if it has free capacity, false
+ *    otherwise
+ * @param {RoomObject} roomObj
+ * @param {number} minAmount minimum free capacity
+ * @param {string} resourceType RESOURCE_ENERGY by default
+ */
+const storeHasSpace = (roomObj, minAmount, resourceType = RESOURCE_ENERGY) => {
+  let freeCapacity = getFreeCapacity(roomObj, resourceType);
+  return minAmount == undefined || minAmount <= 0
+    ? freeCapacity > 0
+    : freeCapacity >= minAmount;
 };
 
 /**
@@ -111,6 +186,11 @@ const withdrawFromStorageOk = (room) => {
 module.exports = {
   getUsedCapacity,
   getFreeCapacity,
+  getCapacity,
+  storeIsEmpty,
+  storeIsFull,
+  storeHasResource,
+  storeHasSpace,
   getEnergyAvailable,
   getEnergyCapacityAvailable,
   withdrawFromContainerOk,
