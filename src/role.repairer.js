@@ -1,6 +1,7 @@
 const { getRoomConfig } = require("./configAPI");
 const { repairTarget } = require("./Creep");
 const { obtainResource } = require("./CreepResource");
+const { storeIsEmpty, storeIsFull } = require("./util.resourceManager");
 const { getDamagedStructures } = require("./util.structureFinder");
 
 /**
@@ -8,12 +9,12 @@ const { getDamagedStructures } = require("./util.structureFinder");
  * @param {Creep} creep
  */
 const updateRepairingStatus = (creep) => {
-  if (creep.memory.repairing && creep.store[RESOURCE_ENERGY] == 0) {
+  if (creep.memory.repairing && storeIsEmpty(creep)) {
     creep.memory.repairing = false;
     creep.say("⛏");
   }
 
-  if (!creep.memory.repairing && creep.store.getFreeCapacity() == 0) {
+  if (!creep.memory.repairing && storeIsFull(creep)) {
     creep.memory.repairing = true;
     creep.say("🚧");
   }

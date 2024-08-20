@@ -1,6 +1,7 @@
 const { buildClosestConstructionSite } = require("./Creep");
 const { obtainResource } = require("./CreepResource");
 const { getMyRooms, getRoomConfig } = require("./configAPI");
+const { storeIsEmpty, storeIsFull } = require("./util.resourceManager");
 
 /**
  * Update the building status of the builder creep
@@ -15,12 +16,12 @@ const updateBuildingStatus = (creep) => {
     return;
   }
 
-  if (creep.memory.building && creep.store[RESOURCE_ENERGY] == 0) {
+  if (creep.memory.building && storeIsEmpty(creep)) {
     creep.memory.building = false;
     creep.say("⛏");
   }
 
-  if (!creep.memory.building && creep.store.getFreeCapacity() == 0) {
+  if (!creep.memory.building && storeIsFull(creep)) {
     creep.memory.building = true;
     creep.say("🔨");
   }

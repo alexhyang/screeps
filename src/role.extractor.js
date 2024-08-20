@@ -3,10 +3,12 @@ const {
   harvestFrom,
   withdrawFrom,
 } = require("./CreepResource");
+const { storeHasSpace, getUsedCapacity } = require("./util.resourceManager");
 const {
   getStorage,
   getExtractor,
   getTerminal,
+  getFactory,
 } = require("./util.structureFinder");
 
 const memorizeMineralResourceType = (creep, mineral) => {
@@ -29,7 +31,7 @@ const harvestMineral = (creep) => {
 
   if (
     mineral.mineralAmount == 0 &&
-    storage.store.getUsedCapacity(resourceType) > 0
+    getUsedCapacity(storage, resourceType) > 0
   ) {
     console.log(
       creep.room.name,
@@ -51,12 +53,15 @@ const harvestMineral = (creep) => {
 module.exports = {
   /** @param {Creep} creep **/
   run: function (creep) {
-    if (creep.store.getFreeCapacity() > 0) {
+    if (storeHasSpace(creep)) {
       harvestMineral(creep);
     } else {
       let terminal = getTerminal(creep.room);
       let storage = getStorage(creep.room);
-      if (terminal && terminal.store.getFreeCapacity() > 0) {
+      let factory = getFactory(creep.room);
+      if (factory && storeHasSpace(factory, getUsedCapacity(creep))) {
+        transferResource(creep, factory);
+      } else if (terminal && storeHasSpace(terminal, getUsedCapacity(creep))) {
         transferResource(creep, terminal);
       } else {
         transferResource(creep, storage);

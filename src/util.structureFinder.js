@@ -14,38 +14,6 @@ function getStructures(structureType, room) {
 }
 
 /**
- * Find if a given structure has free capacity of specified resource type
- *    greater than the threshold
- * @param {Structure} structure
- * @param {number} [minFreeCapacity=1] 1 by default
- * @param {string} [resourceType=RESOURCE_ENERGY] RESOURCE_ENERGY by default
- * @returns {boolean} true if structure has free capacity, false otherwise
- */
-function structureHasFreeCapacity(
-  structure,
-  minFreeCapacity = 1,
-  resourceType = RESOURCE_ENERGY
-) {
-  if (structure) {
-    return structure.store.getFreeCapacity(resourceType) >= minFreeCapacity;
-  }
-  return false;
-}
-
-/**
- * Find if a given structure has of specified resource type
- * @param {Structure} structure
- * @param {string} [resourceType=RESOURCE_ENERGY] RESOURCE_ENERGY by default
- * @returns {boolean} true if structure has resource, false otherwise
- */
-function structureHasResource(structure, resourceType = RESOURCE_ENERGY) {
-  if (structure) {
-    return structure.store.getUsedCapacity(resourceType) > 0;
-  }
-  return false;
-}
-
-/**
  * Find the spawn with given spawn name
  * @param {string} spawnName
  * @returns {(StructureSpawn|undefined)} the spawn with the given name,
@@ -233,8 +201,6 @@ const getDamagedStructures = (room, structureType) => {
 
 module.exports = {
   getStructures,
-  structureHasFreeCapacity,
-  structureHasResource,
   getSpawnByName,
   getSpawns,
   getExtensions,

@@ -9,6 +9,11 @@ const {
 } = require("./CreepResource");
 const { getTeam } = require("./squad");
 const {
+  getFreeCapacity,
+  getCapacity,
+  storeIsEmpty,
+} = require("./util.resourceManager");
+const {
   getStorage,
   getContainers,
   getController,
@@ -60,7 +65,7 @@ const obtainFromRoom = (creep, fromRoomName) => {
 const getFreeContainersToTransfer = (creep, roomName) => {
   return _.filter(
     getContainers(Game.rooms[roomName]),
-    (c) => c.store.getFreeCapacity(RESOURCE_ENERGY) >= creep.store.getCapacity()
+    (c) => getFreeCapacity(c) >= getCapacity(creep)
   );
 };
 
@@ -131,7 +136,7 @@ module.exports = {
         return;
       }
 
-      if (creep.store.getUsedCapacity(RESOURCE_ENERGY) == 0) {
+      if (storeIsEmpty(creep)) {
         console.log(
           creep.name,
           creep.ticksToLive,

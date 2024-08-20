@@ -3,11 +3,11 @@ const {
   withdrawFromSpawnOk,
   withdrawFromContainerOk,
   withdrawFromStorageOk,
+  storeHasResource,
+  storeHasSpace,
 } = require("./util.resourceManager");
 const {
-  structureHasResource,
   getStructures,
-  structureHasFreeCapacity,
   getStorage,
   getContainers,
   getTerminal,
@@ -27,7 +27,7 @@ const TRANSFER_STOKE = "#16ff05"; // green
  */
 const findClosestStructureWithResource = (creep, structureType) => {
   let structures = _.filter(getStructures(structureType, creep.room), (s) =>
-    structureHasResource(s)
+    storeHasResource(s)
   );
   return creep.pos.findClosestByRange(structures);
 };
@@ -41,7 +41,7 @@ const findClosestStructureWithResource = (creep, structureType) => {
  */
 const findClosestStructureWithFreeCapacity = (creep, structureType) => {
   let structures = _.filter(getStructures(structureType, creep.room), (s) =>
-    structureHasFreeCapacity(s)
+    storeHasSpace(s)
   );
   return creep.pos.findClosestByRange(structures);
 };

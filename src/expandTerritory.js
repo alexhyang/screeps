@@ -4,6 +4,7 @@ const { getCreep } = require("./squad");
 const { getCreepSpawningTime } = require("./squad.creepModelAnalyzer");
 const MODELS = require("./squad.creepModels");
 const { recruitCreep } = require("./squad.recruiter");
+const { storeIsEmpty } = require("./util.resourceManager");
 const { getController, getTowers } = require("./util.structureFinder");
 
 const prepareClaimer = (targetRoomName, fromRoomName) => {
@@ -79,7 +80,7 @@ const prepareSpecialBuilder = (name, toRoom, fromRoom) => {
 
   if (sBuilder.room.name == fromRoom) {
     sBuilder.memory.role = "builder";
-    if (sBuilder.store.getFreeCapacity() == sBuilder.store.getCapacity()) {
+    if (storeIsEmpty(sBuilder)) {
       obtainResource(sBuilder, ["storage"]);
     } else {
       sendTo(name, toRoom);
@@ -89,7 +90,7 @@ const prepareSpecialBuilder = (name, toRoom, fromRoom) => {
     if (!sBuilder.memory.building) {
       sBuilder.memory.building = "true";
     }
-    if (sBuilder.store.getUsedCapacity(RESOURCE_ENERGY) == 0) {
+    if (storeIsEmpty(sBuilder)) {
       sendTo(name, fromRoom);
     }
   }

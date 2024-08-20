@@ -1,18 +1,19 @@
 const { getRoomConfig } = require("./configAPI");
 const { upgradeController } = require("./Creep");
 const { obtainResource } = require("./CreepResource");
+const { storeIsEmpty, storeIsFull } = require("./util.resourceManager");
 
 /**
  * Update upgrading status of a creep
  * @param {Creep} creep
  */
 const updateUpgradingStatus = (creep) => {
-  if (creep.memory.upgrading && creep.store[RESOURCE_ENERGY] == 0) {
+  if (creep.memory.upgrading && storeIsEmpty(creep)) {
     creep.memory.upgrading = false;
     creep.say("🔄");
   }
 
-  if (!creep.memory.upgrading && creep.store.getFreeCapacity() == 0) {
+  if (!creep.memory.upgrading && storeIsFull(creep)) {
     creep.memory.upgrading = true;
     creep.say("⚡");
   }

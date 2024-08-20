@@ -1,3 +1,6 @@
+const { getUsedCapacity } = require("./util.resourceManager");
+const { getTerminal } = require("./util.structureFinder");
+
 /**
  * Create an order in the market
  * @param {number} amount
@@ -85,10 +88,7 @@ const dealOrders = (myRoomName, resourceType, deal) => {
   let order = Memory.orders[0];
   if (order && deal == true) {
     const { id, amount } = Memory.orders[0];
-    if (
-      terminal.cooldown == 0 &&
-      terminal.store.getUsedCapacity(RESOURCE_ENERGY) > sendCost
-    ) {
+    if (terminal.cooldown == 0 && getUsedCapacity(terminal) > sendCost) {
       let result = Game.market.deal(id, amount, myRoomName);
       console.log(result);
     }

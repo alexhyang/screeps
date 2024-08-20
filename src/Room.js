@@ -11,6 +11,7 @@ const {
 const {
   getEnergyAvailable,
   getEnergyCapacityAvailable,
+  getUsedCapacity,
 } = require("./util.resourceManager");
 const { parseNumber, roundTo, padStr } = require("./utils");
 
@@ -53,7 +54,7 @@ const getDefenseMeta = (roomName) => {
       "/" +
       `${numHealthyWallsRamparts + numUnhealthyWallsRamparts}`;
     let towerAvailableEnergy = _.map(getTowers(Game.rooms[roomName]), (t) =>
-      t.store.getUsedCapacity(RESOURCE_ENERGY)
+      getUsedCapacity(t)
     );
     if (towerAvailableEnergy.length == 0) {
       towerAvailableEnergy = "N/A";
@@ -116,8 +117,7 @@ const getStorageMeta = (roomName) => {
   if (getMyRooms().includes(roomName)) {
     let target = getStorage(Game.rooms[roomName]);
     if (target) {
-      let targetUsedCapacity = target.store.getUsedCapacity(RESOURCE_ENERGY);
-      return padStr(parseNumber(targetUsedCapacity), 7, true);
+      return padStr(parseNumber(getUsedCapacity(target)), 7, true);
     }
     return "N/A";
   }
@@ -135,8 +135,8 @@ const getContainerMeta = (roomName) => {
     if (containers.length > 0) {
       let containerMeta = [];
       for (let i in containers) {
-        let usedCapacity = containers[i].store.getUsedCapacity(RESOURCE_ENERGY);
-        containerMeta.push(parseNumber(usedCapacity));
+        let container = containers[i];
+        containerMeta.push(parseNumber(getUsedCapacity(container)));
       }
       return padStr(containerMeta.join(", "), 24, true);
     }
@@ -148,13 +148,11 @@ const getTerminalMeta = (roomName, padding = true) => {
   let terminal = getTerminal(Game.rooms[roomName]);
   if (terminal) {
     let mineralType = Game.rooms[roomName].find(FIND_MINERALS)[0].mineralType;
-    let energyInTerminal = terminal.store.getUsedCapacity(RESOURCE_ENERGY);
-    let mineralInTerminal = terminal.store.getUsedCapacity(mineralType);
     return (
-      padStr(parseNumber(energyInTerminal), 7, true) +
+      padStr(parseNumber(getUsedCapacity(terminal)), 7, true) +
       ", " +
       `${mineralType} ` +
-      padStr(parseNumber(mineralInTerminal), 7, true)
+      padStr(parseNumber(getUsedCapacity(terminal, mineralType)), 7, true)
     );
   }
 };
