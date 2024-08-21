@@ -1,4 +1,5 @@
 const { getCreep } = require("./squad");
+const { getController } = require("./util.structureFinder");
 
 const REPAIR_STROKE = "#fffb05"; // yellow
 const BUILD_STROKE = "#fffb05"; // yellow
@@ -161,8 +162,12 @@ const claimController = (creep) => {
  * @param {Creep} creep
  */
 const upgradeController = (creep) => {
-  if (creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {
-    creep.moveTo(creep.room.controller, {
+  let controller = getController(creep.room);
+  if (controller.level == 8 && controller.ticksToDowngrade > 199900) {
+    return;
+  }
+  if (creep.upgradeController(controller) == ERR_NOT_IN_RANGE) {
+    creep.moveTo(controller, {
       visualizePathStyle: { stroke: UPGRADE_STROKE },
     });
   }

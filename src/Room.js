@@ -78,6 +78,9 @@ const getControllerMeta = (roomName) => {
   if (getMyRooms().includes(roomName)) {
     let controller = getController(Game.rooms[roomName]);
     if (controller) {
+      if (controller.level == 8) {
+        return `CTRL (8) ${controller.ticksToDowngrade}`;
+      }
       let current = parseNumber(controller.progress);
       let total = parseNumber(controller.progressTotal);
       let percentage = roundTo(

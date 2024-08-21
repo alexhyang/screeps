@@ -175,7 +175,7 @@ function shouldRecruitUpgraders(room, roomConfig) {
   let controller = getController(room);
   return (
     controller &&
-    ((controller.level == 8 && controller.ticksToDowngrade < 100000) ||
+    ((controller.level == 8 && controller.ticksToDowngrade < 170000) ||
       controller.level < 8) &&
     recruitInAdvanceOk(
       getTeam("upgrader", room.name),
