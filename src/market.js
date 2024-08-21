@@ -5,8 +5,8 @@ const { getTerminal } = require("./util.structureFinder");
  * Create an order in the market
  * @param {number} amount
  * @param {number} price
- * @param {string} resourceType
- * @param {string} roomName
+ * @param {string} resourceType by default RESOURCE_HYDROGEN
+ * @param {string} roomName by default "W35N43"
  */
 const createOrder = (
   amount,
@@ -64,6 +64,9 @@ const dealOrders = (myRoomName, resourceType, deal) => {
       break;
     case RESOURCE_KEANIUM:
       minPrice = 115;
+      break;
+    case RESOURCE_ZYNTHIUM_BAR:
+      minPrice = 170;
       break;
     default:
   }
