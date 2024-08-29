@@ -321,7 +321,7 @@ function shouldRecruitArmy(room, roomConfig) {
  * @returns {boolean} true if the recruit is successful, false otherwise
  */
 function recruitArmy(room, currentModel) {
-  if (currentModel == undefined) {
+  if (!currentModel) {
     currentModel = MODELS.DEFENDER2;
   }
   return recruitCreep(currentModel, "army", room.name);
@@ -337,7 +337,7 @@ function recruitForRoom(roomName) {
 
   if (room && roomConfig) {
     if (shouldRecruitArmy(room)) {
-      return recruitArmy(room, roomConfig);
+      return recruitArmy(room);
     }
 
     if (shouldRecruitMiners(room, roomConfig)) {
