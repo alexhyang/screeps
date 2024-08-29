@@ -7,8 +7,7 @@ const squadRecruiter = require("./squad.recruiter");
 const structureSetup = require("./structure.setup");
 
 module.exports.loop = function () {
-  memoryManager.cleanNonExistingCreeps();
-  memoryManager.cpuBucket();
+  memoryManager.run();
   logger.run();
   defense.activateTowers();
   structureSetup.run();

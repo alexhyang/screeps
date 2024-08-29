@@ -17,6 +17,9 @@ const clearHostileMemory = () => {
   delete Memory.hostiles;
 };
 
+/**
+ * Print current CPU Bucket value, if it's full, generate pixel
+ */
 const cpuBucket = () => {
   console.log(Game.cpu.bucket);
   if (Game.cpu.bucket == 10000) {
@@ -24,8 +27,20 @@ const cpuBucket = () => {
   }
 };
 
+/**
+ * Decrement debug countdown
+ */
+const decrementDebugCountdown = () => {
+  if (Memory.debugCountDown > 0) {
+    Memory.debugCountDown = Memory.debugCountDown - 1;
+  }
+};
+
 module.exports = {
-  cleanNonExistingCreeps,
+  run: () => {
+    cleanNonExistingCreeps();
+    cpuBucket();
+    decrementDebugCountdown();
+  },
   clearHostileMemory,
-  cpuBucket,
 };
