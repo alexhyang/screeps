@@ -1,13 +1,16 @@
+const { getNearbyStructures } = require("./Creep");
 const {
   transferResource,
   harvestFrom,
   withdrawFrom,
+  pickupNearByResource,
 } = require("./CreepResource");
 const { getRoomMineralType } = require("./Room");
 const {
   storeHasSpace,
   getUsedCapacity,
   storeHasResource,
+  storeIsFull,
 } = require("./util.resourceManager");
 const {
   getStorage,
@@ -56,12 +59,16 @@ module.exports = {
   /** @param {Creep} creep **/
   run: function (creep) {
     if (storeHasSpace(creep)) {
+      pickupNearByResource(creep, getRoomMineralType(creep.room.name));
       harvestMineral(creep);
     } else {
+      let nearbyContainers = getNearbyStructures(creep, STRUCTURE_CONTAINER);
       let terminal = getTerminal(creep.room);
       let storage = getStorage(creep.room);
       let factory = getFactory(creep.room);
-      if (factory && storeHasSpace(factory, getUsedCapacity(creep))) {
+      if (nearbyContainers.length > 0 && !storeIsFull(nearbyContainers[0])) {
+        transferResource(creep, nearbyContainers[0]);
+      } else if (factory && storeHasSpace(factory, getUsedCapacity(creep))) {
         transferResource(creep, factory);
       } else if (terminal && storeHasSpace(terminal, getUsedCapacity(creep))) {
         transferResource(creep, terminal);
