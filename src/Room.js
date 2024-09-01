@@ -163,10 +163,21 @@ const getTerminalMeta = (roomName, padding = true) => {
   }
 };
 
+/**
+ * Get room mineral type
+ * @param {string} roomName
+ * @returns {string} type of mineral in room
+ */
+const getRoomMineralType = (roomName) => {
+  let mineral = getRoom(roomName).find(FIND_MINERALS)[0];
+  return mineral.mineralType;
+};
+
 module.exports = {
   getResourceMeta,
   getDefenseMeta,
   getControllerMeta,
   getStorageMeta,
   getContainerMeta,
+  getRoomMineralType,
 };
