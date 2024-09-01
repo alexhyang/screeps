@@ -313,22 +313,6 @@ const withdrawFromContainer = (creep) => {
 };
 
 /**
- * Withdraw from the closest extension
- * @param {Creep} creep
- * @returns {boolean} true if the withdraw is successful, false otherwise
- */
-const withdrawFromExtension = (creep) => {
-  let closestExtension = findClosestStructureWithResource(
-    creep,
-    STRUCTURE_EXTENSION
-  );
-  if (closestExtension !== null && withdrawFromSpawnOk(creep.room)) {
-    return withdrawFrom(creep, closestExtension);
-  }
-  return false;
-};
-
-/**
  * @param {Creep} creep
  * @returns {boolean} true if the withdraw is successful, false otherwise
  */
@@ -349,19 +333,6 @@ const withdrawFromTerminal = (creep) => {
 
   if (terminal !== undefined) {
     return withdrawFrom(creep, terminal);
-  }
-  return false;
-};
-
-/**
- * Withdraw from the closest spawn
- * @param {Creep} creep
- * @returns {boolean} true if the withdraw is successful, false otherwise
- */
-const withdrawFromSpawn = (creep) => {
-  let closestSpawn = findClosestStructureWithResource(creep, STRUCTURE_SPAWN);
-  if (closestSpawn !== null && withdrawFromSpawnOk(creep.room)) {
-    return withdrawFrom(creep, closestSpawn);
   }
   return false;
 };
@@ -419,10 +390,6 @@ const findHarvestMethod = (origin) => {
       return withdrawFromStorage;
     case "terminal":
       return withdrawFromTerminal;
-    case "extension":
-      return withdrawFromExtension;
-    case "spawn":
-      return withdrawFromSpawn;
     case "wall":
       return;
       return dismantleWalls;
