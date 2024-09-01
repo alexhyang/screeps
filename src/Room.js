@@ -107,7 +107,7 @@ const getEnergyMeta = (roomName) => {
     let energyAvailable = getEnergyAvailable(room);
     let energyCapacityAvailable = getEnergyCapacityAvailable(room);
     let energyMeta = `${energyAvailable}/${energyCapacityAvailable}`;
-    return padStr(energyMeta, 9, true);
+    return padStr(energyMeta, 11, true);
   }
 };
 
@@ -134,6 +134,8 @@ const getStorageMeta = (roomName) => {
  *    if room name is not included in room config
  */
 const getContainerMeta = (roomName) => {
+  let numOfContainer = 4;
+  let padToLength = 7 * numOfContainer - 2;
   if (getMyRooms().includes(roomName)) {
     let containers = getContainers(getRoom(roomName));
     if (containers.length > 0) {
@@ -142,9 +144,9 @@ const getContainerMeta = (roomName) => {
         let container = containers[i];
         containerMeta.push(parseNumber(getUsedCapacity(container)));
       }
-      return padStr(containerMeta.join(", "), 24, true);
+      return padStr(containerMeta.join(", "), padToLength, true);
     }
-    return "N/A";
+    return padStr("N/A", padToLength, true);
   }
 };
 
