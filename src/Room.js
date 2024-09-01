@@ -14,6 +14,7 @@ const {
   getUsedCapacity,
 } = require("./util.resourceManager");
 const { parseNumber, roundTo, padStr } = require("./utils");
+const { getRoom } = require("./utils.game");
 
 /**
  * Get energy meta data of room with the given name
@@ -43,17 +44,17 @@ const getDefenseMeta = (roomName) => {
     const { minDefenseHitsToRepair } = getRoomConfig(roomName).tower;
     let numHealthyWallsRamparts = getHealthyDefenses(
       minDefenseHitsToRepair,
-      Game.rooms[roomName]
+      getRoom(roomName)
     ).length;
     let numUnhealthyWallsRamparts = getUnhealthyDefenses(
       minDefenseHitsToRepair,
-      Game.rooms[roomName]
+      getRoom(roomName)
     ).length;
     let towerRepairProgress =
       numHealthyWallsRamparts +
       "/" +
       `${numHealthyWallsRamparts + numUnhealthyWallsRamparts}`;
-    let towerAvailableEnergy = _.map(getTowers(Game.rooms[roomName]), (t) =>
+    let towerAvailableEnergy = _.map(getTowers(getRoom(roomName)), (t) =>
       getUsedCapacity(t)
     );
     if (towerAvailableEnergy.length == 0) {
@@ -76,7 +77,7 @@ const getDefenseMeta = (roomName) => {
  */
 const getControllerMeta = (roomName) => {
   if (getMyRooms().includes(roomName)) {
-    let controller = getController(Game.rooms[roomName]);
+    let controller = getController(getRoom(roomName));
     if (controller) {
       if (controller.level == 8) {
         return `CTRL (8) ${controller.ticksToDowngrade}`;
@@ -102,7 +103,7 @@ const getControllerMeta = (roomName) => {
  */
 const getEnergyMeta = (roomName) => {
   if (getMyRooms().includes(roomName)) {
-    let room = Game.rooms[roomName];
+    let room = getRoom(roomName);
     let energyAvailable = getEnergyAvailable(room);
     let energyCapacityAvailable = getEnergyCapacityAvailable(room);
     let energyMeta = `${energyAvailable}/${energyCapacityAvailable}`;
@@ -118,7 +119,7 @@ const getEnergyMeta = (roomName) => {
  */
 const getStorageMeta = (roomName) => {
   if (getMyRooms().includes(roomName)) {
-    let target = getStorage(Game.rooms[roomName]);
+    let target = getStorage(getRoom(roomName));
     if (target) {
       return padStr(parseNumber(getUsedCapacity(target)), 7, true);
     }
@@ -134,7 +135,7 @@ const getStorageMeta = (roomName) => {
  */
 const getContainerMeta = (roomName) => {
   if (getMyRooms().includes(roomName)) {
-    let containers = getContainers(Game.rooms[roomName]);
+    let containers = getContainers(getRoom(roomName));
     if (containers.length > 0) {
       let containerMeta = [];
       for (let i in containers) {
@@ -148,9 +149,9 @@ const getContainerMeta = (roomName) => {
 };
 
 const getTerminalMeta = (roomName, padding = true) => {
-  let terminal = getTerminal(Game.rooms[roomName]);
+  let terminal = getTerminal(getRoom(roomName));
   if (terminal) {
-    let mineralType = Game.rooms[roomName].find(FIND_MINERALS)[0].mineralType;
+    let mineralType = getRoom(roomName).find(FIND_MINERALS)[0].mineralType;
     return (
       padStr(parseNumber(getUsedCapacity(terminal)), 7, true) +
       ", " +

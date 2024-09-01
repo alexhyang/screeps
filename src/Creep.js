@@ -66,18 +66,10 @@ const getSpeed = (creep) => {
  * @param {Creep} creep
  * @returns {boolean} true if the task assignment is successful, false otherwise
  */
-const dismantleStructures = (creep, roomObjectId) => {
-  let target;
-  if (!roomObjectId) {
-    target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
-      filter: { structureType: STRUCTURE_WALL },
-    });
-  } else {
-    target = Game.getObjectById(roomObjectId);
-  }
-  if (target) {
-    if (creep.dismantle(target) == ERR_NOT_IN_RANGE) {
-      creep.moveTo(target);
+const dismantleStructure = (creep, structure) => {
+  if (structure) {
+    if (creep.dismantle(structure) == ERR_NOT_IN_RANGE) {
+      creep.moveTo(structure);
     }
     return true;
   }
@@ -241,7 +233,7 @@ module.exports = {
   buildClosestConstructionSite,
   buildTargetById,
   repairTarget,
-  dismantleStructures,
+  dismantleStructure,
   claimController,
   upgradeController,
   signController,
