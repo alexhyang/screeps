@@ -126,18 +126,6 @@ const getEnergyCapacityAvailable = (room) => {
 };
 
 /**
- * Determine if it's ok to withdraw energy from spawn in the room
- * @param {Room} room
- * @returns {boolean} true if it is okay to withdraw from spawn(s) in the
- *    given room, false otherwise
- **/
-const withdrawFromSpawnOk = (room) => {
-  const { SPAWN_WITHDRAW_THRESHOLD } = getRoomConfig(room.name);
-  let energyAvailable = getEnergyAvailable(room);
-  return energyAvailable >= SPAWN_WITHDRAW_THRESHOLD;
-};
-
-/**
  * Determine if sources in the specified room are empty
  * @param {Room} room
  * @returns {boolean} true if all sources are empty, false otherwise
@@ -145,23 +133,6 @@ const withdrawFromSpawnOk = (room) => {
 const allSourcesAreEmpty = (room) => {
   let sources = room.find(FIND_SOURCES);
   return sources.filter((s) => s.energy > 0).length == 0;
-};
-
-/**
- * Determine if it's ok to withdraw energy from containers in the room
- * @param {StructureContainer} container
- * @param {Room} room
- * @returns {boolean} true if it is okay to withdraw from container(s) in the
- *    given room, false otherwise
- **/
-const withdrawFromContainerOk = (container, room) => {
-  const { CONTAINER_WITHDRAW_THRESHOLD } = getRoomConfig(room.name);
-
-  if (allSourcesAreEmpty(room)) {
-    return true;
-  } else {
-    return getUsedCapacity(container) >= CONTAINER_WITHDRAW_THRESHOLD;
-  }
 };
 
 /**
@@ -194,7 +165,5 @@ module.exports = {
   storeHasSpace,
   getEnergyAvailable,
   getEnergyCapacityAvailable,
-  withdrawFromContainerOk,
   withdrawFromStorageOk,
-  withdrawFromSpawnOk,
 };
