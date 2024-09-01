@@ -8,8 +8,8 @@ const structureSetup = require("./structure.setup");
 const market = require("./market");
 
 module.exports.loop = function () {
-  memoryManager.run();
   logger.run();
+  memoryManager.run();
   market.dealTransactions();
 
   defense.activateTowers();
