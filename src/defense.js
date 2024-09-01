@@ -17,6 +17,7 @@ const repairUnhealthyDefenses = (tower, minRepairRange = 50) => {
     tower.room
   )
     .sort((a, b) => a.hits - b.hits)
+    .filter((s) => !Memory.toDismantle.includes(s.id))
     .filter((s) => tower.pos.inRangeTo(s, minRepairRange));
 
   if (
@@ -36,24 +37,26 @@ const repairUnhealthyDefenses = (tower, minRepairRange = 50) => {
  */
 const repairInfrastructure = (tower) => {
   const { minTowerEnergyToRepair } = getRoomConfig(tower.room.name).tower;
-  let targetRoadsOrContainers = _.filter(
-    tower.room.find(FIND_STRUCTURES, {
+  let targetRoadsOrContainers = tower.room
+    .find(FIND_STRUCTURES, {
       filter: (s) => {
         return (
           s.structureType == STRUCTURE_ROAD ||
           s.structureType == STRUCTURE_CONTAINER
         );
       },
-    }),
-    (r) => r.hitsMax - r.hits > 2000
-  );
+    })
+    .filter((r) => r.hitsMax - r.hits > 2000)
+    .filter((r) => !Memory.toDismantle.includes(r.id));
 
   if (
     tower.store.getUsedCapacity(RESOURCE_ENERGY) >= minTowerEnergyToRepair &&
     targetRoadsOrContainers.length > 0
   ) {
     tower.repair(targetRoadsOrContainers[0]);
+    return true;
   }
+  return false;
 };
 
 /**
@@ -178,8 +181,8 @@ const activateTowersInRoom = (roomName) => {
           attackHostiles(tower, closestHostile);
         } else {
           healCreep(tower) ||
-            repairUnhealthyDefenses(tower) ||
-            repairInfrastructure(tower);
+            repairInfrastructure(tower) ||
+            repairUnhealthyDefenses(tower);
         }
       }
     }
