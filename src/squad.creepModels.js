@@ -56,6 +56,10 @@ let MODELS = {
     name: "W10B",
     body: { work: 10, carry: 4, move: 7 },
   },
+  WORKER_20: {
+    name: "W20",
+    body: { work: 20, carry: 2, move: 11 },
+  },
   // ======== CARRIERS ========
   CARRIER_1: {
     name: "C1",
@@ -95,7 +99,7 @@ let MODELS = {
   },
   CARRIER_10: {
     name: "C10",
-    body: { work: 1, carry: 10, move: 6 },
+    body: { carry: 10, move: 5 },
   },
   CARRIER_20: {
     name: "C20",
