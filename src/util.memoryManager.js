@@ -21,7 +21,7 @@ const clearHostileMemory = () => {
  * Print current CPU Bucket value, if it's full, generate pixel
  */
 const cpuBucket = () => {
-  console.log(Game.cpu.bucket);
+  console.log("CPU Bucket:", Game.cpu.bucket);
   if (Game.cpu.bucket == 10000) {
     Game.cpu.generatePixel();
   }

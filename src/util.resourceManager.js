@@ -44,6 +44,7 @@ const getCapacity = (roomObj, resourceType = RESOURCE_ENERGY) => {
       ? roomObj.store.getCapacity()
       : roomObj.store.getCapacity(resourceType);
   }
+  return null;
 };
 
 /**
