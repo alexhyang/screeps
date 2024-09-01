@@ -375,7 +375,7 @@ module.exports = {
     getMyRooms().forEach((roomName) => {
       const { debugMode, spawnNames, spawningDirections } =
         getRoomConfig(roomName).spawn;
-      if (debugMode) {
+      if (debugMode && Memory.debugCountDown > 0) {
         console.log(`Room ${roomName} spawning debug mode is on`);
       }
       recruitForRoom(roomName);
