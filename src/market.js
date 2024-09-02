@@ -62,11 +62,14 @@ const dealOrders = (myRoomName, resourceType, deal) => {
     case RESOURCE_HYDROGEN:
       minPrice = 127;
       break;
+    case RESOURCE_REDUCTANT:
+      minPrice = 830;
+      break;
     case RESOURCE_KEANIUM:
       minPrice = 115;
       break;
     case RESOURCE_ZYNTHIUM_BAR:
-      minPrice = 170;
+      minPrice = 175;
       break;
     default:
   }
