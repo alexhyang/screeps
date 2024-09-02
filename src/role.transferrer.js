@@ -31,7 +31,7 @@ const obtainFromRoom = (creep, fromRoomName) => {
   if (creep.room.name == fromRoomName) {
     switch (fromRoomName) {
       case "W35N43":
-        obtainResource(creep, ["container", "storage"]);
+        obtainResource(creep, ["storage"]);
         break;
       case "W36N43":
         obtainResource(creep, ["link"]);
@@ -79,21 +79,24 @@ const transferToRoom = (creep, toRoomName) => {
     toRoomName = creep.memory.dstRoom;
   }
   let storage = getStorage(Game.rooms[toRoomName]);
+  let freeContainers;
   switch (toRoomName) {
     case "W36N43":
-      let freeContainers = getFreeContainersToTransfer(creep, toRoomName);
+      freeContainers = getFreeContainersToTransfer(creep, toRoomName);
       if (freeContainers.length > 0) {
         transferResource(creep, freeContainers[0]);
       } else {
         transferResource(creep, storage);
       }
-    // case "W37N43":
-    //   let freeContainers2 = getFreeContainersToTransfer(creep, toRoomName);
-    //   if (freeContainers2.length > 0) {
-    //     transferResource(creep, freeContainers2[1]);
-    //   } else {
-    //     transferResource(creep, storage);
-    //   }
+      break;
+    case "W37N43":
+      freeContainers = getFreeContainersToTransfer(creep, toRoomName);
+      if (freeContainers.length > 0) {
+        transferResource(creep, freeContainers[1]);
+      } else {
+        transferResource(creep, storage);
+      }
+      break;
     default:
       if (storage) {
         transferResource(creep, storage);
