@@ -102,16 +102,6 @@ const transferToRoom = (creep, toRoomName) => {
 };
 
 /**
- * Force the transferrer to move down if it is going to W36N44 room
- * @param {Creep} creep
- */
-const avoidDangerZone = (creep) => {
-  if (creep.room.name == "W36N43" && creep.pos.y <= 3) {
-    creep.moveTo(BOTTOM);
-  }
-};
-
-/**
  * Convert to harvester in specified room when no harvester present
  * @param {Creep} creep
  * @returns {boolean} true if conversion is successful, false otherwise
@@ -131,11 +121,6 @@ module.exports = {
   /** @param {Creep} creep **/
   run: function (creep, fromRoomName = "W35N43", toRoomName = "W36N43") {
     if (getMyRooms(fromRoomName).includes(fromRoomName)) {
-      avoidDangerZone(creep);
-      if (convertToHarvesterWhenNecessary(creep, "W36N43")) {
-        return;
-      }
-
       if (storeIsEmpty(creep)) {
         console.log(
           creep.name,
