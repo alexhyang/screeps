@@ -99,11 +99,19 @@ const dealOrders = (myRoomName, resourceType, deal) => {
       console.log(result);
     }
   }
-
-  Memory.orderCountdown--;
 };
 
 module.exports = {
-  createOrder,
-  dealOrders,
+  dealTransactions: () => {
+    if (Memory.orderCountdown <= 0) {
+      Memory.orderCountdown = 0;
+    } else {
+      Memory.orderCountdown--;
+    }
+
+    // dealOrders("W35N43", RESOURCE_REDUCTANT, false);
+    // dealOrders("W35N43", RESOURCE_ZYNTHIUM_BAR, false);
+    // console.log(Game.market.deal("66d52d531b117e0012b318b3", 3000, "W34N43"));
+    // Game.market.changeOrderPrice("66c57d55270e2b00128e4bbc", 190);
+  },
 };
