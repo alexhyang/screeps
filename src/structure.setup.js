@@ -2,6 +2,7 @@ const {
   getUsedCapacity,
   storeHasSpace,
   storeHasResource,
+  storeIsEmpty,
 } = require("./util.resourceManager");
 const { getTerminal, getFactory } = require("./util.structureFinder");
 const { getById } = require("./utils.game");
@@ -22,12 +23,12 @@ const getLink = (x, y, roomName) => {
 const setUpLinks = () => {
   const link34_0 = getLink(43, 15, W34N43);
   const link34_1 = getLink(23, 21, W34N43);
-  const link34_2 = getLink(25, 7, W34N43);
-  if (storeHasSpace(link34_2, 400)) {
-    link34_0.transferEnergy(link34_2);
+  const link34_to = getLink(25, 7, W34N43);
+  if (storeHasResource(link34_0, 150) || storeHasSpace(link34_to)) {
+    link34_0.transferEnergy(link34_to);
   }
-  if (storeHasResource(link34_1, 800)) {
-    // link34_1.transferEnergy(link34_2);
+  if (storeHasResource(link34_1, 300) && storeIsEmpty(link34_to)) {
+    link34_1.transferEnergy(link34_to, 300);
   }
 
   const link36_0 = getLink(43, 5, W36N43);
@@ -52,7 +53,7 @@ const setUpLinks = () => {
 
   const link38From = getLink(47, 12, W38N43);
   const link38To = getLink(25, 19, W38N43);
-  if (getUsedCapacity(link38From) >= 150 || storeHasSpace(link38To)) {
+  if (storeHasResource(link38From, 150) || storeHasSpace(link38To)) {
     link38From.transferEnergy(link38To);
   }
 };
