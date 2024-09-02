@@ -14,8 +14,14 @@ const {
 } = require("./util.structureFinder");
 
 /**
+ * @typedef {Object} CreepModel
+ * @property {string} name
+ * @property {Object<string, number>} body
+ */
+
+/**
  * Generate name for new creep
- * @param {object.<string, object.<string, number>>} creepModel
+ * @param {CreepModel} creepModel
  * @param {string} creepName
  * @returns {string} given creep name, or modelName-timestamp
  */
@@ -93,7 +99,7 @@ function recruitCreep(creepModel, creepRole, roomName, creepName, srcIndex) {
 
 /**
  * Determine if it's okay to recruit in advance
- * @param {object.<string, Creep>} currentTeam current team of same role
+ * @param {Creep[]} currentTeam current team of same role
  * @param {number} maxTeamSize max allowed team size
  * @param {number} newCreepReadyTime time for new creep to get ready to work
  * @returns {boolean} true if all in-advance recruit requirements met,
