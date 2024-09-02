@@ -1,4 +1,4 @@
-const { getNearbyStructures } = require("./Creep");
+const { findStructuresInRange } = require("./Creep");
 const { obtainResource, transferResource } = require("./CreepResource");
 const { getTeam } = require("./squad");
 const {
@@ -65,12 +65,13 @@ const assignSrcIndex = (creep) => {
  */
 const findDeliveryTarget = (creep) => {
   if (creep) {
-    let nearbyLinks = getNearbyStructures(creep, STRUCTURE_LINK).filter(
+    let nearbyLinks = findStructuresInRange(creep, STRUCTURE_LINK, 2).filter(
       (s) => getFreeCapacity(s) >= getCapacity(creep)
     );
-    let nearbyContainers = getNearbyStructures(
+    let nearbyContainers = findStructuresInRange(
       creep,
-      STRUCTURE_CONTAINER
+      STRUCTURE_CONTAINER,
+      2
     ).filter((s) => getFreeCapacity(s) >= getCapacity(creep));
 
     if (nearbyLinks.length > 0) {

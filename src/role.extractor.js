@@ -1,4 +1,4 @@
-const { getNearbyStructures } = require("./Creep");
+const { findStructuresInRange } = require("./Creep");
 const {
   transferResource,
   harvestFrom,
@@ -62,7 +62,11 @@ module.exports = {
       pickupNearByResource(creep, getRoomMineralType(creep.room.name));
       harvestMineral(creep);
     } else {
-      let nearbyContainers = getNearbyStructures(creep, STRUCTURE_CONTAINER);
+      let nearbyContainers = findStructuresInRange(
+        creep,
+        STRUCTURE_CONTAINER,
+        2
+      );
       let terminal = getTerminal(creep.room);
       let storage = getStorage(creep.room);
       let factory = getFactory(creep.room);
