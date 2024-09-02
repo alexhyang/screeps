@@ -21,7 +21,7 @@ const getCreepMeta = (creep) => {
 /**
  * Get the summary of body part count
  * @param {Creep} creep
- * @returns {object.<string, number>} an object with part as key and count as
+ * @returns {Object.<string, number>} an object with part as key and count as
  *    value, return undefined if all parts are lost
  */
 const getCreepBodyPartCount = (creep) => {
@@ -52,18 +52,9 @@ const getCreepBodyParts = (creep) => {
 };
 
 /**
- * Calculate the speed of the given creep
+ * Dismantle the given structure
  * @param {Creep} creep
- * @returns speed of the creep in ticks per square
- */
-const getSpeed = (creep) => {
-  // TODO: finish the implementation later
-  return 0;
-};
-
-/**
- * Dismantle structures with the given id
- * @param {Creep} creep
+ * @param {Structure} structure
  * @returns {boolean} true if the task assignment is successful, false otherwise
  */
 const dismantleStructure = (creep, structure) => {
