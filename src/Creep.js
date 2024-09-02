@@ -194,6 +194,21 @@ const moveToPosition = (creep, x, y, roomName = "") => {
   }
 };
 
+/**
+ * Find the nearby structures of the given type
+ * @param {Creep} creep
+ * @param {string} structureType
+ * @param {number} range by default 2
+ * @returns {StructureContainer} nearby containers in the given range
+ */
+const getNearbyStructures = (creep, structureType, range = 2) => {
+  let nearbyStructures = creep.room.find(FIND_STRUCTURES, {
+    filter: (s) =>
+      s.structureType == structureType && creep.pos.inRangeTo(s, range),
+  });
+  return nearbyStructures;
+};
+
 const sendTo = (creepName, roomName) => {
   let creep = getCreep(creepName);
   if (creep) {
@@ -239,4 +254,5 @@ module.exports = {
   signController,
   moveToPosition,
   sendTo,
+  getNearbyStructures,
 };
