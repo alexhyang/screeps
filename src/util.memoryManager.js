@@ -28,10 +28,11 @@ const cpuBucket = () => {
 };
 
 /**
- * Decrement debug countdown
+ * Print current debug countdown then decrement it
  */
 const decrementDebugCountdown = () => {
   if (Memory.debugCountDown > 0) {
+    console.log("debug countdown:", Memory.debugCountDown);
     Memory.debugCountDown = Memory.debugCountDown - 1;
   }
 };
