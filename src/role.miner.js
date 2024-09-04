@@ -58,6 +58,22 @@ const assignSrcIndex = (creep) => {
 };
 
 /**
+ * Adjust miner so that it stays on top of a container
+ * @param {Creep} creep
+ */
+const adjustPosition = (creep) => {
+  switch (creep.room.name) {
+    case "W35N43":
+      if (creep.srcIndex == 0 && creep.pos.x != 19) {
+        creep.moveTo(19, 15, creep.room.name);
+      }
+      break;
+    default:
+      break;
+  }
+};
+
+/**
  * Find a target to deliver energy for the miner creep
  * @param {Creep} creep
  * @returns {(Structure | undefined)} target to deliver energy,
@@ -100,6 +116,7 @@ module.exports = {
   /** @param {Creep} creep **/
   run: function (creep) {
     assignSrcIndex(creep);
+    adjustPosition(creep);
     if (getFreeCapacity(creep) > 0) {
       obtainResource(creep, ["source"], creep.memory.srcIndex);
     } else {
