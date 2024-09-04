@@ -30,22 +30,35 @@ const createOrder = (
 };
 
 /**
- * Get orders with given information and save them in memory
+ * Get orders from market and save them in memory
  * @param {string} resourceType
  * @param {number} minPrice minimum price of orders to be saved
- * @param {number} countdown time left to update orders in memory
  */
-const updateOrdersInMemory = (resourceType, minPrice, countdown = 11) => {
-  if (Memory.orderCountdown == undefined || Memory.orderCountdown <= 0) {
-    Memory.orders = Game.market
-      .getAllOrders({
-        type: ORDER_BUY,
-        resourceType: resourceType,
-      })
-      .filter((o) => o.price > minPrice)
-      .sort((a, b) => b.price - a.price);
-    Memory.orderCountdown = countdown;
-  }
+const updateOrdersInMemory = (resourceType, minPrice) => {
+  Memory.orders = Game.market
+    .getAllOrders({
+      type: ORDER_BUY,
+      resourceType: resourceType,
+    })
+    .filter((o) => o.price > minPrice)
+    .sort((a, b) => b.price - a.price);
+};
+
+/**
+ * Determine if orders in memory should be updated
+ * @returns {boolean} true if it's time to update orders in memory, false
+ *    otherwise
+ */
+const shouldUpdateOrders = () => {
+  return Memory.orderCountdown == undefined || Memory.orderCountdown <= 0;
+};
+
+/**
+ * Reset order count down to given value
+ * @param {number} countdown
+ */
+const resetOrderCountDown = (countdown = 550) => {
+  Memory.orderCountdown = countdown;
 };
 
 /**
@@ -74,7 +87,10 @@ const dealOrders = (myRoomName, resourceType, deal) => {
     default:
   }
 
-  updateOrdersInMemory(resourceType, minPrice);
+  if (shouldUpdateOrders()) {
+    updateOrdersInMemory(resourceType, minPrice);
+    resetOrderCountDown(550);
+  }
 
   if (Memory.orders != undefined && Memory.orders.length > 0) {
     console.log("order countdown", Memory.orderCountdown);
