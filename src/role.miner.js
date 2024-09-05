@@ -64,7 +64,7 @@ const assignSrcIndex = (creep) => {
 const adjustPosition = (creep) => {
   switch (creep.room.name) {
     case "W35N43":
-      if (creep.srcIndex == 0 && creep.pos.x != 19) {
+      if (creep.memory.srcIndex == 0 && creep.pos.x != 19) {
         creep.moveTo(19, 15, creep.room.name);
       }
       break;
