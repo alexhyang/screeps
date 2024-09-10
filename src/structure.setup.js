@@ -59,6 +59,21 @@ const setUpLinks = () => {
 };
 
 /**
+ * Fill energy from a terminal to another terminal to the given amount
+ * @param {StructureTerminal} from
+ * @param {StructureTerminal} to
+ * @param {number} fillToAmount
+ */
+const sendEnergy = (from, to, fillToAmount) => {
+  if (from && to && getUsedCapacity(to) < fillToAmount) {
+    console.log(
+      "structure.setup.sendEnergy()",
+      from.send(RESOURCE_ENERGY, 5000, to.room.name)
+    );
+  }
+};
+
+/**
  * Set up terminals in my rooms
  */
 const setUpTerminals = () => {
@@ -68,23 +83,9 @@ const setUpTerminals = () => {
   let terminal38 = getTerminal(Game.rooms[W38N43]);
   let terminal37 = getTerminal(Game.rooms[W37N43]);
 
-  if (getUsedCapacity(terminal35) < 60000) {
-    // terminal34.send(RESOURCE_ENERGY, 5000, W35N43);
-  }
-
-  if (getUsedCapacity(terminal36) < 30000) {
-    // terminal34.send(RESOURCE_ENERGY, 5000, W36N43);
-  }
-  if (getUsedCapacity(terminal37) < 30000) {
-    // terminal38.send(RESOURCE_ENERGY, 5000, W37N43);
-  }
-  if (getUsedCapacity(terminal34, RESOURCE_ZYNTHIUM_BAR) > 40000) {
-    // terminal34.send(RESOURCE_ZYNTHIUM_BAR, 10000, W35N43)
-  }
-
-  // if (getUsedCapacity(terminal38) < 40000) {
-  //   terminal35.send(RESOURCE_ENERGY, 10000, W38N43);
-  // }
+  sendEnergy(terminal38, terminal37, 40000);
+  // sendEnergy(terminal35, terminal36, 20000);
+  sendEnergy(terminal34, terminal36, 20000);
 };
 
 const setUpLabs = () => {

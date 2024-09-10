@@ -118,12 +118,9 @@ const attackHostiles = (tower, hostileCreep) => {
  * @param {Creep} hostileCreep
  */
 const addHostileInvasionInfoToMemory = (tower, hostileCreep) => {
-  if (hostileCreep && hostileCreep.hits == hostileCreep.hitsMax) {
+  if (hostileCreep && !isHostileCreepInRecord(hostileCreep)) {
     if (!Memory.hostiles) {
       Memory.hostiles = [];
-    }
-    if (isHostileCreepInRecord(hostileCreep)) {
-      return;
     } else {
       Memory.hostiles.push(
         createHostileInvasionRecord(tower.room.name, hostileCreep)
