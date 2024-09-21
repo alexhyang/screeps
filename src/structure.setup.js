@@ -1,11 +1,20 @@
+const { transferBetween } = require("./CreepResource");
+const { getRoomMineralType } = require("./Room");
+const { getCreep } = require("./squad");
+const MODELS = require("./squad.creepModels");
+const { recruitCreep } = require("./squad.recruiter");
 const {
   getUsedCapacity,
   storeHasSpace,
   storeHasResource,
   storeIsEmpty,
 } = require("./util.resourceManager");
-const { getTerminal, getFactory } = require("./util.structureFinder");
-const { getById } = require("./utils.game");
+const {
+  getTerminal,
+  getFactory,
+  getStorage,
+} = require("./util.structureFinder");
+const { getById, getRoom } = require("./utils.game");
 
 const W36N43 = "W36N43";
 const W35N43 = "W35N43";
@@ -100,11 +109,79 @@ const setUpLabs = () => {
   lab352.runReaction(lab350, lab351);
 };
 
+/**
+ * Run mineral production in specified room from mineral in room to its
+ *    commodities
+ * @param {string} roomName
+ * @param {string} creepName
+ * @param {string} mineralType if undefined (default value), production will
+ *    produce commodities of room mineral type
+ */
+const runMineralProduction = (roomName, creepName, mineralType = undefined) => {
+  const getCommodityType = (mineralType) => {
+    switch (mineralType) {
+      case RESOURCE_ZYNTHIUM:
+        return RESOURCE_ZYNTHIUM_BAR;
+      case RESOURCE_HYDROGEN:
+        return RESOURCE_REDUCTANT;
+      case RESOURCE_KEANIUM:
+        return RESOURCE_KEANIUM_BAR;
+      case RESOURCE_OXYGEN:
+        return RESOURCE_OXIDANT;
+    }
+  };
+
+  creepName = creepName == undefined ? roomName.toLowerCase() : creepName;
+  mineralType =
+    mineralType == undefined ? getRoomMineralType(roomName) : mineralType;
+  let commodityType = getCommodityType(mineralType);
+  let hauler = getCreep(creepName);
+  let room = getRoom(roomName);
+  let factory = getFactory(room);
+  factory.produce(commodityType);
+  let terminal = getTerminal(room);
+  let storage = getStorage(room);
+
+  if (
+    !hauler &&
+    storeHasResource(storage, 70000) &&
+    (storeHasResource(storage, 10000, mineralType) ||
+      storeHasResource(terminal, 10000, mineralType)) &&
+    storeHasSpace(terminal, 5000)
+  ) {
+    recruitCreep(MODELS.CARRIER_10, "hauler", roomName, creepName);
+    return;
+  }
+
+  if (hauler) {
+    let mineralSource = storeHasResource(terminal, undefined, mineralType)
+      ? terminal
+      : storage;
+
+    if (storeHasSpace(factory, 5000)) {
+      hauler.say("m");
+      transferBetween(hauler, mineralSource, factory, mineralType);
+    }
+
+    if (
+      storeHasSpace(terminal, 5000) &&
+      (storeHasResource(factory, undefined, commodityType) ||
+        storeHasResource(hauler, undefined, commodityType))
+    ) {
+      hauler.say("c");
+      transferBetween(hauler, factory, terminal, commodityType);
+    }
+  }
+};
+
+/**
+ * Set up factories to produce commodities from room mineral
+ */
 const setUpFactories = () => {
-  getFactory(Game.rooms[W34N43]).produce(RESOURCE_ZYNTHIUM_BAR);
-  getFactory(Game.rooms[W35N43]).produce(RESOURCE_REDUCTANT);
-  // getFactory(Game.rooms[W35N43]).produce(RESOURCE_ZYNTHIUM_BAR);
-  getFactory(Game.rooms[W38N43]).produce(RESOURCE_ZYNTHIUM_BAR);
+  runMineralProduction("W35N43", "t35");
+  runMineralProduction("W34N43", "t34");
+  runMineralProduction("W38N43", "t38");
+  runMineralProduction("W37N43", "t37");
 };
 
 module.exports = {
@@ -114,4 +191,5 @@ module.exports = {
     setUpFactories();
     setUpLabs();
   },
+  runMineralProduction,
 };
