@@ -179,14 +179,19 @@ function recruitBuilders(room, currentModel) {
 function shouldRecruitUpgraders(room, roomConfig) {
   const { currentModel, teamSize, distanceToSource } = roomConfig.upgrader;
   let controller = getController(room);
+  let model = getController(room).level == 8 ? MODELS.WORKER_3 : currentModel;
+  let upgraderTeam = getTeam("upgrader", room.name);
+
   return (
     controller &&
-    ((controller.level == 8 && controller.ticksToDowngrade < 170000) ||
+    ((controller.level == 8 &&
+      upgraderTeam.length == 0 &&
+      controller.ticksToDowngrade < 160000) ||
       controller.level < 8) &&
     recruitInAdvanceOk(
-      getTeam("upgrader", room.name),
+      upgraderTeam,
       teamSize,
-      getCreepSpawningTime(currentModel) + distanceToSource
+      getCreepSpawningTime(model) + distanceToSource
     )
   );
 }
@@ -198,7 +203,8 @@ function shouldRecruitUpgraders(room, roomConfig) {
  * @returns {boolean} true if the recruit is successful, false otherwise
  */
 function recruitUpgraders(room, currentModel) {
-  return recruitCreep(currentModel, "upgrader", room.name);
+  let model = getController(room).level == 8 ? MODELS.WORKER_3 : currentModel;
+  return recruitCreep(model, "upgrader", room.name);
 }
 
 /**
@@ -254,8 +260,10 @@ function recruitMiners(room, currentModel) {
     return recruitCreep(MODELS.WORKER_5B, "miner", room.name);
   } else if (energyAvailable >= getModelCost(MODELS.WORKER_3)) {
     return recruitCreep(MODELS.WORKER_3, "miner", room.name);
-  } else {
+  } else if (energyAvailable >= getModelCost(MODELS.WORKER_2B)) {
     return recruitCreep(MODELS.WORKER_2B, "miner", room.name);
+  } else {
+    return recruitCreep(MODELS.WORKER_1B, "miner", room.name);
   }
 }
 
