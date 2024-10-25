@@ -6,7 +6,11 @@ const {
   getCapacity,
   storeHasSpace,
 } = require("./util.resourceManager");
-const { getSpawns, getExtensions } = require("./util.structureFinder");
+const {
+  getSpawns,
+  getExtensions,
+  getStorage,
+} = require("./util.structureFinder");
 
 /**
  * Set source index in creep memory
@@ -68,6 +72,24 @@ const adjustPosition = (creep) => {
         creep.moveTo(19, 15, creep.room.name);
       }
       break;
+    case "W34N43":
+      if (creep.memory.srcIndex == 0 && creep.pos.y != 14) {
+        creep.moveTo(44, 14, creep.room.name);
+      }
+      if (creep.memory.srcIndex == 1 && creep.pos.y != 27) {
+        creep.moveTo(27, 35, creep.room.name);
+      }
+      break;
+    case "W38N43":
+      if (creep.memory.srcIndex == 1 && creep.pos.x != 46) {
+        creep.moveTo(46, 13, creep.room.name);
+      }
+      break;
+    case "W37N43":
+      if (creep.memory.srcIndex == 0 && creep.pos.x != 19) {
+        creep.moveTo(19, 4, creep.room.name);
+      }
+      break;
     default:
       break;
   }
@@ -108,6 +130,9 @@ const findDeliveryTarget = (creep) => {
       if (spawnsNotFull.length > 0) {
         return creep.pos.findClosestByRange(spawnsNotFull);
       }
+
+      let storage = getStorage(creep.room);
+      if (storage) return storage;
     }
   }
 };
