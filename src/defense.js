@@ -148,13 +148,15 @@ const isHostileCreepInRecord = (hostileCreep) => {
  * Create an invasion record of a hostile creep
  * @param {string} roomName
  * @param {Creep} hostileCreep
- * @returns {object.<string, string>} an invasion record object containing
- *    room name, creep name, and invasion time
+ * @returns {{roomName: string; name: string; owner: string; time: number}} an
+ *    invasion record object containing room name, creep name, and invasion
+ *    time
  */
 const createHostileInvasionRecord = (roomName, hostileCreep) => {
   return {
     roomName: roomName,
     name: hostileCreep.name,
+    owner: hostileCreep.owner.username,
     time: Game.time,
   };
 };
