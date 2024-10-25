@@ -48,6 +48,11 @@ function printInvasionRecords() {
 module.exports = {
   run: function () {
     console.log();
+    console.log(
+      "=== Defense Hits Target update in:",
+      28800 - (Game.time % 28800),
+      "==="
+    );
     getMyRooms().forEach(printRoomSummary);
     printInvasionRecords();
   },
