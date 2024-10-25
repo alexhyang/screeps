@@ -67,15 +67,9 @@ module.exports = {
         STRUCTURE_CONTAINER,
         2
       );
-      let terminal = getTerminal(creep.room);
       let storage = getStorage(creep.room);
-      let factory = getFactory(creep.room);
       if (nearbyContainers.length > 0 && !storeIsFull(nearbyContainers[0])) {
         transferResource(creep, nearbyContainers[0]);
-      } else if (factory && storeHasSpace(factory, getUsedCapacity(creep))) {
-        transferResource(creep, factory);
-      } else if (terminal && storeHasSpace(terminal, getUsedCapacity(creep))) {
-        transferResource(creep, terminal);
       } else {
         transferResource(creep, storage);
       }
