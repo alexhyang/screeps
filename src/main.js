@@ -6,6 +6,7 @@ const testScripts = require("./testScripts");
 const squadRecruiter = require("./squad.recruiter");
 const structureSetup = require("./structure.setup");
 const market = require("./market");
+const notifications = require("./notifications");
 
 module.exports.loop = function () {
   logger.run();
@@ -17,4 +18,5 @@ module.exports.loop = function () {
   squadRecruiter.run();
   squadJobManager.assignJobs();
   testScripts.run();
+  notifications.run();
 };
