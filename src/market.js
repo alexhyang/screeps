@@ -1,6 +1,6 @@
 const { blockedRooms } = require("./marketBlockedRooms");
 const { getUsedCapacity } = require("./util.resourceManager");
-const { getTerminal } = require("./util.structureFinder");
+const { getTerminal, getStorage } = require("./util.structureFinder");
 const { getRoom } = require("./utils.game");
 
 /**
@@ -31,13 +31,13 @@ const createOrder = (
   }
 };
 
-const demandingParam = [
-  { resourceType: RESOURCE_HYDROGEN, minPrice: 127 },
+const DEMANDING_PARAM = [
+  // { resourceType: RESOURCE_HYDROGEN, minPrice: 127 },
+  // { resourceType: RESOURCE_KEANIUM, minPrice: 115 },
   { resourceType: RESOURCE_OXIDANT, minPrice: 190 },
-  { resourceType: RESOURCE_KEANIUM, minPrice: 115 },
-  { resourceType: RESOURCE_ZYNTHIUM_BAR, minPrice: 190 },
-  { resourceType: RESOURCE_REDUCTANT, minPrice: 496.5 },
-  { resourceType: RESOURCE_KEANIUM_BAR, minPrice: 650 },
+  { resourceType: RESOURCE_ZYNTHIUM_BAR, minPrice: 175 },
+  { resourceType: RESOURCE_REDUCTANT, minPrice: 520 },
+  { resourceType: RESOURCE_KEANIUM_BAR, minPrice: 720 },
 ];
 
 /**
@@ -46,8 +46,8 @@ const demandingParam = [
  */
 const getDemandingResources = () => {
   let demandingResources = [];
-  for (i in demandingParam) {
-    demandingResources.push(demandingParam[i].resourceType);
+  for (i in DEMANDING_PARAM) {
+    demandingResources.push(DEMANDING_PARAM[i].resourceType);
   }
   return demandingResources;
 };
@@ -58,28 +58,40 @@ const getDemandingResources = () => {
  * @returns {number} minimum price to start deals
  */
 const getMinPrice = (resourceType) => {
-  return demandingParam.find((r) => r.resourceType == resourceType).minPrice;
+  return DEMANDING_PARAM.find((r) => r.resourceType == resourceType).minPrice;
 };
 
 /**
  * Get names of Room for deal
  * @param {string} resourceType
  * @returns {string[]} a list of names of rooms that have given resource type,
- *    return empty list if resourceType not defined in demandingParam
+ *    return empty list if resourceType not defined in DEMANDING_PARAM
  */
 const getRoomsForDeal = (resourceType) => {
-  switch (resourceType) {
-    case RESOURCE_REDUCTANT:
-      return ["W35N43"];
-    case RESOURCE_KEANIUM_BAR:
-      return ["W36N43"];
-    case RESOURCE_ZYNTHIUM_BAR:
-      return ["W38N43", "W34N43"];
-    case RESOURCE_OXIDANT:
-      return ["W37N43"];
-    default:
-      return [];
+  if (!Memory.market)
+    Memory.market = {};
+
+  if (!Memory.market[resourceType] || Memory.market[resourceType].length === 0) {
+    switch (resourceType) {
+      case RESOURCE_REDUCTANT:
+        Memory.market[resourceType] = ["W35N43"];
+        break;
+      case RESOURCE_KEANIUM_BAR:
+        Memory.market[resourceType] = ["W36N43"];
+        break;
+      case RESOURCE_ZYNTHIUM_BAR:
+        Memory.market[resourceType] = ["W34N43", "W38N43"];
+        break;
+      case RESOURCE_OXIDANT:
+        Memory.market[resourceType] = ["W37N43"];
+        break;
+      default:
+        Memory.market[resourceType] = [];
+        console.log(`added Memory.market.${resourceType}`);
+    }
   }
+
+  return Memory.market[resourceType];
 };
 
 /**
@@ -102,7 +114,7 @@ const updateOrdersInMemory = () => {
         type: ORDER_BUY,
         resourceType: resourceType,
       })
-      .filter((o) => o.price > minPrice)
+      .filter((o) => o.price > minPrice && o.remainingAmount > 0)
       .sort((a, b) => b.price - a.price);
     Memory.orders[resourceType] = newOrders;
   }
@@ -129,7 +141,6 @@ const resetOrderCountDown = (countdown = 2400) => {
  * Enhanced transaction deal excluding blocked rooms
  * @param {string} orderId
  * @param {string} roomName
- * @param {number} dealAmount
  * @param {boolean} blockRoom
  */
 const deal = (orderId, roomName, dealAmount = 5000, blockRoom = true) => {
@@ -143,25 +154,24 @@ const deal = (orderId, roomName, dealAmount = 5000, blockRoom = true) => {
       console.log(Game.market.deal(orderId, dealAmount, roomName));
     }
   } else {
-    console.log("\n++++++++ order not found ++++++++\n\n");
+    console.log(`\n++++++++ order ${orderId} not found ++++++++\n\n`);
   }
 };
 
 /**
  * Deal orders of given resource type from specified room
  * @param {string} resourceType
- * @param {string} myRoomName
  */
-const dealOrders = (resourceType, myRoomName) => {
+const dealOrders = (resourceType) => {
   let orders = Memory.orders[resourceType];
-  let sendCost;
-  let terminal = getTerminal(getRoom(myRoomName));
+  let myRoomName = getRoomsForDeal(resourceType)[0];
 
-  if (orders != undefined && orders.length > 0) {
+  if (orders !== undefined && myRoomName !== undefined && orders.length > 0) {
+    let terminal = getTerminal(getRoom(myRoomName));
     let nextOrder = orders[0];
     if (nextOrder) {
       const { id, resourceType, price, amount, roomName } = nextOrder;
-      sendCost = Game.market.calcTransactionCost(amount, myRoomName, roomName);
+      let sendCost = Game.market.calcTransactionCost(amount, myRoomName, roomName);
       console.log(
         `${myRoomName}->${roomName}:`,
         `id: ${id}`,
@@ -183,9 +193,15 @@ const dealOrders = (resourceType, myRoomName) => {
       ) {
         let result = deal(id, myRoomName);
         console.log(result);
-        if (result == ERR_INVALID_ARGS) {
+        if (!result || result == ERR_INVALID_ARGS || nextOrder.amount == 0) {
           Memory.orders[resourceType].shift();
         }
+
+        Memory.market[resourceType].sort(
+          (a, b) =>
+            getUsedCapacity(getTerminal(getRoom(b)), resourceType) -
+            getUsedCapacity(getTerminal(getRoom(a)), resourceType)
+        )
       }
     }
   }
@@ -195,19 +211,14 @@ const dealOrders = (resourceType, myRoomName) => {
  * Deal orders of given resource type from specified room
  */
 const dealOrdersInMemory = (resourceType = "all") => {
-  let rooms;
   if (resourceType !== "all") {
-    rooms = getRoomsForDeal(resourceType);
-    dealOrders(resourceType, rooms[0]);
+    dealOrders(resourceType);
   } else {
     console.log("dealing all types...");
     let resourceTypes = Object.keys(Memory.orders);
     resourceTypes.forEach((t) => {
       if (Memory.orders[t].length > 0) {
-        let roomName = getRoomsForDeal(t)[0];
-        if (roomName) {
-          dealOrders(t, roomName);
-        }
+        dealOrders(t);
       }
     });
   }
@@ -224,5 +235,6 @@ module.exports = {
       updateOrdersInMemory();
       resetOrderCountDown(500);
     }
+    dealOrdersInMemory();
   },
 };
