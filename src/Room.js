@@ -12,6 +12,7 @@ const {
   getEnergyAvailable,
   getEnergyCapacityAvailable,
   getUsedCapacity,
+  getFreeCapacity
 } = require("./util.resourceManager");
 const { parseNumber, roundTo, padStr } = require("./utils");
 const { getRoom } = require("./utils.game");
@@ -63,11 +64,26 @@ const getDefenseMeta = (roomName) => {
 
     let defenseMeta =
       `TWR (${padStr(towerAvailableEnergy.join(","), 17)}) ` +
-      `WR (${padStr(parseNumber(minDefenseHitsToRepair), 4, true)}): ` +
+      "WR " +
+      `(${padStr(parseNumber(getDefenseWithLowestHits(roomName)), 6, true)}/` +
+      `${padStr(parseNumber(minDefenseHitsToRepair), 6, true)}): ` +
       padStr(towerRepairProgress, 7);
     return defenseMeta;
   }
 };
+
+/**
+ * Get defense with lowest hits
+ * @param {string} roomName
+ * @returns {number} the hits of most unhealthy defense
+ */
+const getDefenseWithLowestHits = (roomName) => {
+  let maxHits = 300000000;
+  let defenses = getUnhealthyDefenses(maxHits, getRoom(roomName))
+    .sort((a, b) => a.hits - b.hits)
+    .filter((s) => !Memory.toDismantle.includes(s.id));
+  return defenses.length == 0 ? maxHits : defenses[0].hits;
+}
 
 /**
  * Get controller meta data of room with the given name
@@ -121,7 +137,8 @@ const getStorageMeta = (roomName) => {
   if (getMyRooms().includes(roomName)) {
     let target = getStorage(getRoom(roomName));
     if (target) {
-      return padStr(parseNumber(getUsedCapacity(target)), 7, true);
+      return `${padStr(parseNumber(getUsedCapacity(target)), 7, true)} U|F ` +
+        `${padStr(parseNumber(getFreeCapacity(target)), 7, true)}`;
     }
     return "N/A";
   }
@@ -153,12 +170,13 @@ const getContainerMeta = (roomName) => {
 const getTerminalMeta = (roomName, padding = true) => {
   let terminal = getTerminal(getRoom(roomName));
   if (terminal) {
-    let mineralType = getRoom(roomName).find(FIND_MINERALS)[0].mineralType;
+    let mineralType = getRoomMineralType(roomName);
+    let commodityType = getRoomCommodityType(mineralType);
     return (
       padStr(parseNumber(getUsedCapacity(terminal)), 7, true) +
       ", " +
-      `${mineralType} ` +
-      padStr(parseNumber(getUsedCapacity(terminal, mineralType)), 7, true)
+      `${padStr(commodityType, 12, true)} ` +
+      padStr(parseNumber(getUsedCapacity(terminal, commodityType)), 7, true)
     );
   }
 };
@@ -173,6 +191,25 @@ const getRoomMineralType = (roomName) => {
   return mineral.mineralType;
 };
 
+/**
+ * Get room mineral commodity type
+ * @param {string} mineralType
+ * @returns {string} type of mineral commodity in room
+ */
+const getRoomCommodityType = (mineralType) => {
+  // let mineralType = getRoomMineralType(roomName); # refactor later
+  switch (mineralType) {
+    case RESOURCE_ZYNTHIUM:
+      return RESOURCE_ZYNTHIUM_BAR;
+    case RESOURCE_HYDROGEN:
+      return RESOURCE_REDUCTANT;
+    case RESOURCE_KEANIUM:
+      return RESOURCE_KEANIUM_BAR;
+    case RESOURCE_OXYGEN:
+      return RESOURCE_OXIDANT;
+  }
+};
+
 module.exports = {
   getResourceMeta,
   getDefenseMeta,
@@ -180,4 +217,5 @@ module.exports = {
   getStorageMeta,
   getContainerMeta,
   getRoomMineralType,
+  getRoomCommodityType
 };
