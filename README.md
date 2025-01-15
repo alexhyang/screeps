@@ -51,7 +51,7 @@
 
 1.  module import diagram
 
-    <img alt="module import diagram" src="./assets/screeps-v1.0.1-import-diagram.jpg" width="90%">
+    <img alt="module import diagram" src="./assets/screeps-v0.0.3-import-diagram.jpg" width="90%">
 
 ## References
 
