@@ -42,13 +42,13 @@ const getResourceMeta = (roomName) => {
  */
 const getDefenseMeta = (roomName) => {
   if (getMyRooms().includes(roomName)) {
-    const { minDefenseHitsToRepair } = getRoomConfig(roomName).tower;
+    let defenseHitsTarget = Memory.defenses[roomName].defenseHitsTarget;
     let numHealthyWallsRamparts = getHealthyDefenses(
-      minDefenseHitsToRepair,
+      defenseHitsTarget,
       getRoom(roomName)
     ).length;
     let numUnhealthyWallsRamparts = getUnhealthyDefenses(
-      minDefenseHitsToRepair,
+      defenseHitsTarget,
       getRoom(roomName)
     ).length;
     let towerRepairProgress =
@@ -65,19 +65,19 @@ const getDefenseMeta = (roomName) => {
     let defenseMeta =
       `TWR (${padStr(towerAvailableEnergy.join(","), 17)}) ` +
       "WR " +
-      `(${padStr(parseNumber(getDefenseWithLowestHits(roomName)), 6, true)}/` +
-      `${padStr(parseNumber(minDefenseHitsToRepair), 6, true)}): ` +
+      `(${padStr(parseNumber(getLowestDefenseHits(roomName)), 6, true)}/` +
+      `${padStr(parseNumber(defenseHitsTarget), 6, true)}): ` +
       padStr(towerRepairProgress, 7);
     return defenseMeta;
   }
 };
 
 /**
- * Get defense with lowest hits
+ * Get lowest hits of defenses in the given room
  * @param {string} roomName
  * @returns {number} the hits of most unhealthy defense
  */
-const getDefenseWithLowestHits = (roomName) => {
+const getLowestDefenseHits = (roomName) => {
   let maxHits = 300000000;
   let defenses = getUnhealthyDefenses(maxHits, getRoom(roomName))
     .sort((a, b) => a.hits - b.hits)
@@ -213,6 +213,7 @@ const getRoomCommodityType = (mineralType) => {
 module.exports = {
   getResourceMeta,
   getDefenseMeta,
+  getLowestDefenseHits,
   getControllerMeta,
   getStorageMeta,
   getContainerMeta,

@@ -14,7 +14,7 @@ const cleanNonExistingCreeps = () => {
  * Delete hostile creep record in memory
  */
 const clearHostileMemory = () => {
-  delete Memory.hostiles;
+  Memory.hostiles = [];
 };
 
 /**

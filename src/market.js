@@ -191,9 +191,14 @@ const dealOrders = (resourceType) => {
         getUsedCapacity(terminal) > sendCost &&
         getUsedCapacity(terminal, resourceType) > nextOrder.amount
       ) {
-        let result = deal(id, myRoomName);
-        console.log(result);
-        if (!result || result == ERR_INVALID_ARGS || nextOrder.amount == 0) {
+        let result = deal(id, myRoomName, amount);
+        console.log("market.dealOrders", result);
+        if (
+          !result ||
+          result == 0 ||
+          result == ERR_INVALID_ARGS ||
+          nextOrder.amount == 0
+        ) {
           Memory.orders[resourceType].shift();
         }
 

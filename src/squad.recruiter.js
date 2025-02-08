@@ -58,7 +58,7 @@ const printCreepSpawningMsg = (spawn, creepName, creepRole, spawningCost) => {
 const getIdleSpawn = (spawnNames) => {
   for (i in spawnNames) {
     let spawn = getSpawnByName(spawnNames[i]);
-    if (spawn.spawning == null) {
+    if (spawn && spawn.spawning == null) {
       return spawn;
     }
   }

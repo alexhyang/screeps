@@ -74,10 +74,10 @@ const getTargetToDeliverEnergy = (creep) => {
   const hasSpace = (s) =>
     storeHasSpace(s, getCapacity(creep) > 500 ? 500 : getCapacity(creep));
 
-  if (linkFrom && storeHasSpace(linkFrom, 600)) {
-    creep.memory.deliveryTarget = linkFrom.id;
-    return linkFrom;
-  }
+  // if (linkFrom && storeHasSpace(linkFrom, 500)) {
+  //   creep.memory.deliveryTarget = linkFrom.id;
+  //   return linkFrom;
+  // }
 
   let spawnExtensionsNotFull = getSpawnsExtensionsNotFull(creep.room);
   if (spawnExtensionsNotFull.length > 0) {
@@ -102,14 +102,14 @@ const getTargetToDeliverEnergy = (creep) => {
   }
 
   let factory = getFactory(creep.room);
-  if (factory && getUsedCapacity(factory) < 5000 && !storeIsFull(factory)) {
+  if (factory && storeHasSpace(factory) > 2000) {
     return factory;
   }
 
   let nuker = getNuker(creep.room);
   if (
     storage &&
-    storeHasResource(storage, 250000) &&
+    storeHasResource(storage, 30000) &&
     nuker &&
     storeHasSpace(nuker)
   ) {
@@ -152,6 +152,11 @@ const findDeliveryTarget = (creep) => {
         creep.memory.resourceTypes.shift();
       }
 
+      let factory = getFactory(creep.room);
+      if (factory && getUsedCapacity(factory) < 25000 && !storeIsFull(factory)) {
+        return factory;
+      }
+
       if (storage) {
         return storage;
       }
@@ -159,9 +164,24 @@ const findDeliveryTarget = (creep) => {
   }
 };
 
+const checkResourceTypes = (creep) => {
+  creep.memory.resourceTypes = [
+    "Z",
+    "H",
+    "K",
+    "O",
+    "GO",
+    "KO",
+    "ZH",
+    "UH",
+    "LO",
+    "energy",
+  ];
+};
+
 module.exports = {
   /** @param {Creep} creep **/
-  run: function (creep) {
+  run: function(creep) {
     if (!creep.memory.resourceTypes) {
       creep.memory.resourceTypes = [];
     }

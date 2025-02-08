@@ -146,9 +146,6 @@ const claimController = (creep) => {
  */
 const upgradeController = (creep) => {
   let controller = getController(creep.room);
-  if (controller.level == 8 && controller.ticksToDowngrade > 199900) {
-    return;
-  }
   if (creep.upgradeController(controller) == ERR_NOT_IN_RANGE) {
     creep.moveTo(controller, {
       visualizePathStyle: { stroke: UPGRADE_STROKE },

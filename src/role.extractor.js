@@ -8,16 +8,10 @@ const {
 const { getRoomMineralType } = require("./Room");
 const {
   storeHasSpace,
-  getUsedCapacity,
   storeHasResource,
   storeIsFull,
 } = require("./util.resourceManager");
-const {
-  getStorage,
-  getExtractor,
-  getTerminal,
-  getFactory,
-} = require("./util.structureFinder");
+const { getStorage, getExtractor } = require("./util.structureFinder");
 
 const memorizeMineralResourceType = (creep, mineral) => {
   if (
@@ -65,7 +59,7 @@ module.exports = {
       let nearbyContainers = findStructuresInRange(
         creep,
         STRUCTURE_CONTAINER,
-        2
+        3
       );
       let storage = getStorage(creep.room);
       if (nearbyContainers.length > 0 && !storeIsFull(nearbyContainers[0])) {

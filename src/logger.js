@@ -53,6 +53,11 @@ module.exports = {
       28800 - (Game.time % 28800),
       "==="
     );
+    console.log(
+      "=== Order update in:",
+      Memory.orderCountdown,
+      "==="
+    );
     getMyRooms().forEach(printRoomSummary);
     printInvasionRecords();
   },

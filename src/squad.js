@@ -7,7 +7,9 @@ const { getRoomConfig, getMyRooms } = require("./configAPI");
  *    found
  **/
 const getTeam = (creepRole, roomName) => {
-  if (roomName == "all") {
+  if (creepRole == "all") {
+    return _.filter(Game.creeps, (creep) => creep.room.name == roomName);
+  } else if (roomName == "all") {
     return _.filter(Game.creeps, (creep) => creep.memory.role == creepRole);
   } else {
     return _.filter(
