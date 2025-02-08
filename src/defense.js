@@ -1,5 +1,14 @@
 const { getMyRooms, getRoomConfig } = require("./configAPI");
-const { getTowers, getUnhealthyDefenses } = require("./util.structureFinder");
+const { storeHasResource } = require("./util.resourceManager");
+const {
+  getTowers,
+  getUnhealthyDefenses,
+  getStorage,
+} = require("./util.structureFinder");
+const { getRoom } = require("./utils.game");
+const { getLowestDefenseHits } = require("./Room");
+
+const STORAGE_ENERGY_RESERVE = 300000;
 
 /**
  * Let the tower repair unhealthy walls and ramparts if any
@@ -7,13 +16,11 @@ const { getTowers, getUnhealthyDefenses } = require("./util.structureFinder");
  * @param {number} minRepairRange
  * @returns {boolean} true if job assigned successfully, false otherwise
  */
-const repairUnhealthyDefenses = (tower, minRepairRange = 50) => {
-  const { minTowerEnergyToRepair, minDefenseHitsToRepair } = getRoomConfig(
-    tower.room.name
-  ).tower;
+const repairUnhealthyDefenses = (tower, minRepairRange = 51) => {
+  const { minTowerEnergyToRepair } = getRoomConfig(tower.room.name).tower;
 
   let defensesToRepair = getUnhealthyDefenses(
-    minDefenseHitsToRepair,
+    Memory.defenses[tower.room.name].defenseHitsTarget,
     tower.room
   )
     .sort((a, b) => a.hits - b.hits)
@@ -46,7 +53,7 @@ const repairInfrastructure = (tower) => {
         );
       },
     })
-    .filter((r) => r.hitsMax - r.hits > 2000)
+    .filter((r) => r.hitsMax - r.hits > 1500)
     .filter((r) => !Memory.toDismantle.includes(r.id));
 
   if (
@@ -167,7 +174,6 @@ const createHostileInvasionRecord = (roomName, hostileCreep) => {
  */
 const activateTowersInRoom = (roomName) => {
   var towers = getTowers(Game.rooms[roomName]);
-  let { repairTowerIndex } = getRoomConfig(roomName).tower;
   for (let i in towers) {
     let tower = towers[i];
     if (tower) {
@@ -189,10 +195,57 @@ const activateTowersInRoom = (roomName) => {
 };
 
 /**
+ * Calibrate defenseHitsTarget for rooms
+ * @param {string} roomName
+ */
+const calibrateHitsTargets = (roomName) => {
+  if (!Memory.defenses) {
+    Memory.defenses = {};
+    return;
+  }
+
+  if (!Memory.defenses[roomName]) {
+    Memory.defenses[roomName] = {
+      base: 2175,
+      inc: 10000,
+      defenseHitsTarget: 10000,
+    };
+    return;
+  }
+
+  const { base, inc, defenseHitsTarget } = Memory.defenses[roomName];
+  let lowestDefHits = getLowestDefenseHits(roomName);
+  console.log(roomName, base, lowestDefHits, "->", defenseHitsTarget);
+  if (
+    storeHasResource(getStorage(getRoom(roomName)), STORAGE_ENERGY_RESERVE) &&
+    lowestDefHits >= defenseHitsTarget
+  ) {
+    Memory.defenses[roomName].base--;
+    let numDefenses = getUnhealthyDefenses(
+      WALL_HITS_MAX,
+      getRoom(roomName)
+    ).length;
+    Memory.defenses[roomName].inc = Math.floor(
+      (STORAGE_ENERGY_RESERVE / numDefenses) * 10
+    );
+    Memory.defenses[roomName].defenseHitsTarget =
+      inc * Math.floor(Game.time / 28800 - base);
+  }
+};
+
+/**
  * Activate all towers
  */
 const activateTowers = () => {
   getMyRooms().forEach(activateTowersInRoom);
+  getMyRooms().forEach(calibrateHitsTargets);
+  // getMyRooms().forEach(roomName => {
+  //   Memory.defenses[roomName] = {
+  //     base: 2175,
+  //     inc: 10000,
+  //     defenseHitsTarget: 10000
+  //   };
+  // });
 };
 
 module.exports = {
